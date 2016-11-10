@@ -37,7 +37,7 @@ public class HomeResource {
      */
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public String getIndex() {
+    public String getHtml() {
         //TODO return proper representation object
         return "<p>hello world!</p>";
     }
