@@ -39,7 +39,7 @@ public class HomeResource {
     @Produces(MediaType.TEXT_HTML)
     public String getIndex() {
         //TODO return proper representation object
-        return "hello world!";
+        return "<p>hello world!</p>";
     }
 
     /**
