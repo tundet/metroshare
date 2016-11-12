@@ -74,10 +74,10 @@ CREATE TABLE IF NOT EXISTS `img_tag` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `like`
+-- Table structure for table `img_like`
 --
 
-CREATE TABLE IF NOT EXISTS `like` (
+CREATE TABLE IF NOT EXISTS `img_like` (
   `ID` int(11) NOT NULL,
   `imgId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
@@ -198,28 +198,6 @@ ALTER TABLE `tag`
 --
 ALTER TABLE `user`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `img`
---
-ALTER TABLE `img`
-  ADD CONSTRAINT `img_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `like` (`imgId`),
-  ADD CONSTRAINT `img_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `like` (`userId`);
-
---
--- Constraints for table `tag`
---
-ALTER TABLE `tag`
-  ADD CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `img_tag` (`tagId`);
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `img` (`userId`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
