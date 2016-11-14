@@ -16,10 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -27,23 +27,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jozi_
  */
 @Entity
+@Table(name = "media_like")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c")
-    , @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c WHERE c.id = :id")
-    , @NamedQuery(name = "Comment.findByMessage", query = "SELECT c FROM Comment c WHERE c.message = :message")
-    , @NamedQuery(name = "Comment.findByDate", query = "SELECT c FROM Comment c WHERE c.date = :date")})
-public class Comment implements Serializable {
+    @NamedQuery(name = "MediaLike.findAll", query = "SELECT m FROM MediaLike m")
+    , @NamedQuery(name = "MediaLike.findById", query = "SELECT m FROM MediaLike m WHERE m.id = :id")
+    , @NamedQuery(name = "MediaLike.findByLikeBoolean", query = "SELECT m FROM MediaLike m WHERE m.likeBoolean = :likeBoolean")
+    , @NamedQuery(name = "MediaLike.findByDate", query = "SELECT m FROM MediaLike m WHERE m.date = :date")})
+public class MediaLike implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    private String message;
+    private Boolean likeBoolean;
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,16 +53,15 @@ public class Comment implements Serializable {
     @ManyToOne(optional = false)
     private Media mediaId;
 
-    public Comment() {
+    public MediaLike() {
     }
 
-    public Comment(Integer id) {
+    public MediaLike(Integer id) {
         this.id = id;
     }
 
-    public Comment(Integer id, String message, Date date) {
+    public MediaLike(Integer id, Date date) {
         this.id = id;
-        this.message = message;
         this.date = date;
     }
 
@@ -76,12 +73,12 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public Boolean getLikeBoolean() {
+        return likeBoolean;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setLikeBoolean(Boolean likeBoolean) {
+        this.likeBoolean = likeBoolean;
     }
 
     public Date getDate() {
@@ -118,10 +115,10 @@ public class Comment implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Comment)) {
+        if (!(object instanceof MediaLike)) {
             return false;
         }
-        Comment other = (Comment) object;
+        MediaLike other = (MediaLike) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -130,7 +127,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Comment[ id=" + id + " ]";
+        return "model.MediaLike[ id=" + id + " ]";
     }
     
 }

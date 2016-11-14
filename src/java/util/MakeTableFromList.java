@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package util;
 
 import java.util.List;
 import model.Comment;
 import model.Friend;
-import model.Img;
-import model.ImgLike;
-import model.ImgTag;
+import model.Media;
+import model.MediaLike;
+import model.MediaTag;
 import model.Tag;
 import model.User;
 
@@ -42,12 +42,12 @@ public class MakeTableFromList {
         return r;
     }
 
-    public String TableForImages(List<Img> imglst) {
+    public String TableForImages(List<Media> mlst) {
         String r = "";
         r += "<table><thead><tr>";
         r += "<th>ID</th><th>User ID</th><th>Image src</th><th>Date</th>";
         r += "</tr></thead><tbody>";
-        for (Img i : imglst) {
+        for (Media i : mlst) {
             r += "<tr><td>" + i.getId() + "</td><td>" + i.getUserId() + "</td><td>" + i.getImageLocation() + "</td><td>" + i.getDate() + "</td></tr>";
         }
         r += "</tbody></table>";
@@ -57,10 +57,10 @@ public class MakeTableFromList {
     public String TableForComment(List<Comment> clst) {
         String r = "";
         r += "<table><thead><tr>";
-        r += "<th>ID</th><th>Img ID</th><th>User ID</th><th>Message</th><th>Date</th>";
+        r += "<th>ID</th><th>Media ID</th><th>User ID</th><th>Message</th><th>Date</th>";
         r += "</tr></thead><tbody>";
         for (Comment c : clst) {
-            r += "<tr><td>" + c.getId() + "</td><td>" + c.getImgId() + "</td><td>" + c.getUserId() + "</td><td>" + c.getMessage() + "</td><td>" + c.getDate() + "</td></tr>";
+            r += "<tr><td>" + c.getId() + "</td><td>" + c.getMediaId() + "</td><td>" + c.getUserId() + "</td><td>" + c.getMessage() + "</td><td>" + c.getDate() + "</td></tr>";
         }
         r += "</tbody></table>";
         return r;
@@ -78,25 +78,25 @@ public class MakeTableFromList {
         return r;
     }
     
-    public String TableForLikes(List<ImgLike> llst) {
+    public String TableForLikes(List<MediaLike> llst) {
         String r = "";
         r += "<table><thead><tr>";
-        r += "<th>ID</th><th>Img ID</th><th>User ID</th><th>Like</th><th>Date</th>";
+        r += "<th>ID</th><th>Media ID</th><th>User ID</th><th>Like</th><th>Date</th>";
         r += "</tr></thead><tbody>";
-        for (ImgLike l : llst) {
-            r += "<tr><td>" + l.getId() + "</td><td>" + l.getImgId() + "</td><td>" + l.getUserId() + "</td><td>" + l.getLikeBoolean() + "</td><td>" + l.getDate() + "</td></tr>";
+        for (MediaLike l : llst) {
+            r += "<tr><td>" + l.getId() + "</td><td>" + l.getMediaId() + "</td><td>" + l.getUserId() + "</td><td>" + l.getLikeBoolean() + "</td><td>" + l.getDate() + "</td></tr>";
         }
         r += "</tbody></table>";
         return r;
     }
 
-    public String TableForImgTags(List<ImgTag> imgtlst) {
+    public String TableForMediaTags(List<MediaTag> mtlst) {
         String r = "";
         r += "<table><thead><tr>";
-        r += "<th>ID</th><th>Img ID</th><th>Tag ID</th>";
+        r += "<th>ID</th><th>Media ID</th><th>Tag ID</th>";
         r += "</tr></thead><tbody>";
-        for (ImgTag t : imgtlst) {
-            r += "<tr><td>" + t.getId() + "</td><td>" + t.getImgId() + "</td><td>" + t.getTagId() + "</td></tr>";
+        for (MediaTag t : mtlst) {
+            r += "<tr><td>" + t.getId() + "</td><td>" + t.getMediaId() + "</td><td>" + t.getTagId() + "</td></tr>";
         }
         r += "</tbody></table>";
         return r;

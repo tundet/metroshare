@@ -8,13 +8,13 @@ package model;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -22,28 +22,29 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author jozi_
  */
 @Entity
+@Table(name = "media_tag")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Friend.findAll", query = "SELECT f FROM Friend f")
-    , @NamedQuery(name = "Friend.findById", query = "SELECT f FROM Friend f WHERE f.id = :id")})
-public class Friend implements Serializable {
+    @NamedQuery(name = "MediaTag.findAll", query = "SELECT m FROM MediaTag m")
+    , @NamedQuery(name = "MediaTag.findById", query = "SELECT m FROM MediaTag m WHERE m.id = :id")})
+public class MediaTag implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     private Integer id;
-    @JoinColumn(name = "ownerId", referencedColumnName = "ID")
+    @JoinColumn(name = "mediaId", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private User ownerId;
-    @JoinColumn(name = "friendId", referencedColumnName = "ID")
+    private Media mediaId;
+    @JoinColumn(name = "tagId", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private User friendId;
+    private Tag tagId;
 
-    public Friend() {
+    public MediaTag() {
     }
 
-    public Friend(Integer id) {
+    public MediaTag(Integer id) {
         this.id = id;
     }
 
@@ -55,20 +56,20 @@ public class Friend implements Serializable {
         this.id = id;
     }
 
-    public User getOwnerId() {
-        return ownerId;
+    public Media getMediaId() {
+        return mediaId;
     }
 
-    public void setOwnerId(User ownerId) {
-        this.ownerId = ownerId;
+    public void setMediaId(Media mediaId) {
+        this.mediaId = mediaId;
     }
 
-    public User getFriendId() {
-        return friendId;
+    public Tag getTagId() {
+        return tagId;
     }
 
-    public void setFriendId(User friendId) {
-        this.friendId = friendId;
+    public void setTagId(Tag tagId) {
+        this.tagId = tagId;
     }
 
     @Override
@@ -81,10 +82,10 @@ public class Friend implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Friend)) {
+        if (!(object instanceof MediaTag)) {
             return false;
         }
-        Friend other = (Friend) object;
+        MediaTag other = (MediaTag) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -93,7 +94,7 @@ public class Friend implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Friend[ id=" + id + " ]";
+        return "model.MediaTag[ id=" + id + " ]";
     }
     
 }

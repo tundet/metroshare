@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `comment` (
   `ID` int(11) NOT NULL,
-  `imgId` int(11) NOT NULL,
+  `mediaId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `message` tinytext NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -49,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `friend` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `img`
+-- Table structure for table `media`
 --
 
-CREATE TABLE IF NOT EXISTS `img` (
+CREATE TABLE IF NOT EXISTS `media` (
   `ID` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `imageLocation` varchar(255) NOT NULL,
@@ -62,24 +62,24 @@ CREATE TABLE IF NOT EXISTS `img` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `img_tag`
+-- Table structure for table `media_tag`
 --
 
-CREATE TABLE IF NOT EXISTS `img_tag` (
+CREATE TABLE IF NOT EXISTS `media_tag` (
   `ID` int(11) NOT NULL,
-  `imgId` int(11) NOT NULL,
+  `mediaId` int(11) NOT NULL,
   `tagId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `img_like`
+-- Table structure for table `media_like`
 --
 
-CREATE TABLE IF NOT EXISTS `img_like` (
+CREATE TABLE IF NOT EXISTS `media_like` (
   `ID` int(11) NOT NULL,
-  `imgId` int(11) NOT NULL,
+  `mediaId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `likeBoolean` tinyint(1) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `imgId` (`imgId`),
+  ADD KEY `mediaId` (`mediaId`),
   ADD KEY `userId` (`userId`);
 
 --
@@ -130,26 +130,26 @@ ALTER TABLE `friend`
   ADD KEY `friendId` (`friendId`);
 
 --
--- Indexes for table `img`
+-- Indexes for table `media`
 --
-ALTER TABLE `img`
+ALTER TABLE `media`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `userId` (`userId`);
 
 --
--- Indexes for table `img_tag`
+-- Indexes for table `media_tag`
 --
-ALTER TABLE `img_tag`
+ALTER TABLE `media_tag`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `imgId` (`imgId`),
+  ADD KEY `mediaId` (`mediaId`),
   ADD KEY `tagId` (`tagId`);
 
 --
--- Indexes for table `img_like`
+-- Indexes for table `media_like`
 --
-ALTER TABLE `img_like`
+ALTER TABLE `media_like`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `imgId` (`imgId`),
+  ADD KEY `mediaId` (`mediaId`),
   ADD KEY `userId` (`userId`);
 
 --
@@ -179,14 +179,14 @@ ALTER TABLE `comment`
 ALTER TABLE `friend`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `img`
+-- AUTO_INCREMENT for table `media`
 --
-ALTER TABLE `img`
+ALTER TABLE `media`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `like`
 --
-ALTER TABLE `img_like`
+ALTER TABLE `media_like`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tag`
@@ -202,9 +202,3 @@ ALTER TABLE `user`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO 'MetroShareAdmin'@'%' IDENTIFIED BY PASSWORD '*0D0B96439077B6E28641E87EE520F5B3184D00E4';
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `metro\_share`.* TO 'MetroShareAdmin'@'%';
-
