@@ -145,9 +145,9 @@ ALTER TABLE `img_tag`
   ADD KEY `tagId` (`tagId`);
 
 --
--- Indexes for table `like`
+-- Indexes for table `img_like`
 --
-ALTER TABLE `like`
+ALTER TABLE `img_like`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `imgId` (`imgId`),
   ADD KEY `userId` (`userId`);
@@ -186,7 +186,7 @@ ALTER TABLE `img`
 --
 -- AUTO_INCREMENT for table `like`
 --
-ALTER TABLE `like`
+ALTER TABLE `img_like`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tag`
