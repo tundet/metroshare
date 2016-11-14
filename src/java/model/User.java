@@ -6,15 +6,18 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -22,7 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-@Table(name="user")
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
     , @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
@@ -48,6 +50,16 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 10)
     private String privileges;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "friendId")
+    private Collection<Friend> friendCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ownerId")
+    private Collection<Friend> friendCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Comment> commentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<Media> mediaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<MediaLike> mediaLikeCollection;
 
     public User() {
     }
@@ -93,6 +105,51 @@ public class User implements Serializable {
 
     public void setPrivileges(String privileges) {
         this.privileges = privileges;
+    }
+
+    @XmlTransient
+    public Collection<Friend> getFriendCollection() {
+        return friendCollection;
+    }
+
+    public void setFriendCollection(Collection<Friend> friendCollection) {
+        this.friendCollection = friendCollection;
+    }
+
+    @XmlTransient
+    public Collection<Friend> getFriendCollection1() {
+        return friendCollection1;
+    }
+
+    public void setFriendCollection1(Collection<Friend> friendCollection1) {
+        this.friendCollection1 = friendCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Comment> getCommentCollection() {
+        return commentCollection;
+    }
+
+    public void setCommentCollection(Collection<Comment> commentCollection) {
+        this.commentCollection = commentCollection;
+    }
+
+    @XmlTransient
+    public Collection<Media> getMediaCollection() {
+        return mediaCollection;
+    }
+
+    public void setMediaCollection(Collection<Media> mediaCollection) {
+        this.mediaCollection = mediaCollection;
+    }
+
+    @XmlTransient
+    public Collection<MediaLike> getMediaLikeCollection() {
+        return mediaLikeCollection;
+    }
+
+    public void setMediaLikeCollection(Collection<MediaLike> mediaLikeCollection) {
+        this.mediaLikeCollection = mediaLikeCollection;
     }
 
     @Override

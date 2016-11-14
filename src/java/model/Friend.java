@@ -9,9 +9,10 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -21,12 +22,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-@Table(name="friend")
 @NamedQueries({
     @NamedQuery(name = "Friend.findAll", query = "SELECT f FROM Friend f")
-    , @NamedQuery(name = "Friend.findById", query = "SELECT f FROM Friend f WHERE f.id = :id")
-    , @NamedQuery(name = "Friend.findByOwnerId", query = "SELECT f FROM Friend f WHERE f.ownerId = :ownerId")
-    , @NamedQuery(name = "Friend.findByFriendId", query = "SELECT f FROM Friend f WHERE f.friendId = :friendId")})
+    , @NamedQuery(name = "Friend.findById", query = "SELECT f FROM Friend f WHERE f.id = :id")})
 public class Friend implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,24 +32,18 @@ public class Friend implements Serializable {
     @Basic(optional = false)
     @NotNull
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    private int ownerId;
-    @Basic(optional = false)
-    @NotNull
-    private int friendId;
+    @JoinColumn(name = "friendId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User friendId;
+    @JoinColumn(name = "ownerId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User ownerId;
 
     public Friend() {
     }
 
     public Friend(Integer id) {
         this.id = id;
-    }
-
-    public Friend(Integer id, int ownerId, int friendId) {
-        this.id = id;
-        this.ownerId = ownerId;
-        this.friendId = friendId;
     }
 
     public Integer getId() {
@@ -62,20 +54,20 @@ public class Friend implements Serializable {
         this.id = id;
     }
 
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public int getFriendId() {
+    public User getFriendId() {
         return friendId;
     }
 
-    public void setFriendId(int friendId) {
+    public void setFriendId(User friendId) {
         this.friendId = friendId;
+    }
+
+    public User getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(User ownerId) {
+        this.ownerId = ownerId;
     }
 
     @Override

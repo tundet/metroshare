@@ -9,14 +9,17 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,44 +27,41 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Mafields
  */
 @Entity
+@Table(name = "media_like")
 @XmlRootElement
-@Table(name="img")
 @NamedQueries({
-    @NamedQuery(name = "Img.findAll", query = "SELECT i FROM Img i")
-    , @NamedQuery(name = "Img.findById", query = "SELECT i FROM Img i WHERE i.id = :id")
-    , @NamedQuery(name = "Img.findByUserId", query = "SELECT i FROM Img i WHERE i.userId = :userId")
-    , @NamedQuery(name = "Img.findByImageLocation", query = "SELECT i FROM Img i WHERE i.imageLocation = :imageLocation")
-    , @NamedQuery(name = "Img.findByDate", query = "SELECT i FROM Img i WHERE i.date = :date")})
-public class Img implements Serializable {
+    @NamedQuery(name = "MediaLike.findAll", query = "SELECT m FROM MediaLike m")
+    , @NamedQuery(name = "MediaLike.findById", query = "SELECT m FROM MediaLike m WHERE m.id = :id")
+    , @NamedQuery(name = "MediaLike.findByLikeBoolean", query = "SELECT m FROM MediaLike m WHERE m.likeBoolean = :likeBoolean")
+    , @NamedQuery(name = "MediaLike.findByDate", query = "SELECT m FROM MediaLike m WHERE m.date = :date")})
+public class MediaLike implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    private int userId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    private String imageLocation;
+    private Boolean likeBoolean;
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    @JoinColumn(name = "mediaId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Media mediaId;
+    @JoinColumn(name = "userId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User userId;
 
-    public Img() {
+    public MediaLike() {
     }
 
-    public Img(Integer id) {
+    public MediaLike(Integer id) {
         this.id = id;
     }
 
-    public Img(Integer id, int userId, String imageLocation, Date date) {
+    public MediaLike(Integer id, Date date) {
         this.id = id;
-        this.userId = userId;
-        this.imageLocation = imageLocation;
         this.date = date;
     }
 
@@ -73,20 +73,12 @@ public class Img implements Serializable {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public Boolean getLikeBoolean() {
+        return likeBoolean;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
+    public void setLikeBoolean(Boolean likeBoolean) {
+        this.likeBoolean = likeBoolean;
     }
 
     public Date getDate() {
@@ -95,6 +87,22 @@ public class Img implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Media getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(Media mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -107,10 +115,10 @@ public class Img implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Img)) {
+        if (!(object instanceof MediaLike)) {
             return false;
         }
-        Img other = (Img) object;
+        MediaLike other = (MediaLike) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -119,7 +127,7 @@ public class Img implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Img[ id=" + id + " ]";
+        return "model.MediaLike[ id=" + id + " ]";
     }
     
 }

@@ -10,9 +10,10 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -25,12 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-@Table(name="comment")
 @NamedQueries({
     @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c")
     , @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c WHERE c.id = :id")
-    , @NamedQuery(name = "Comment.findByImgId", query = "SELECT c FROM Comment c WHERE c.imgId = :imgId")
-    , @NamedQuery(name = "Comment.findByUserId", query = "SELECT c FROM Comment c WHERE c.userId = :userId")
     , @NamedQuery(name = "Comment.findByMessage", query = "SELECT c FROM Comment c WHERE c.message = :message")
     , @NamedQuery(name = "Comment.findByDate", query = "SELECT c FROM Comment c WHERE c.date = :date")})
 public class Comment implements Serializable {
@@ -42,18 +40,18 @@ public class Comment implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    private int imgId;
-    @Basic(optional = false)
-    @NotNull
-    private int userId;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     private String message;
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    @JoinColumn(name = "mediaId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Media mediaId;
+    @JoinColumn(name = "userId", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private User userId;
 
     public Comment() {
     }
@@ -62,10 +60,8 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public Comment(Integer id, int imgId, int userId, String message, Date date) {
+    public Comment(Integer id, String message, Date date) {
         this.id = id;
-        this.imgId = imgId;
-        this.userId = userId;
         this.message = message;
         this.date = date;
     }
@@ -76,22 +72,6 @@ public class Comment implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getImgId() {
-        return imgId;
-    }
-
-    public void setImgId(int imgId) {
-        this.imgId = imgId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getMessage() {
@@ -108,6 +88,22 @@ public class Comment implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Media getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(Media mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     @Override
