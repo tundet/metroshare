@@ -1,0 +1,16 @@
+dist/
+build/
+nbproject/private/
+nbbuild/
+nbactions.xml
+nb-configuration.xml
+nbdist/
+.nb-gradle/
+
+*.class
+
+*.jar
+*.war
+*.ear
+*.log
+*.private.xml
