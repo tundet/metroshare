@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")
     , @NamedQuery(name = "User.findByPrivileges", query = "SELECT u FROM User u WHERE u.privileges = :privileges")})
 public class User implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,6 +61,11 @@ public class User implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "Privileges")
     private String privileges;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Activity")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date activity;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ownerId")
     private Collection<Friend> friendCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "friendId")
@@ -182,6 +191,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "model.User[ id=" + id + " ]";
+    }
+
+    public Date getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Date activity) {
+        this.activity = activity;
     }
     
 }

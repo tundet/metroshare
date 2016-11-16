@@ -56,59 +56,59 @@ public class HomeResource {
         User u = mssb.readUserByID(3);
         r += "Login: " + u.getLogin() + ", Password; " + u.getPassword() + ", Privileges: " + u.getPrivileges() + "</br>";
         r += "</BR>USER BY LOGIN SHOW ALL:</BR>";
-        r += mkfl.TableForUsers(mssb.readUserByLogin("Oven"), true);
+        r += mkfl.TableForUsers(mssb.readUserByLogin("matti"), true);
         r += "</BR>";
 
-        r += "IMG TABLE QUERIES</BR>";
-        r += "</BR>IMG BY ALL:</BR>";
+        r += "MEDIA TABLE QUERIES</BR>";
+        r += "</BR>MEDIA BY ALL:</BR>";
         r += mkfl.TableForImages(mssb.readAllMedias());
-        r += "</BR>IMG BY ID:</BR>";
-       // r += mkfl.TableForImages(mssb.readMediaByUserID(3));
+        r += "</BR>MEDIA BY ID:</BR>";
+        r += mkfl.TableForImages(mssb.readMediaByUserID(3));
         r += "</BR>";
         
         r += "COMMENT TABLE QUERIES</BR>";
         r += "</BR>COMMENTS BY ALL:</BR>";
         r += mkfl.TableForComment(mssb.readAllComments());
-        r += "</BR>COMMENTS BY IMG ID:</BR>";
-       // r += mkfl.TableForComment(mssb.readCommentByMediaID(1));
+        r += "</BR>COMMENTS BY MEDIA ID:</BR>";
+        r += mkfl.TableForComment(mssb.readCommentByMediaID(2));
         r += "</BR>COMMENTS BY USER ID:</BR>";
-       // r += mkfl.TableForComment(mssb.readCommentByUserID(4));
+        r += mkfl.TableForComment(mssb.readCommentByUserID(2));
         r += "</BR>";
         
         r += "FRIEND TABLE QUERIES</BR>";
         r += "</BR>FRIENDS BY ALL:</BR>";
         r += mkfl.TableForFriends(mssb.readAllFriends());
         r += "</BR>FRIENDS BY OWNER ID:</BR>";
-       // r += mkfl.TableForFriends(mssb.readFriendByOwnerID(3));
+        r += mkfl.TableForFriends(mssb.readFriendByOwnerID(3));
         r += "</BR>FRIENDS BY FRIEND ID:</BR>";
-       // r += mkfl.TableForFriends(mssb.readFriendByFriendID(3));
+        r += mkfl.TableForFriends(mssb.readFriendByFriendID(3));
         r += "</BR>";
         
         r += "LIKES TABLE QUERIES</BR>";
         r += "</BR>LIKES BY ALL:</BR>";
         r += mkfl.TableForLikes(mssb.readAllMediaLikes());
-        r += "</BR>LIKES BY IMG ID:</BR>";
-      //  r += mkfl.TableForLikes(mssb.readLikeByMediaID(1));
+        r += "</BR>LIKES BY MEDIA ID:</BR>";
+        r += mkfl.TableForLikes(mssb.readLikeByMediaID(2));
         r += "</BR>LIKES BY USER ID:</BR>";
-      //  r += mkfl.TableForLikes(mssb.readLikeByUserID(4));
+        r += mkfl.TableForLikes(mssb.readLikeByUserID(3));
         r += "</BR>";
         
-        r += "IMGTAG TABLE QUERIES</BR>";
-        r += "</BR>IMGTAG BY ALL:</BR>";
+        r += "MEDIATAG TABLE QUERIES</BR>";
+        r += "</BR>MEDIATAG BY ALL:</BR>";
         r += mkfl.TableForMediaTags(mssb.readAllMediaTags());
-        r += "</BR>IMGTAG BY IMG ID:</BR>";
-       // r += mkfl.TableForMediaTags(mssb.readMediaTagByMediaID(1));
-        r += "</BR>IMGTAG BY TAGID ID:</BR>";
-       // r += mkfl.TableForMediaTags(mssb.readMediaTagByTagID(2));
+        r += "</BR>MEDIATAG BY MEDIA ID:</BR>";
+        r += mkfl.TableForMediaTags(mssb.readMediaTagByMediaID(2));
+        r += "</BR>MEDIATAG BY TAG ID:</BR>";
+        r += mkfl.TableForMediaTags(mssb.readMediaTagByTagID(2));
         r += "</BR>";
         
         r += "TAG TABLE QUERIES</BR>";
-        r += "</BR>IMGTAG BY ALL:</BR>";
+        r += "</BR>TAG BY ALL:</BR>";
         r += mkfl.TableForTags(mssb.readAllTags());
-        r += "</BR>IMGTAG BY ALL:</BR>";
+        r += "</BR>TAG BY ID:</BR>";
         r += mkfl.TableForTags(mssb.readTagById(2));
-        r += "</BR>TAG BY TAG ID:</BR>";
-        r += mkfl.TableForTags(mssb.readTagByTag("Test"));
+        r += "</BR>TAG BY TAG:</BR>";
+        r += mkfl.TableForTags(mssb.readTagByTag("Seppo"));
         r += "</BR>";
         
         return r;
