@@ -5,9 +5,7 @@
  */
 package controller;
 
-import java.util.Map;
 import javax.ejb.EJB;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -56,8 +54,13 @@ public class HomeResource {
     public String getHtml() {
         String s = "Session Stuff:</BR>";
         //s += h.getRequestHeaders().toString();
-        Cookie login = new Cookie("MetroShare", "MetroShareSessionID");
-        h.getCookies().putIfAbsent("Metroshare", login);
+        
+        
+        // Does not work!
+        // Cookie login = new Cookie("MetroShare", "MetroShareSessionID");
+        // h.getCookies().putIfAbsent("Metroshare", login);
+        
+        
         for (Cookie c : h.getCookies().values()){
             s += "Domain: " + c.getDomain() + "</br>";
             s += "Name: " + c.getName() + "</br>";
