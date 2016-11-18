@@ -47,7 +47,7 @@ public class LoginResource {
         // user found and returning json data about login priviliges and activity
         if (u != null && username.equals(u.getLogin()) && password.equals(u.getPassword())) {
             login += "username: '" + u.getLogin() + "', ";
-            login += "class: '" + u.getPrivileges() + ", ";
+            login += "priviliges: '" + u.getPrivileges() + "', ";
             login += "activity: '" + u.getActivity() + "' ";
             // TODO set new activity time
         } else {
