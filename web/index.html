@@ -11,6 +11,33 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+    <form id="login-form" method="post" action="">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" value="Log in">
+    </form>
+        <script type="text/javascript">
+            $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function(data){
+                alert("Loaded user: " + data.activity);
+            });
+        </script>
+
+        <script type="text/javascript">
+            $("#login-form").submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/login",
+                    data: $("#login-form").serialize(),
+                    success: function(data, textStatus, xhr) {
+                        alert(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
