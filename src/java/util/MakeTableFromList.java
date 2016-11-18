@@ -24,18 +24,18 @@ public class MakeTableFromList {
         String r = "";
         r += "<table><thead><tr>";
         if (showIdAndPassword) {
-            r += "<th>ID</th><th>Login</th><th>Password</th><th>Privileges</th>";
+            r += "<th>ID</th><th>Login</th><th>Password</th><th>Privileges</th><th>Activity</th>";
         } else {
-            r += "<th>Login</th><th>Class</th>";
+            r += "<th>Login</th><th>Class</th><th>Activity</th>";
         }
         r += "</tr></thead><tbody>";
         if (showIdAndPassword) {
             for (User u : ulst) {
-                r += "<tr><td>" + u.getId() + "</td><td>" + u.getLogin() + "</td><td>" + u.getPassword() + "</td><td>" + u.getPrivileges() + "</td></tr>";
+                r += "<tr><td>" + u.getId() + "</td><td>" + u.getLogin() + "</td><td>" + u.getPassword() + "</td><td>" + u.getPrivileges() + "</td><td>" + u.getActivity() + "</td></tr>";
             }
         } else {
             for (User u : ulst) {
-                r += "<tr><td>" + u.getLogin() + "</td><td>" + u.getPrivileges() + "</td></tr>";
+                r += "<tr><td>" + u.getLogin() + "</td><td>" + u.getPrivileges() + "</td><td>" + u.getActivity() + "</td></tr>";
             }
         }
         r += "</tbody></table>";

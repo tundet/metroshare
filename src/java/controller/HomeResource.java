@@ -5,7 +5,9 @@
  */
 package controller;
 
+import java.util.Map;
 import javax.ejb.EJB;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -13,6 +15,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import model.User;
 import util.MakeTableFromList;
@@ -26,13 +30,16 @@ import util.MakeTableFromList;
 public class HomeResource {
 
     private MakeTableFromList mkfl = new MakeTableFromList();
-    
+
     @Context
     private UriInfo context;
-    
+
+    @Context
+    HttpHeaders h;
+
     @EJB
     private MetroShareSB mssb;
-    
+
     /**
      * Creates a new instance of HomeResource
      */
@@ -41,13 +48,26 @@ public class HomeResource {
 
     /**
      * Retrieves representation of an instance of controller.HomeResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getHtml() {
+        String s = "Session Stuff:</BR>";
+        //s += h.getRequestHeaders().toString();
+        Cookie login = new Cookie("MetroShare", "MetroShareSessionID");
+        h.getCookies().putIfAbsent("Metroshare", login);
+        for (Cookie c : h.getCookies().values()){
+            s += "Domain: " + c.getDomain() + "</br>";
+            s += "Name: " + c.getName() + "</br>";
+            s += "Path: " + c.getPath() + "</br>";
+            s += "Value: " + c.getValue() + "</br>";
+            s += c.toString() + "</br>";
+        }
+        s += "</BR></BR>";
         //TODO return proper representation object
-        String r  = "USER TABLE QUERIES</BR>";
+        String r = s + "USER TABLE QUERIES</BR>";
         r += "</BR>USER BY ALL SHOW ALL:</BR>";
         r += mkfl.TableForUsers(mssb.readAllUsers(), true);
         r += "</BR>USER BY ALL SHOW LOGIN & CLASS</BR>";
@@ -65,7 +85,7 @@ public class HomeResource {
         r += "</BR>MEDIA BY ID:</BR>";
         r += mkfl.TableForImages(mssb.readMediaByUserID(3));
         r += "</BR>";
-        
+
         r += "COMMENT TABLE QUERIES</BR>";
         r += "</BR>COMMENTS BY ALL:</BR>";
         r += mkfl.TableForComment(mssb.readAllComments());
@@ -74,7 +94,7 @@ public class HomeResource {
         r += "</BR>COMMENTS BY USER ID:</BR>";
         r += mkfl.TableForComment(mssb.readCommentByUserID(2));
         r += "</BR>";
-        
+
         r += "FRIEND TABLE QUERIES</BR>";
         r += "</BR>FRIENDS BY ALL:</BR>";
         r += mkfl.TableForFriends(mssb.readAllFriends());
@@ -83,7 +103,7 @@ public class HomeResource {
         r += "</BR>FRIENDS BY FRIEND ID:</BR>";
         r += mkfl.TableForFriends(mssb.readFriendByFriendID(3));
         r += "</BR>";
-        
+
         r += "LIKES TABLE QUERIES</BR>";
         r += "</BR>LIKES BY ALL:</BR>";
         r += mkfl.TableForLikes(mssb.readAllMediaLikes());
@@ -92,7 +112,7 @@ public class HomeResource {
         r += "</BR>LIKES BY USER ID:</BR>";
         r += mkfl.TableForLikes(mssb.readLikeByUserID(3));
         r += "</BR>";
-        
+
         r += "MEDIATAG TABLE QUERIES</BR>";
         r += "</BR>MEDIATAG BY ALL:</BR>";
         r += mkfl.TableForMediaTags(mssb.readAllMediaTags());
@@ -101,7 +121,7 @@ public class HomeResource {
         r += "</BR>MEDIATAG BY TAG ID:</BR>";
         r += mkfl.TableForMediaTags(mssb.readMediaTagByTagID(2));
         r += "</BR>";
-        
+
         r += "TAG TABLE QUERIES</BR>";
         r += "</BR>TAG BY ALL:</BR>";
         r += mkfl.TableForTags(mssb.readAllTags());
@@ -110,12 +130,13 @@ public class HomeResource {
         r += "</BR>TAG BY TAG:</BR>";
         r += mkfl.TableForTags(mssb.readTagByTag("Seppo"));
         r += "</BR>";
-        
+
         return r;
     }
 
     /**
      * PUT method for updating or creating an instance of HomeResource
+     *
      * @param content representation for the resource
      */
     @PUT
