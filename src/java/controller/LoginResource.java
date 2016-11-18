@@ -5,6 +5,9 @@
  */
 package controller;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -31,7 +34,7 @@ public class LoginResource {
 
     @EJB
     private MetroShareSB mssb;
-    
+
     /**
      * Creates a new instance of LoginResource
      */
@@ -42,48 +45,59 @@ public class LoginResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String postHtml(@FormParam("username") String username, @FormParam("password") String password) {
         String login = "{";
-        
+
         User u = mssb.readUserByLogin(username).get(0);
+        String sid = nextSessionId();
+        u.setSessionID(sid);
+        mssb.update(u);
         // user found and returning json data about login priviliges and activity
         if (u != null && username.equals(u.getLogin()) && password.equals(u.getPassword())) {
             login += "username: '" + u.getLogin() + "', ";
             login += "privileges: '" + u.getPrivileges() + "', ";
-            login += "activity: '" + u.getActivity() + "' ";
+            login += "activity: '" + u.getActivity() + "', ";
+            login += "sessionid: '" + u.getSessionID() + "' ";
             // TODO set new activity time
-        } else {
-            // error handling returning reasons of error as json
-            if (u != null && !username.equals(u.getLogin())) {
+        } else // error handling returning reasons of error as json
+         if (u != null && !username.equals(u.getLogin())) {
                 return " error: 'Login name was not found!' }";
             } else if (u != null && !password.equals(u.getPassword())) {
                 return " error: 'Password incorrect!' }";
             } else {
                 return " error: 'Login was not found!' }";
             }
-        }
-        
-        
+
         login += "}";
         return login;
     }
-    
+
     /**
      * Retrieves representation of an instance of controller.LoginResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
         //TODO return proper representation object
-        
+
         return "{ error: 'Nothing posted' }";
     }
 
     /**
      * PUT method for updating or creating an instance of LoginResource
+     *
      * @param content representation for the resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
+
     public void putJson(String content) {
+    }
+
+    private SecureRandom sessionid = new SecureRandom();
+
+    public String nextSessionId() {
+        return new BigInteger(130, sessionid).toString(64);
+
     }
 }

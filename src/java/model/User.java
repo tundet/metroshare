@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByPrivileges", query = "SELECT u FROM User u WHERE u.privileges = :privileges")})
 public class User implements Serializable {
 
+    @Size(max = 64)
+    @Column(name = "SessionID")
+    private String sessionID;
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -199,6 +203,14 @@ public class User implements Serializable {
 
     public void setActivity(Date activity) {
         this.activity = activity;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
     }
     
 }
