@@ -62,16 +62,16 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getUsersJson() {
         //TODO return proper representation object
-        String ul = "{ 'users': {";
+        String ul = "{ \"users\": {";
         
         List<User> ulst = mssb.readAllUsers();
         // user found and returning json data about login priviliges and activity
         for (User u: ulst) {
-            ul += "'id': '" + u.getId() + "', ";
-            ul += "'username': '" + u.getLogin() + "', ";
-            ul += "'password': '" + u.getPassword() + "', ";
-            ul += "'privileges': '" + u.getPrivileges() + "', ";
-            ul += "'activity': '" + u.getActivity() + "' ";
+            ul += "{\"id\": \"" + u.getId() + "\", ";
+            ul += "\"username\": \"" + u.getLogin() + "\", ";
+            ul += "\"password\": \"" + u.getPassword() + "\", ";
+            ul += "\"privileges\": \"" + u.getPrivileges() + "\", ";
+            ul += "\"activity\": \"" + u.getActivity() + "\"}, ";
         }
         ul += "}}";
         return ul;
