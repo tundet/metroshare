@@ -10,31 +10,139 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <style>
+            li {display: inline-block;}
+        </style>
     </head>
     <body>
-    <form id="login-form" method="post" action="">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Log in">
-    </form>
+        <form id="login-form" method="post" action="">
+            <input type="text" name="username" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" value="Log in">
+        </form>
+        <div>
+            <h4>GET ADMIN LISTS AS JSONS</h4>
+            <ul>
+                <li>
+                    <!-- GET ADMIN USERLIST -->
+                    <form id="admin-users" method="post" action="">
+                        <button type="submit">Get Users!</button>
+                    </form>
+                </li>
+
+                <li>
+                    <!-- GET ADMIN COMMENTLIST -->
+                    <form id="admin-comments" method="post" action="">
+                        <button type="submit">Get Comments!</button>
+                    </form>
+                </li>
+                
+                <li>
+                    <!-- GET ADMIN MEDIALIST -->
+                    <form id="admin-medias" method="post" action="">
+                        <button type="submit">Get Medias!</button>
+                    </form>
+                </li>
+                
+                <li>
+                    <!-- GET ADMIN TAGLIST -->
+                    <form id="admin-tags" method="post" action="">
+                        <button type="submit">Get Tags!</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
         <script type="text/javascript">
-            $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function(data){
+            $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function (data) {
                 alert("Loaded user: " + data.activity);
             });
         </script>
 
         <script type="text/javascript">
-            $("#login-form").submit(function(event) {
+            $("#login-form").submit(function (event) {
                 event.preventDefault();
 
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:8080/MetroShare/webresources/login",
                     data: $("#login-form").serialize(),
-                    success: function(data, textStatus, xhr) {
+                    success: function (data, textStatus, xhr) {
                         alert(data);
                     },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $("#admin-users").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/users",
+                    data: $("#admin-users").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        alert(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $("#admin-comments").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/comments",
+                    data: $("#admin-comments").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        alert(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+        
+        <script type="text/javascript">
+            $("#admin-medias").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/medias",
+                    data: $("#admin-medias").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        alert(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+        
+        <script type="text/javascript">
+            $("#admin-tags").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/tags",
+                    data: $("#admin-tags").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        alert(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
                     }
                 });

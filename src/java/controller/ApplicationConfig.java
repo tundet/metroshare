@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(controller.AdminResource.class);
         resources.add(controller.HomeResource.class);
         resources.add(controller.LoginResource.class);
         resources.add(controller.UsersResource.class);
