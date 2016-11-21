@@ -10,7 +10,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-        <script type="text/javascript" src="JS/Utils.js"></script>
+        <!--<script type="text/javascript" src="JS/Utils.js"></script>-->
         <style>
             li {display: inline-block;}
         </style>
@@ -26,7 +26,7 @@ and open the template in the editor.
             <ul>
                 <li>
                     <!-- GET ADMIN USERLIST -->
-                    <form id="admin-users" method="post" action="" onsubmit="return onUserListSubmit()">
+                    <form id="admin-users" method="post" action="">
                         <button type="submit">Get Users!</button>
                     </form>
                 </li>
@@ -53,6 +53,10 @@ and open the template in the editor.
                 </li>
             </ul>
         </div>
+
+        <table id="tables">
+
+        </table>
 
         <script type="text/javascript">
             $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function (data) {
@@ -87,11 +91,22 @@ and open the template in the editor.
                     url: "http://localhost:8080/MetroShare/webresources/admin/users",
                     data: $("#admin-users").serialize(),
                     success: function (data, textStatus, xhr) {
-                        alert(data);
-
-                        var a = JSON.parse(data)
-                        alert(a[0])
-                        
+                        var jsondata = JSON.parse(data);
+                        var a = [];
+                        var b = [];
+                        for (var data in jsondata.users[0]) {
+                            b.push(data);
+                        }
+                        a.push(b);
+                        for (var json in jsondata.users) {
+                            var b = [];
+                            for (var data in jsondata.users[json]) {
+                                b.push(jsondata.users[json][data]);
+                            }
+                            a.push(b);
+                        }
+                        console.log(a);
+                        arrayToTable(a);
 
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -110,7 +125,22 @@ and open the template in the editor.
                     url: "http://localhost:8080/MetroShare/webresources/admin/comments",
                     data: $("#admin-comments").serialize(),
                     success: function (data, textStatus, xhr) {
-                        alert(data);
+                        var jsondata = JSON.parse(data);
+                        var a = [];
+                        var b = [];
+                        for (var data in jsondata.comments[0]) {
+                            b.push(data);
+                        }
+                        a.push(b);
+                        for (var json in jsondata.comments) {
+                            var b = [];
+                            for (var data in jsondata.comments[json]) {
+                                b.push(jsondata.comments[json][data]);
+                            }
+                            a.push(b);
+                        }
+                        console.log(a);
+                        arrayToTable(a);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -128,7 +158,32 @@ and open the template in the editor.
                     url: "http://localhost:8080/MetroShare/webresources/admin/medias",
                     data: $("#admin-medias").serialize(),
                     success: function (data, textStatus, xhr) {
-                        alert(data);
+                        var jsondata = JSON.parse(data);
+                        var a = [];
+                        var b = [];
+                        for (var data in jsondata.medias[0]) {
+                            b.push(data);
+                        }
+                        a.push(b);
+                        for (var json in jsondata.medias) {
+                            var b = [];
+                            for (var data in jsondata.medias[json]) {
+                                if (data == "tags") {
+                                    for (var tag in jsondata.medias[json][data]) {
+                                        var c = [];
+                                        for (var tagdata in jsondata.medias[json][data][tag]) {
+                                            c.push(jsondata.medias[json][data][tag][tagdata]);
+                                        }
+                                        b.push(c);
+                                    }
+                                } else {
+                                    b.push(jsondata.medias[json][data]);
+                                }
+                            }
+                            a.push(b);
+                        }
+                        console.log(a);
+                        arrayToTable(a);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -146,7 +201,22 @@ and open the template in the editor.
                     url: "http://localhost:8080/MetroShare/webresources/admin/tags",
                     data: $("#admin-tags").serialize(),
                     success: function (data, textStatus, xhr) {
-                        alert(data);
+                        var jsondata = JSON.parse(data);
+                        var a = [];
+                        var b = [];
+                        for (var data in jsondata.tags[0]) {
+                            b.push(data);
+                        }
+                        a.push(b);
+                        for (var json in jsondata.tags) {
+                            var b = [];
+                            for (var data in jsondata.tags[json]) {
+                                b.push(jsondata.tags[json][data]);
+                            }
+                            a.push(b);
+                        }
+                        console.log(a);
+                        arrayToTable(a);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -156,12 +226,33 @@ and open the template in the editor.
         </script>
 
         <script type="text/javascript">
-            function jsonToTable(jsonToBeTable) {
-                var jsonAsArray = $.map(jsonToBeTable, function (key) {
-                    return key;
-                });
-                console.log(jsonAsArray);
-                return jsonAsArray;
+            function arrayToTable(arrayToBeTable) {
+                console.log(arrayToBeTable);
+                var table = document.getElementById("tables");
+                table.innerHTML = '';
+                var thead = document.createElement("THEAD");
+                var tbody = document.createElement("TBODY");
+                var tr = document.createElement("TR");
+                for (i = 0; i < arrayToBeTable.length; i++) {
+                    if (i == 0) {
+                        for (var header in arrayToBeTable[i]) {
+                            var th = document.createElement("TH");
+                            th.textContent = arrayToBeTable[i][header];
+                            tr.appendChild(th);
+                        }
+                        thead.appendChild(tr);
+                        table.appendChild(thead);
+                    } else {
+                        tr = document.createElement("TR");
+                        for (var value in arrayToBeTable[i]) {
+                            var th = document.createElement("TD");
+                            th.textContent = arrayToBeTable[i][value];
+                            tr.appendChild(th);
+                        }
+                        tbody.appendChild(tr);
+                        table.appendChild(tbody);
+                    }
+                }
             }
         </script>
     </body>

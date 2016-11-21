@@ -32,7 +32,7 @@ public class AdminResource {
 
     @Context
     private UriInfo context;
-    
+
     @EJB
     private MetroShareSB mssb;
 
@@ -44,6 +44,7 @@ public class AdminResource {
 
     /**
      * Retrieves representation of an instance of controller.AdminResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -55,6 +56,7 @@ public class AdminResource {
 
     /**
      * Retrieves representation of an instance of controller.AdminResource
+     *
      * @return an instance of java.lang.String
      */
     @POST
@@ -62,23 +64,29 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getUsersJson() {
         //TODO return proper representation object
-        String ul = "{ \"users\": {";
-        
+        String ul = "{ \"users\": [";
+
         List<User> ulst = mssb.readAllUsers();
         // user found and returning json data about login priviliges and activity
-        for (User u: ulst) {
+        for (User u : ulst) {
             ul += "{\"id\": \"" + u.getId() + "\", ";
             ul += "\"username\": \"" + u.getLogin() + "\", ";
             ul += "\"password\": \"" + u.getPassword() + "\", ";
             ul += "\"privileges\": \"" + u.getPrivileges() + "\", ";
-            ul += "\"activity\": \"" + u.getActivity() + "\"}, ";
+            ul += "\"activity\": \"" + u.getActivity() + "\", ";
+            if (u == ulst.get(ulst.size() - 1)) {
+                ul += "\"sessionid\": \"" + u.getSessionID() + "\"} ";
+            } else {
+                ul += "\"sessionid\": \"" + u.getSessionID() + "\"}, ";
+            }
         }
-        ul += "}}";
+        ul += "]}";
         return ul;
     }
-    
+
     /**
      * Retrieves representation of an instance of controller.AdminResource
+     *
      * @return an instance of java.lang.String
      */
     @POST
@@ -86,23 +94,28 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getCommentsJson() {
         //TODO return proper representation object
-        String cl = "{ 'Comments': {";
-        
+        String cl = "{ \"comments\": [";
+
         List<Comment> clst = mssb.readAllComments();
         // user found and returning json data about login priviliges and activity
-        for (Comment c: clst) {
-            cl += "'id': '" + c.getId() + "', ";
-            cl += "'mediaid': '" + c.getMediaId() + "', ";
-            cl += "'userid': '" + c.getUserId() + "', ";
-            cl += "'message': '" + c.getMessage() + "', ";
-            cl += "'date': '" + c.getDate() + "' ";
+        for (Comment c : clst) {
+            cl += "{\"id\": \"" + c.getId() + "\", ";
+            cl += "\"mediaid\": \"" + c.getMediaId() + "\", ";
+            cl += "\"userid\": \"" + c.getUserId() + "\", ";
+            cl += "\"message\": \"" + c.getMessage() + "\", ";
+            if (c == clst.get(clst.size() - 1)) {
+                cl += "\"date\": \"" + c.getDate() + "\"} ";
+            } else {
+                cl += "\"date\": \"" + c.getDate() + "\"}, ";
+            }
         }
-        cl += "}}";
+        cl += "]}";
         return cl;
     }
-    
+
     /**
      * Retrieves representation of an instance of controller.AdminResource
+     *
      * @return an instance of java.lang.String
      */
     @POST
@@ -110,29 +123,47 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getMediasJson() {
         //TODO return proper representation object
-        String ml = "{ 'Medias': {";
-        
+        String ml = "{ \"medias\": [";
+
         List<Media> mlst = mssb.readAllMedias();
         // user found and returning json data about login priviliges and activity
-        for (Media m: mlst) {
-            ml += "'id': '" + m.getId() + "', ";
-            ml += "'userid': '" + m.getUserId() + "', ";
-            ml += "'medialocation': '" + m.getMediaLocation() + "', ";
-            ml += "'date': '" + m.getDate() + "' ";
-            ml += "'nsfw': '" + m.getNsfw() + "', ";
-            ml += "'tags': {";
-            for (MediaTag mt :m.getMediaTagCollection()) {
-                ml += "'tagid': '" + mt.getTagId().getId() + "', ";
-                ml += "'tag': '" + mt.getTagId().getTag() + "' ";
+        for (Media m : mlst) {
+            ml += "{\"id\": \"" + m.getId() + "\", ";
+            ml += "\"userid\": \"" + m.getUserId() + "\", ";
+            ml += "\"medialocation\": \"" + m.getMediaLocation() + "\", ";
+            ml += "\"date\": \"" + m.getDate() + "\", ";
+            ml += "\"nsfw\": \"" + m.getNsfw() + "\", ";
+            if (m == mlst.get(mlst.size() - 1)) {
+                ml += "\"tags\": [";
+                for (MediaTag mt : m.getMediaTagCollection()) {
+                    ml += "{\"tagid\": \"" + mt.getTagId().getId() + "\", ";
+                    if (mt == m.getMediaTagCollection().toArray()[m.getMediaTagCollection().size()-1]) {
+                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" }";
+                    } else {
+                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" },";
+                    }
+                }
+                ml += "]}";
+            } else {
+                ml += "\"tags\": [";
+                for (MediaTag mt : m.getMediaTagCollection()) {
+                    ml += "{\"tagid\": \"" + mt.getTagId().getId() + "\", ";
+                    if (mt == m.getMediaTagCollection().toArray()[m.getMediaTagCollection().size()-1]) {
+                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" }";
+                    } else {
+                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" },";
+                    }
+                }
+                ml += "]},";
             }
-            ml += "}";
         }
-        ml += "}}";
+        ml += "]}";
         return ml;
     }
-    
+
     /**
      * Retrieves representation of an instance of controller.AdminResource
+     *
      * @return an instance of java.lang.String
      */
     @POST
@@ -140,20 +171,25 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getTagsJson() {
         //TODO return proper representation object
-        String tl = "{ 'Tags': {";
-        
+        String tl = "{ \"tags\": [";
+
         List<Tag> tlst = mssb.readAllTags();
         // user found and returning json data about login priviliges and activity
-        for (Tag t: tlst) {
-            tl += "'id': '" + t.getId() + "', ";
-            tl += "'tag': '" + t.getTag() + "', ";
+        for (Tag t : tlst) {
+            tl += "{\"id\": \"" + t.getId() + "\", ";
+            if (t == tlst.get(tlst.size() - 1)) {
+                tl += "\"tag\": \"" + t.getTag() + "\"} ";
+            } else {
+                tl += "\"tag\": \"" + t.getTag() + "\"}, ";
+            }
         }
-        tl += "}}";
+        tl += "]}";
         return tl;
     }
-    
+
     /**
      * PUT method for updating or creating an instance of AdminResource
+     *
      * @param content representation for the resource
      */
     @PUT
