@@ -5,8 +5,6 @@
  */
 package controller;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Random;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
@@ -58,13 +56,15 @@ public class LoginResource {
             login += "sessionid: '" + u.getSessionID() + "' ";
             // TODO set new activity time
         } else // error handling returning reasons of error as json
-         if (u != null && !username.equals(u.getLogin())) {
+        {
+            if (u != null && !username.equals(u.getLogin())) {
                 return " error: 'Login name was not found!' }";
             } else if (u != null && !password.equals(u.getPassword())) {
                 return " error: 'Password incorrect!' }";
             } else {
                 return " error: 'Login was not found!' }";
             }
+        }
 
         login += "}";
         return login;
@@ -94,10 +94,16 @@ public class LoginResource {
     public void putJson(String content) {
     }
 
-    private SecureRandom sessionid = new SecureRandom();
-
     public String nextSessionId() {
-        return new BigInteger(130, sessionid).toString(64);
+        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789-!@+&=?#".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 64; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        String sessionid = sb.toString();
+        return sessionid;
 
     }
 }
