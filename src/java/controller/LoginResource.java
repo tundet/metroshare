@@ -95,7 +95,7 @@ public class LoginResource {
     }
 
     public String nextSessionId() {
-        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789-!@+&=?#".toCharArray();
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-!@+&=?#".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 64; i++) {
