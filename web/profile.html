@@ -177,14 +177,15 @@
         <script type="text/javascript">
             $(document).ready(function (event) {
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     url: "http://localhost:8080/MetroShare/webresources/users/matti",
-                    data: $("#matti").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         var matti = $('#matti');
-                        matti.innerHTML = jsondata;
-                        console.log(jsondata);
+                        var p = document.createElement("P");
+                        p.innerHTML = jsondata[0].login;
+                        matti.append(p)
+                        console.log(jsondata[0].login);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
