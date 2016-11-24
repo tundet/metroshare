@@ -193,6 +193,18 @@ p {
     margin-bottom: 0 !important;
 }
 
+.navbar-login {
+    height: 85px;
+}
+
+.navbar-login li {
+    line-height: 75px !important;
+}
+
+.navbar-login .navbar-secondary-logo {
+    margin-top: 10px;
+}
+
 #navbar-mobile > .container {
     margin: 0;
 }
