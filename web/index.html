@@ -109,18 +109,18 @@ and open the template in the editor.
                         var jsondata = JSON.parse(data);
                         var a = [];
                         var b = [];
-                        for (var data in jsondata.users[0]) {
+                        for (var data in jsondata[0]) {
                             b.push(data);
                         }
                         a.push(b);
-                        for (var json in jsondata.users) {
+                        for (var json in jsondata) {
                             var b = [];
-                            for (var data in jsondata.users[json]) {
-                                b.push(jsondata.users[json][data]);
+                            for (var data in jsondata[json]) {
+                                b.push(jsondata[json][data]);
                             }
                             a.push(b);
                         }
-                        console.log(a);
+                        //console.log(a);
                         arrayToTable(a);
 
                     },
@@ -143,18 +143,18 @@ and open the template in the editor.
                         var jsondata = JSON.parse(data);
                         var a = [];
                         var b = [];
-                        for (var data in jsondata.comments[0]) {
+                        for (var data in jsondata[0]) {
                             b.push(data);
                         }
                         a.push(b);
-                        for (var json in jsondata.comments) {
+                        for (var json in jsondata) {
                             var b = [];
-                            for (var data in jsondata.comments[json]) {
-                                b.push(jsondata.comments[json][data]);
+                            for (var data in jsondata[json]) {
+                                b.push(jsondata[json][data]);
                             }
                             a.push(b);
                         }
-                        console.log(a);
+                        //console.log(a);
                         arrayToTable(a);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -174,25 +174,26 @@ and open the template in the editor.
                     data: $("#admin-medias").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
+                        console.log(jsondata);
                         var a = [];
                         var b = [];
-                        for (var data in jsondata.medias[0]) {
+                        for (var data in jsondata[0]) {
                             b.push(data);
                         }
                         a.push(b);
-                        for (var json in jsondata.medias) {
+                        for (var json in jsondata) {
                             var b = [];
-                            for (var data in jsondata.medias[json]) {
+                            for (var data in jsondata[json]) {
                                 if (data == "tags") {
-                                    for (var tag in jsondata.medias[json][data]) {
+                                    for (var tag in jsondata[json][data]) {
                                         var c = [];
-                                        for (var tagdata in jsondata.medias[json][data][tag]) {
-                                            c.push(jsondata.medias[json][data][tag][tagdata]);
+                                        for (var tagdata in jsondata[json][data][tag]) {
+                                            c.push(jsondata[json][data][tag][tagdata]);
                                         }
                                         b.push(c);
                                     }
                                 } else {
-                                    b.push(jsondata.medias[json][data]);
+                                    b.push(jsondata[json][data]);
                                 }
                             }
                             a.push(b);
@@ -219,14 +220,14 @@ and open the template in the editor.
                         var jsondata = JSON.parse(data);
                         var a = [];
                         var b = [];
-                        for (var data in jsondata.tags[0]) {
+                        for (var data in jsondata[0]) {
                             b.push(data);
                         }
                         a.push(b);
-                        for (var json in jsondata.tags) {
+                        for (var json in jsondata) {
                             var b = [];
-                            for (var data in jsondata.tags[json]) {
-                                b.push(jsondata.tags[json][data]);
+                            for (var data in jsondata[json]) {
+                                b.push(jsondata[json][data]);
                             }
                             a.push(b);
                         }
