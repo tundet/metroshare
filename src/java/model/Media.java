@@ -43,6 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Media.findByNsfw", query = "SELECT m FROM Media m WHERE m.nsfw = :nsfw")})
 public class Media implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "title")
+    private String title;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -177,6 +181,14 @@ public class Media implements Serializable {
     @Override
     public String toString() {
         return "model.Media[ id=" + id + " ]";
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
     
 }
