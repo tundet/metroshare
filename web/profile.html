@@ -32,7 +32,7 @@
                         <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a></li>
                         <li class="left"><a href="index.html">Statistics</a></li>
                         <li class="left"><a href="index.html">About</a></li>
-                        <li class="right"><a href="profile.html">JohnDoe</a></li>
+                        <li class="right"><a href="profile.html" id="loginname">JohnDoe</a></li>
                     </ul>
                 </div>
             </div>
@@ -67,9 +67,8 @@
 
         <div class="container-fluid" style="background-color: #73b9ff; padding-top: 25px;">
             <div class="container">
-                <div class="col-4">
+                <div class="col-4" id="login">
                     <img src="http://www.technologybloggers.org/wp-content/uploads/2012/04/Gravatar-Logo-300x300.jpg" alt="" style="width: 50%; display:block; margin: auto;">
-                    <h3 style="text-align: center;">JohnDoe</h3>
                 </div>
                 <div class="col-4">
                     <div class="panel panel-success">
@@ -182,9 +181,18 @@
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         var matti = $('#matti');
-                        var p = document.createElement("P");
-                        p.innerHTML = jsondata[0].login;
-                        matti.append(p)
+                        
+                        // Example how to insert user name to page after load 
+                        var h3 = document.createElement("H3");
+                        h3.innerHTML = jsondata[0].login;
+                        h3.style.textAlign = "center";
+                        var loginArea = $('#login');
+                        loginArea.append(h3); 
+                        
+                        // Example how to modify existing data
+                        $("#loginname").text(jsondata[0].login);
+                        
+                        console.log($("#loginname").text());
                         console.log(jsondata[0].login);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
