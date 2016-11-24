@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -185,6 +186,23 @@ public class AdminResource {
         }
         tl += "]}";
         return tl;
+    }
+    
+    @POST
+    @Path("/signup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String postRegister(@FormParam("username")String username, @FormParam("password")String password) {
+        //TODO return proper representation object
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        User user = new User();
+        user.setLogin(username);
+        user.setPassword(password);
+        user.setPrivileges("user");
+        
+        mssb.insert(user);
+        
+        return "{'status': 'true'}";
     }
 
     /**

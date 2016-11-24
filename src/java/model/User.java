@@ -46,8 +46,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -60,13 +59,11 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "Password")
     private String password;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Size(min = 1, max = 10)
     @Column(name = "Privileges")
     private String privileges;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Column(name = "Activity")
     @Temporal(TemporalType.TIMESTAMP)
     private Date activity;
