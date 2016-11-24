@@ -22,6 +22,16 @@ and open the template in the editor.
             <input type="submit" value="Log in">
         </form>
         <div>
+            
+            <h4>PAGES</h4>
+            <ul>
+                <li>
+                    <form id="profile" action="profile.html">
+                        <button type="submit">Profile page</button>
+                    </form>
+                </li>
+            </ul>
+            
             <h4>GET ADMIN LISTS AS JSONS</h4>
             <ul>
                 <li>
@@ -51,18 +61,18 @@ and open the template in the editor.
                         <button type="submit">Get Tags!</button>
                     </form>
                 </li>
-            </ul>
+            </ul>           
         </div>
 
         <table id="tables">
 
         </table>
 
-        <script type="text/javascript">
+        <!--<script type="text/javascript">
             $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function (data) {
                 alert("Loaded user: " + data.activity);
             });
-        </script>
+        </script>-->
 
         <script type="text/javascript">
             $("#login-form").submit(function (event) {
