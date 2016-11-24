@@ -831,3 +831,28 @@ footer ul li a {
 .imageholder:hover .caption {
     opacity: 0.7;
 }
+
+/* ---------------------------*/
+/* ------ Signup Form ------- */
+/* ---------------------------*/
+
+.signup-form-container {
+    margin-top: 25px;
+}
+
+.signup-form label {
+    display: block;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.signup-form-username, .signup-form-password, .signup-form-submit {
+    display: block;
+    width: 100%;
+}
+
+.signup-form-submit {
+    margin-top: 25px;
+    padding: 15px;
+    font-size: 20px;
+}
