@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -166,7 +167,7 @@ public class AdminResource {
         JsonArray mediaA = builder.build();
 
         return mediaA.toString();
-        
+
         // NEVER AGAIN!!!
 //        String ml = "{ \"medias\": [";
 //        for (Media m : mlst) {
@@ -213,7 +214,7 @@ public class AdminResource {
     public String getTagsJson() {
         //TODO return proper representation object
         List<Tag> tlst = mssb.readAllTags();
-        
+
         // user found and returning json data about login priviliges and activity
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Tag t : tlst) {
@@ -223,25 +224,43 @@ public class AdminResource {
             builder.add(tagValue);
         }
         JsonArray tagA = builder.build();
-        
+
         return tagA.toString();
     }
-    
+
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
-    public String postRegister(@FormParam("username")String username, @FormParam("password")String password) {
-        //TODO return proper representation object
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
+    public String postSignUp(@FormParam("username") String username, @FormParam("password") String password) {
         User user = new User();
+
         user.setLogin(username);
         user.setPassword(password);
         user.setPrivileges("user");
-        
+
         mssb.insert(user);
-        
-        return "{'status': 'true'}";
+
+        return "{\"status\": \"true\"}";
+    }
+
+    @POST
+    @Path("/signin")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String postSignIn(@FormParam("username") String username, @FormParam("password") String password) {
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+
+        try {
+            User user = mssb.readUserByLogin(username);
+
+            if (user.getLogin().equals(username) && user.getPassword().equals(password)) {
+                return "{\"status\": \"true\"}";
+            } else {
+                return "{\"status\": \"false\"}";
+            }
+        } catch (Exception e) {
+            return "{\"status\": \"false\"}";
+        }
     }
 
     /**
