@@ -90,14 +90,10 @@
                 <div class="col-4">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <h3>My Groups</h3>
+                            <h3>Friends</h3>
                         </div>
 
-                        <div class="panel-body">
-                            <ul>
-                                <li>The Photographers</li>
-                                <li>SomeGroup72</li>
-                            </ul>
+                        <div class="panel-body" id="friends">
                         </div>
                     </div>
                 </div>
@@ -157,7 +153,7 @@
                         var jsondata = JSON.parse(data);
                         var matti = $('#matti');
 
-                        console.log(jsondata[0].media);
+                        console.log(jsondata[0]);
 
                         // Example how to insert user name to page after load 
                         var h3 = document.createElement("H3");
@@ -165,8 +161,8 @@
                         h3.style.textAlign = "center";
                         var loginArea = $('#login');
                         loginArea.append(h3);
-                        
-                        
+
+
                         // Adding user's photos
                         for (i = 0; i < jsondata[0].media.length; i++) {
                             var col4 = document.createElement("DIV");
@@ -180,26 +176,46 @@
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[0].media[i].title;
+                            if (jsondata[0].media[i].nsfw == true) {
+                                img.style.filter = "blur(3px)";
+                                img.setAttribute("onclick", "unBlur(this)");
+                                caption.innerText = jsondata[0].media[i].title + "\nNSFW\n(Click to see content)";
+                            }
                             imageholder.appendChild(caption);
                             col4.appendChild(imageholder);
                             document.querySelector("#media").appendChild(col4);
                             console.log(col4);
                         }
-                        
-                        
+
+                        // Friends
+                        var frul = document.createElement("UL");
+                        for (i = 0; i < jsondata[0].friends.length; i++) {
+                            var frli = document.createElement("LI");
+                            frli.innerText = jsondata[0].friends[i].friend;
+                            frul.appendChild(frli);
+                        }
+                        document.querySelector("#friends").appendChild(frul);
+                        console.log(frul);
+
+
                         // Example how to modify existing data
                         console.log($("#loginname").text()); // first it is johndoe
                         $("#loginname").text(jsondata[0].login);
                         console.log($("#loginname").text()); // then changed to json value login 
 
-                        console.log(jsondata[0].login);
-                        arrayToTable(jsondata[0].media);
+                        arrayToTable(jsondata[0].friends[0]);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
                     }
                 });
             });
+        </script>
+
+        <script type="text/javascript">
+            function unBlur(nsfwobject) {
+                nsfwobject.style.filter = "blur(0px)";
+            }
         </script>
 
         <script type="text/javascript">
