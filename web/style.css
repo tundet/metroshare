@@ -873,3 +873,45 @@ footer ul li a {
     padding: 15px;
     font-size: 20px;
 }
+
+/* ---------------------------*/
+/* --- Browse Single Media ---*/
+/* ---------------------------*/
+
+.browse-media-container {
+    text-align: center;
+}
+
+.browse-media-container h1 {
+    margin-bottom: 0;
+}
+
+.browse-media-container img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.browse-media-container figcaption {
+    display: flex;
+    justify-content: center;
+}
+
+.browse-media-container figcaption a {
+    padding: 5px;
+}
+
+/* ---------------------------*/
+/* -------- Comments -------- */
+/* ---------------------------*/
+
+
+.comment h2 {
+    display: inline-block;
+    padding-right: 10px;
+}
+
+.comment-date {
+    display: inline-block;
+    font-size: 12px;
+    text-align: right;
+}
