@@ -5,11 +5,14 @@
  */
 package controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -53,16 +56,21 @@ public class MediaResource {
         //comments
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Comment c : m.getCommentCollection()) {
-            JsonObject commentValue = Json.createObjectBuilder()
-                    .add("commentID", c.getId())
-                    .add("userName", c.getUserId().getLogin())
-                    .add("mediaID", c.getMediaId().getId())
-                    .add("date", c.getDate().toString())
-                    .add("message", c.getMessage())
-                    .build();
-            builder.add(commentValue);
+            JsonObjectBuilder commentValue = Json.createObjectBuilder();
+            commentValue.add("commentID", c.getId());
+            commentValue.add("userName", c.getUserId().getLogin());
+            commentValue.add("mediaID", c.getMediaId().getId());
+            
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd // hh:mm:ss");
+            Date date = c.getDate();
+            String dateS = formatter.format(date);
+            
+            commentValue.add("date", dateS);
+            commentValue.add("message", c.getMessage());
+            builder.add(commentValue.build());
         }
         JsonArray commentA = builder.build();
+        System.out.println(commentA.toString());
 
         //tags
         builder = Json.createArrayBuilder();
@@ -73,9 +81,8 @@ public class MediaResource {
             builder.add(tagValue);
         }
         JsonArray tagA = builder.build();
-        
-        // TODO likes here
 
+        // TODO likes here
         builder = Json.createArrayBuilder();
         JsonObject mediaValue = Json.createObjectBuilder()
                 .add("id", m.getId())
@@ -84,7 +91,7 @@ public class MediaResource {
                 .add("title", m.getTitle())
                 .add("nsfw", m.getNsfw())
                 .add("comments", commentA)
-                .add("tag", tagA)
+                .add("tags", tagA)
                 .add("likes", true)
                 .build();
         builder.add(mediaValue);
