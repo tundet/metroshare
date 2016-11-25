@@ -57,7 +57,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@PathParam("login") String login) {
         //TODO return proper representation object
-        User u = mssb.readUserByLogin(login).get(0);
+        User u = mssb.readUserByLogin(login);
         Map<String, Object> config = new HashMap<String, Object>();
         JsonBuilderFactory factory = Json.createBuilderFactory(config);
         
@@ -106,7 +106,7 @@ public class UsersResource {
     public String getUserJson(@PathParam("login") String login) {
         //TODO return proper representation object
         String ua = "";
-        User u = mssb.readUserByLogin(login).get(0);
+        User u = mssb.readUserByLogin(login);
         ua += "{ activity: '" + u.getActivity() + "'}";
         return ua;
     }

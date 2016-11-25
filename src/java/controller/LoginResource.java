@@ -44,7 +44,7 @@ public class LoginResource {
     public String postHtml(@FormParam("username") String username, @FormParam("password") String password) {
         String login = "{";
 
-        User u = mssb.readUserByLogin(username).get(0);
+        User u = mssb.readUserByLogin(username);
         String sid = nextSessionId();
         u.setSessionID(sid);
         mssb.update(u);

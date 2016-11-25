@@ -79,7 +79,7 @@ public class HomeResource {
         User u = mssb.readUserByID(3);
         r += "Login: " + u.getLogin() + ", Password; " + u.getPassword() + ", Privileges: " + u.getPrivileges() + "</br>";
         r += "</BR>USER BY LOGIN SHOW ALL:</BR>";
-        r += mkfl.TableForUsers(mssb.readUserByLogin("matti"), true);
+        //r += mkfl.TableForUsers(mssb.readUserByLogin("matti"), true);
         r += "</BR>";
 
         r += "MEDIA TABLE QUERIES</BR>";
