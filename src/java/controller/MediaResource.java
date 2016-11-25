@@ -5,13 +5,10 @@
  */
 package controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -23,11 +20,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Comment;
-import model.Friend;
 import model.Media;
 import model.MediaTag;
-import model.Tag;
-import model.User;
 
 /**
  * REST Web Service
@@ -85,6 +79,7 @@ public class MediaResource {
         builder = Json.createArrayBuilder();
         JsonObject mediaValue = Json.createObjectBuilder()
                 .add("id", m.getId())
+                .add("uploaderuser", m.getUserId().getLogin())
                 .add("medialocation", m.getMediaLocation())
                 .add("title", m.getTitle())
                 .add("nsfw", m.getNsfw())
