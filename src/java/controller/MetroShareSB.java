@@ -59,14 +59,13 @@ public class MetroShareSB {
         }
     }
     
-    public List<User> readUserByLogin(String login) {
-        List<User> ul = em.createNamedQuery("User.findByLogin").setParameter("login", login).getResultList();
-        if (ul == null) {
-            User u = new User(0, "Error", "User not found", "user");
-            ul.add(u);
-            return ul;
+    public User readUserByLogin(String login) {
+        User u = (User)em.createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
+        if (u == null) {
+            u = new User(null);
+            return u;
         } else {
-            return ul;
+            return u;
         }
     }
     
@@ -88,6 +87,17 @@ public class MetroShareSB {
             return ilst;
         } else {
             return ilst;
+        }
+    }
+    
+    public Media readMediaByMediaID(int id) {
+        Media m = (Media)em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
+        
+        if (m == null) {
+            m = new Media(null);
+            return m;
+        } else {
+            return m;
         }
     }
     
