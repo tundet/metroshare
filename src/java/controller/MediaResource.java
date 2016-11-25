@@ -22,8 +22,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import model.Comment;
 import model.Friend;
 import model.Media;
+import model.MediaTag;
+import model.Tag;
 import model.User;
 
 /**
@@ -36,7 +39,7 @@ public class MediaResource {
 
     @Context
     private UriInfo context;
-    
+
     @EJB
     private MetroShareSB mssb;
 
@@ -49,48 +52,56 @@ public class MediaResource {
     @GET
     @Path("/{mediaid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson(@PathParam("mediaid") String mediaid) {
+    public String getJson(@PathParam("mediaid") int mediaid) {
         //TODO return proper representation object
-        User u = mssb..get(0);
-        Map<String, Object> config = new HashMap<String, Object>();
-        JsonBuilderFactory factory = Json.createBuilderFactory(config);
-        
-        //Media
-        JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (Media m : u.getMediaCollection()) {
-            JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("mediaId", m.getId())
-                    .add("title", m.getTitle())
-                    .add("date", m.getDate().toString())
-                    .add("nsfw", m.getNsfw())
-                    .add("mediaLocation", m.getMediaLocation()).build();
-            builder.add(mediaValue);
-        }
-        JsonArray mediaA = builder.build();
-        
-        //Friends
-        builder = Json.createArrayBuilder();
-        for (Friend f : u.getFriendCollection()) {
-            JsonObject friendValue = Json.createObjectBuilder()
-                    .add("friend", f.getFriendId().getLogin()).build();
-            builder.add(friendValue);
-        }
-        JsonArray friendsA = builder.build();
-        
-        
-        JsonArray value = factory.createArrayBuilder()
-                .add(factory.createObjectBuilder()
-                        .add("login", u.getLogin())
-                        .add("media", mediaA)
-                        .add("friends", friendsA))
-                .build();
+        Media m = mssb.readMediaByMediaID(mediaid);
 
-        return value.toString();
+        //comments
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Comment c : m.getCommentCollection()) {
+            JsonObject commentValue = Json.createObjectBuilder()
+                    .add("commentID", c.getId())
+                    .add("userName", c.getUserId().getLogin())
+                    .add("mediaID", c.getMediaId().getId())
+                    .add("date", c.getDate().toString())
+                    .add("message", c.getMessage())
+                    .build();
+            builder.add(commentValue);
+        }
+        JsonArray commentA = builder.build();
+
+        //tags
+        builder = Json.createArrayBuilder();
+        for (MediaTag mt : m.getMediaTagCollection()) {
+            JsonObject tagValue = Json.createObjectBuilder()
+                    .add("tagid", mt.getTagId().getId())
+                    .add("tag", mt.getTagId().getTag()).build();
+            builder.add(tagValue);
+        }
+        JsonArray tagA = builder.build();
+        
+        // TODO likes here
+
+        builder = Json.createArrayBuilder();
+        JsonObject mediaValue = Json.createObjectBuilder()
+                .add("id", m.getId())
+                .add("medialocation", m.getMediaLocation())
+                .add("title", m.getTitle())
+                .add("nsfw", m.getNsfw())
+                .add("comments", commentA)
+                .add("tag", tagA)
+                .add("likes", true)
+                .build();
+        builder.add(mediaValue);
+
+        JsonArray media = builder.build();
+
+        return media.toString();
     }
-    
-    
+
     /**
      * Retrieves representation of an instance of controller.MediaResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -102,6 +113,7 @@ public class MediaResource {
 
     /**
      * PUT method for updating or creating an instance of MediaResource
+     *
      * @param content representation for the resource
      */
     @PUT
