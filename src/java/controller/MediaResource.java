@@ -61,7 +61,7 @@ public class MediaResource {
             commentValue.add("userName", c.getUserId().getLogin());
             commentValue.add("mediaID", c.getMediaId().getId());
             
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd // hh:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd @ hh:mm:ss");
             Date date = c.getDate();
             String dateS = formatter.format(date);
             
