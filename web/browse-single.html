@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="container-fluid" style="background: linear-gradient(45deg, #73b9ff, white)">
+        <div class="container-fluid" style="background: linear-gradient(180deg, #73b9ff, white)">
             <div class="container-fluid" style="background-color: #73b9ff">
                 <div class="container browse-media-container">
                     <div class="col-12">
@@ -80,10 +80,8 @@
 
             <div class="container">
                 <div class="col-12">
-                    <h1>Comments</h1>
-                </div>
-                <div class="comment">
-
+                    <div class="comments">
+                    </div>
                 </div>
             </div>
 
@@ -116,6 +114,13 @@
         <table id="tables">
 
         </table>
+        
+        <div class="col-3">
+            
+        </div>
+        <div class="col-9">
+            
+        </div>
 
         <script type="text/javascript">
             $(document).ready(function (event) {
@@ -161,29 +166,38 @@
                             var tag = document.createElement("a");
                             tag.href = "#";
                             tag.innerHTML = a[1][6][i].tag;
-                            figcaption.append(tag)
+                            figcaption.append(tag);
                         }
                         figure.append(figcaption);
 
                         // comment
-                        var comments = $(".comment");
+                        var comments = $(".comments");
                         for (i in a[1][5]) {
                             console.log(a[1][5][i].date);
                             var contdiv = document.createElement("div");
+                            contdiv.classList.add("comment");
 
+                            var leftColumn = document.createElement("div");
+                            leftColumn.classList.add("col-3");
+                            contdiv.append(leftColumn);
+                            
+                            var rightColumn = document.createElement("div");
+                            rightColumn.classList.add("col-9");
+                            contdiv.append(rightColumn);
+                            
                             var unameh2 = document.createElement("h2");
                             unameh2.innerHTML = a[1][5][i].userName;
-                            contdiv.append(unameh2);
+                            leftColumn.append(unameh2);
 
                             var datespan = document.createElement("span");
-                            datespan.class = "comment-date";
+                            datespan.classList.add("comment-date");
                             datespan.innerHTML = a[1][5][i].date;
-                            contdiv.append(datespan);
+                            leftColumn.append(datespan);
 
                             var messagep = document.createElement("p");
-                            messagep.class = "comment-message";
+                            messagep.classList.add("comment-message");
                             messagep.innerHTML = a[1][5][i].message;
-                            contdiv.append(messagep);
+                            rightColumn.append(messagep);
 
                             comments.append(contdiv);
                         }

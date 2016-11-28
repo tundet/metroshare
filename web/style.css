@@ -2,6 +2,7 @@
 /* --------- Document ------- */
 /* ---------------------------*/
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans");
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
 /* Include margin in width and height for all elements. */
 /* Remove dotted outline from active elements. */
@@ -23,7 +24,7 @@ body {
 /* ---------------------------*/
 
 h1, h2, h3, h4, h5, p, span, a {
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 p {
@@ -904,14 +905,77 @@ footer ul li a {
 /* -------- Comments -------- */
 /* ---------------------------*/
 
+.comments {
+    margin-top: 25px;
+    box-shadow: 1px 1px 5px 1px rgba(150, 150, 150, 0.7);
+    background-color: #73b9ff;
+}
+
+.comments h1{
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.comments hr {
+    margin: 0;
+}
+
+.comment {
+    margin-top: 0;
+    display: flex;
+    background-color: #73b9ff;
+    padding: 8px;
+    align-items: center;
+}
+
+.comment .col-9::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    background: #b7dbff;
+    border-left: 1px solid #d8d8d8;
+    border-bottom: 1px solid #d8d8d8;
+    position: absolute;
+    top: 19px;
+    left: -8px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+
+.comment .col-3 {
+    text-align: center;
+}
+
+.comment .col-9 {
+    background-color: #B7DBFF;
+    word-wrap: break-word;
+    overflow-x: auto;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .comment .col-9 {
+        overflow-x: initial;
+    }
+}
+
+.comment .col-3 h2 {
+    padding-left: 0;
+    margin-top: 0;
+}
+
+.comment .col-3, .comment .col-9 {
+    display: block;
+    height: 100%;
+}
 
 .comment h2 {
-    display: inline-block;
-    padding-right: 10px;
+    margin-bottom: 0;
 }
 
 .comment-date {
-    display: inline-block;
     font-size: 12px;
-    text-align: right;
 }
