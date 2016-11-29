@@ -243,12 +243,12 @@ and open the template in the editor.
 
                         // Adding user's photos
                         for (i = 0; i < jsondata.length; i++) {
-                            var col12 = document.createElement("DIV");
-                            col12.setAttribute("class", "col-12");
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-3");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
-                            img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png"; //TODO fix path
+                            img.src = jsondata[i].medialocation; //TODO fix path
                             img.style = "width: 100%; margin-top: 25px; transform: scale(0.8) display:block; border-style: solid; border-color: white";
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
