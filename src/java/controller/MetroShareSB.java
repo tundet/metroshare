@@ -79,6 +79,10 @@ public class MetroShareSB {
         em.merge(i);
     }
     
+    public int lastIndexOfImages() {
+        return em.createQuery("SELECT MAX(ID) FROM `media`").getFirstResult();
+    }
+    
     public List<Media> readAllMedias() {
         List<Media> ilst = em.createNamedQuery("Media.findAll").getResultList();
         if (ilst == null) {

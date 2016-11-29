@@ -4,80 +4,235 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html lang="en">
     <head>
-        <title>Testpage Metroshare</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home | MetroShare</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <link href="css/style.css" type="text/css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
         <!--<script type="text/javascript" src="JS/Utils.js"></script>-->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#navbar-mobile").hide();
+                $(".navbar-dropdown-toggle").click(function ()
+                {
+                    $("#navbar-mobile").slideToggle(500);
+                });
+            });
+        </script>
+
         <style>
-            li {display: inline-block;}
+            .test li {display: inline-block;}
         </style>
     </head>
     <body>
-        <form id="login-form" method="post" action="">
-            <input type="text" name="username" placeholder="Username">
-            <input type="password" name="password" placeholder="Password">
-            <input type="submit" value="Log in">
-        </form>
-        <div>
-            
-            <h4>PAGES</h4>
-            <ul>
-                <li>
-                    <form id="profile" action="profile.html">
-                        <button type="submit">Profile page</button>
-                    </form>
-                </li>
-                <li>
-                    <form id="profile" action="signup.html">
-                        <button type="submit">Login page</button>
-                    </form>
-                </li>
-                <li>
-                    <form id="profile" action="browse-single.html">
-                        <button type="submit">Browse single media page</button>
-                    </form>
-                </li>
-            </ul>
-            
-            <h4>GET ADMIN LISTS AS JSONS</h4>
-            <ul>
-                <li>
-                    <!-- GET ADMIN USERLIST -->
-                    <form id="admin-users" method="post" action="">
-                        <button type="submit">Get Users!</button>
-                    </form>
-                </li>
 
-                <li>
-                    <!-- GET ADMIN COMMENTLIST -->
-                    <form id="admin-comments" method="post" action="">
-                        <button type="submit">Get Comments!</button>
-                    </form>
-                </li>
-
-                <li>
-                    <!-- GET ADMIN MEDIALIST -->
-                    <form id="admin-medias" method="post" action="">
-                        <button type="submit">Get Medias!</button>
-                    </form>
-                </li>
-
-                <li>
-                    <!-- GET ADMIN TAGLIST -->
-                    <form id="admin-tags" method="post" action="">
-                        <button type="submit">Get Tags!</button>
-                    </form>
-                </li>
-            </ul>           
+        <div class="container-fluid navbar-dropdown-toggle-container visible-mobile">
+            <a href="#" class="navbar-dropdown-toggle"><i class="fa fa-2x fa-bars"></i></a>
         </div>
 
-        <table id="tables">
+        <div class="container-fluid">
+            <div class="navbar-secondary visible-desktop">
+                <div class="container">
+                    <ul>
+                        <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a></li>
+                        <li class="left"><a href="index.html">Statistics</a></li>
+                        <li class="left"><a href="index.html">About</a></li>
+                        <li class="right">
+                            <form>
+                                <input type="text" name="username" placeholder="Username" required>
+                                <input type="password" name="password" placeholder="Password" required>
+                                <input type="submit" value="Log in">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-        </table>
+        <div class="container-fluid navbar-secondary-container">
+            <div class="container">
+                <div class="navbar visible-desktop" id="navbar-desktop">
+                    <ul>
+                        <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                        <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
+        <div class="navbar visible-mobile" id="navbar-mobile">
+            <div class="container">
+                <ul>
+                    <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                    <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                    <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="background-color: #73b9ff">
+            <div class="container">
+                <div class="col-4">
+                    <img src="images/logo.png" alt="" style="width: 100%; transform: scale(0.6); display:block; margin: auto;">
+                </div>
+                <div class="col-8">
+                    <p>MetroShare is web site designed for social sharing of media.</p>
+                    <p>We appreciate ease of use and shared moments.</p> 
+                    <p><b>Whoever you are, whatever you like, enjoy your stay!</b></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="col-4">
+                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" style="width: 100%; margin-top: 25px; transform: scale(0.8)">
+            </div>
+            <div class="col-8">
+                <p>Omnis odit veritatis molestiae. Dignissimos laborum temporibus et. Provident iusto sed voluptates. Consequatur minima voluptatem amet accusamus. Dolorem nulla velit et labore vel dolor itaque natus.</p>
+                <p>Consectetur aut et facilis tenetur. Et id quo voluptates odit id repudiandae. Incidunt deleniti soluta delectus. Sed alias quis mollitia incidunt vitae est corrupti.</p>
+                <p>Dolorem in et rem consequatur. Et perspiciatis aut molestiae porro sunt ut velit cupiditate. Qui ut consequuntur dolor quia magnam ut unde ea. Possimus iure maxime quidem qui autem assumenda.</p>
+            </div>
+        </div>
+
+        <div class="div container" style="margin-top: 25px;">
+            <div class="col-5">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3>Danger Panel</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
+                        <button class="btn btn-primary">Click me!</button>
+                        <button class="btn btn-alert">Click me!</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-7">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3>Success Panel</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
+                        <button class="btn btn-primary">Click me!</button>
+                        <button class="btn btn-alert">Click me!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="div container" style="margin-top: 25px;">
+            <div class="col-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3>Primary Panel</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
+                        <button class="btn btn-primary">Click me!</button>
+                        <button class="btn btn-alert">Click me!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="container-fluid">
+            <div class="container">
+                <ul class="col-4">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Browse</a></li>
+                    <li><a href="#">Upload</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+
+                <ul class="col-4">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Browse</a></li>
+                    <li><a href="#">Upload</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+
+                <ul class="col-4">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Browse</a></li>
+                    <li><a href="#">Upload</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </footer>
+
+        <div class="test">
+            <form id="login-form" method="post" action="">
+                <input type="text" name="username" placeholder="Username">
+                <input type="password" name="password" placeholder="Password">
+                <input type="submit" value="Log in">
+            </form>
+            <div>
+
+                <h4>PAGES</h4>
+                <ul>
+                    <li>
+                        <form id="profile" action="profile.html">
+                            <button type="submit">Profile page</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="profile" action="signup.html">
+                            <button type="submit">Login page</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="profile" action="browse-single.html">
+                            <button type="submit">Browse single media page</button>
+                        </form>
+                    </li>
+                </ul>
+
+                <h4>GET ADMIN LISTS AS JSONS</h4>
+                <ul>
+                    <li>
+                        <!-- GET ADMIN USERLIST -->
+                        <form id="admin-users" method="post" action="">
+                            <button type="submit">Get Users!</button>
+                        </form>
+                    </li>
+
+                    <li>
+                        <!-- GET ADMIN COMMENTLIST -->
+                        <form id="admin-comments" method="post" action="">
+                            <button type="submit">Get Comments!</button>
+                        </form>
+                    </li>
+
+                    <li>
+                        <!-- GET ADMIN MEDIALIST -->
+                        <form id="admin-medias" method="post" action="">
+                            <button type="submit">Get Medias!</button>
+                        </form>
+                    </li>
+
+                    <li>
+                        <!-- GET ADMIN TAGLIST -->
+                        <form id="admin-tags" method="post" action="">
+                            <button type="submit">Get Tags!</button>
+                        </form>
+                    </li>
+                </ul>           
+            </div>
+
+            <table id="tables">
+
+            </table>
+        </div>
         <!--<script type="text/javascript">
             $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function (data) {
                 alert("Loaded user: " + data.activity);
