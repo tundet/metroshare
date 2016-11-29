@@ -128,51 +128,19 @@ public class MediaResource {
             r += m.getId() + ", ";
         }
 
-//        //comments
-//        JsonArrayBuilder builder = Json.createArrayBuilder();
-//        for (Comment c : m.getCommentCollection()) {
-//            JsonObjectBuilder commentValue = Json.createObjectBuilder();
-//            commentValue.add("commentID", c.getId());
-//            commentValue.add("userName", c.getUserId().getLogin());
-//            commentValue.add("mediaID", c.getMediaId().getId());
-//            
-//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd @ hh:mm:ss");
-//            Date date = c.getDate();
-//            String dateS = formatter.format(date);
-//            
-//            commentValue.add("date", dateS);
-//            commentValue.add("message", c.getMessage());
-//            builder.add(commentValue.build());
-//        }
-//        JsonArray commentA = builder.build();
-//        System.out.println(commentA.toString());
-//
-//        //tags
-//        builder = Json.createArrayBuilder();
-//        for (MediaTag mt : m.getMediaTagCollection()) {
-//            JsonObject tagValue = Json.createObjectBuilder()
-//                    .add("tagid", mt.getTagId().getId())
-//                    .add("tag", mt.getTagId().getTag()).build();
-//            builder.add(tagValue);
-//        }
-//        JsonArray tagA = builder.build();
-//
-//        // TODO likes here
-//        builder = Json.createArrayBuilder();
-//        JsonObject mediaValue = Json.createObjectBuilder()
-//                .add("id", m.getId())
-//                .add("uploaderuser", m.getUserId().getLogin())
-//                .add("medialocation", m.getMediaLocation())
-//                .add("title", m.getTitle())
-//                .add("nsfw", m.getNsfw())
-//                .add("comments", commentA)
-//                .add("tags", tagA)
-//                .add("likes", true)
-//                .build();
-//        builder.add(mediaValue);
-//
-//        JsonArray media = builder.build();
-        return r;
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : mal) {
+        JsonObject mediaValue = Json.createObjectBuilder()
+                .add("id", m.getId())
+                .add("medialocation", m.getMediaLocation())
+                .add("title", m.getTitle())
+                .add("nsfw", m.getNsfw())
+                .build();
+        builder.add(mediaValue);
+        }
+
+        JsonArray media = builder.build();
+        return media.toString();
     }
 
     /**

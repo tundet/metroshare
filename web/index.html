@@ -88,59 +88,10 @@ and open the template in the editor.
             </div>
         </div>
 
-        <div class="container">
-            <div class="col-4">
-                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" style="width: 100%; margin-top: 25px; transform: scale(0.8)">
-            </div>
-            <div class="col-8">
-                <p>Omnis odit veritatis molestiae. Dignissimos laborum temporibus et. Provident iusto sed voluptates. Consequatur minima voluptatem amet accusamus. Dolorem nulla velit et labore vel dolor itaque natus.</p>
-                <p>Consectetur aut et facilis tenetur. Et id quo voluptates odit id repudiandae. Incidunt deleniti soluta delectus. Sed alias quis mollitia incidunt vitae est corrupti.</p>
-                <p>Dolorem in et rem consequatur. Et perspiciatis aut molestiae porro sunt ut velit cupiditate. Qui ut consequuntur dolor quia magnam ut unde ea. Possimus iure maxime quidem qui autem assumenda.</p>
-            </div>
-        </div>
-
-        <div class="div container" style="margin-top: 25px;">
-            <div class="col-5">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3>Danger Panel</h3>
-                    </div>
-
-                    <div class="panel-body">
-                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
-                        <button class="btn btn-primary">Click me!</button>
-                        <button class="btn btn-alert">Click me!</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-7">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3>Success Panel</h3>
-                    </div>
-
-                    <div class="panel-body">
-                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
-                        <button class="btn btn-primary">Click me!</button>
-                        <button class="btn btn-alert">Click me!</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="div container" style="margin-top: 25px;">
+        <div class="div container">
             <div class="col-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3>Primary Panel</h3>
-                    </div>
-
-                    <div class="panel-body">
-                        <p>Aut facilis aut maxime est at. Similique rerum voluptatem consequatur voluptatem eum voluptatem velit. Sed quia dolorem sunt. Sunt est ea neque provident minus odio enim. Porro eaque sit quod natus. Ut minima quo et commodi exercitationem velit laboriosam.</p><p>Nihil quibusdam voluptas veritatis ut explicabo aut. Ut sapiente cum et rerum. Quo dolores asperiores deserunt similique itaque velit repellendus provident. Illum nobis non vel neque beatae est voluptatem.</p>
-                        <button class="btn btn-primary">Click me!</button>
-                        <button class="btn btn-alert">Click me!</button>
-                    </div>
+                <div id="media">
+                    
                 </div>
             </div>
         </div>
@@ -261,7 +212,7 @@ and open the template in the editor.
                 });
             });
         </script>
-        
+
         <script type="text/javascript">
             $("#get-images").submit(function (event) {
                 event.preventDefault();
@@ -277,6 +228,54 @@ and open the template in the editor.
                     }
                 });
             });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/6",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+
+                        console.log(jsondata[0]);
+
+
+                        // Adding user's photos
+                        for (i = 0; i < jsondata.length; i++) {
+                            var col12 = document.createElement("DIV");
+                            col12.setAttribute("class", "col-12");
+                            var imageholder = document.createElement("DIV");
+                            imageholder.setAttribute("class", "imageholder");
+                            var img = document.createElement("IMG");
+                            img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png"; //TODO fix path
+                            img.style = "width: 100%; margin-top: 25px; transform: scale(0.8) display:block; border-style: solid; border-color: white";
+                            imageholder.appendChild(img);
+                            var caption = document.createElement("DIV");
+                            caption.setAttribute("class", "caption");
+                            caption.innerText = jsondata[i].title;
+                            if (jsondata[i].nsfw == true) {
+                                img.style.filter = "blur(3px)";
+                                img.setAttribute("onclick", "unBlur(this)");
+                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
+                            }
+                            imageholder.appendChild(caption);
+                            col12.appendChild(imageholder);
+                            document.querySelector("#media").appendChild(col12);
+                            console.log(col12);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            function unBlur(nsfwobject) {
+                nsfwobject.style.filter = "blur(0px)";
+            }
         </script>
 
         <script type="text/javascript">
