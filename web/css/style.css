@@ -776,8 +776,9 @@ footer ul li a {
     padding: 8px 30px;
     text-decoration: none;
     color: #fff;
-    margin: 0px auto;
+    margin-bottom: 20px;
     transition: box-shadow 0.5s;
+    display: inline-block;
 }
 
 /* ---------------------------*/

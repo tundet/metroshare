@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in | MetroShare</title>
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+    <link href="font-awesome.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#navbar-mobile").hide();
+            $(".navbar-dropdown-toggle").click(function()
+            {
+                $("#navbar-mobile").slideToggle(500);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div class="container-fluid navbar-dropdown-toggle-container visible-mobile">
+    <a href="#" class="navbar-dropdown-toggle"><i class="fa fa-2x fa-bars"></i></a>
+</div>
+
+<div class="container-fluid">
+    <div class="navbar-secondary visible-desktop navbar-login">
+        <div class="container">
+            <ul>
+                <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a></li>
+                <li class="left"><a href="index.html">Statistics</a></li>
+                <li class="left"><a href="index.html">About</a></li>
+                <li class="right">
+                    <form class="signin-form" method="post">
+                        <input type="text" name="username" placeholder="Username" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <input type="submit" value="Log in">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="navbar visible-mobile" id="navbar-mobile">
+    <div class="container">
+        <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+            <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+            <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container-fluid" style="background-color: #73b9ff">
+    <div class="container">
+        <div class="col-4">
+            <img src="images/logo.png" alt="" style="width: 100%; transform: scale(0.6); display:block; margin: auto;">
+        </div>
+        <div class="col-8">
+            <p>In incidunt consectetur maiores dignissimos veniam voluptatum. Rerum iste facilis recusandae. Ad consequatur suscipit voluptates sint quia eveniet. Eveniet voluptates maiores impedit minima vero sed ea aperiam. Aut eaque repellendus possimus beatae aut explicabo. Cupiditate magnam eum corrupti atque est cum impedit illo.</p>
+            <p>Magni sed maiores laboriosam. Eos ut perferendis eligendi aliquid modi. Quia ut voluptas id quibusdam culpa corrupti ut. Labore et libero soluta id eos ut ratione quod.</p>
+            <p>Ea deserunt esse et. Assumenda voluptatem et aut et ea dolores rerum veniam. Saepe odit ab sed tempore. Iste architecto sed sed voluptatibus a.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container signup-form-container">
+    <div class="col-4">
+    </div>
+    <div class="col-4">
+        <form method="post" class="signup-form" action="webresources/admin/signup">
+            <label>
+                Username
+                <input type="text" name="username" required class="signup-form-username">
+            </label>
+            <label>
+                Password
+                <input type="password" name="password" required class="signup-form-password">
+            </label>
+            <input type="submit" value="Sign up" class="btn btn-block btn-success signup-form-submit">
+        </form>
+    </div>
+</div>
+
+<footer class="container-fluid">
+    <div class="container">
+        <ul class="col-4">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Browse</a></li>
+            <li><a href="#">Upload</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+
+        <ul class="col-4">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Browse</a></li>
+            <li><a href="#">Upload</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+
+        <ul class="col-4">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Browse</a></li>
+            <li><a href="#">Upload</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script type="text/javascript">
+    $("#friend-list-heading").click(function() {
+        if ($("#friend-list .panel-body").is(":visible")) {
+            $("#friend-list .panel-body").slideUp();
+        } else {
+            $("#friend-list .panel-body").slideDown();
+        }
+    });
+    
+    $(".signup-form").submit(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/MetroShare/webresources/admin/signup",
+            data: $(".signup-form").serialize(),
+            success: function (data, textStatus, xhr) {
+                console.log(JSON.parse(data));
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error: " + errorThrown);
+            }
+        });
+    });
+    
+    $(".signin-form").submit(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/MetroShare/webresources/admin/signin",
+            data: $(".signin-form").serialize(),
+            success: function (data, textStatus, xhr) {
+                console.log(JSON.parse(data));
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error: " + errorThrown);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
