@@ -171,13 +171,13 @@
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
                             img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png"; //TODO fix path
-                            img.style = "width: 100%; margin-top: 25px; transform: scale(0.8) display:block; border-style: solid; border-color: white";
+                            img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[0].media[i].title;
                             if (jsondata[0].media[i].nsfw == true) {
-                                img.style.filter = "blur(3px)";
+                                img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
                                 caption.innerText = jsondata[0].media[i].title + "\nNSFW\n(Click to see content)";
                             }
@@ -214,7 +214,7 @@
 
         <script type="text/javascript">
             function unBlur(nsfwobject) {
-                nsfwobject.style.filter = "blur(0px)";
+                nsfwobject.classList.remove("nsfw")";
             }
         </script>
 
