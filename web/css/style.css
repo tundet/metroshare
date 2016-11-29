@@ -850,6 +850,14 @@ footer ul li a {
     filter: blur(10px);
 }
 
+.image {
+    width: 100%;
+    margin-top: 25px;
+    display: block;
+    border-style: solid;
+    border-color: white
+}
+
 /* ---------------------------*/
 /* ------ Signup Form ------- */
 /* ---------------------------*/

@@ -243,26 +243,26 @@ and open the template in the editor.
 
                         // Adding user's photos
                         for (i = 0; i < jsondata.length; i++) {
-                            var col12 = document.createElement("div");
-                            col12.setAttribute("class", "col-3");
+                            var col3 = document.createElement("div");
+                            col3.setAttribute("class", "col-3");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
                             img.src = jsondata[i].medialocation; //TODO fix path
-                            img.style = "width: 100%; margin-top: 25px; transform: scale(0.8) display:block; border-style: solid; border-color: white";
+                            img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[i].title;
                             if (jsondata[i].nsfw == true) {
-                                img.style.filter = "blur(3px)";
+                                img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
                                 caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
                             }
                             imageholder.appendChild(caption);
-                            col12.appendChild(imageholder);
-                            document.querySelector("#media").appendChild(col12);
-                            console.log(col12);
+                            col3.appendChild(imageholder);
+                            document.querySelector("#media").appendChild(col3);
+                            console.log(col3);
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -274,7 +274,7 @@ and open the template in the editor.
 
         <script type="text/javascript">
             function unBlur(nsfwobject) {
-                nsfwobject.style.filter = "blur(0px)";
+                nsfwobject.classList.remove("nsfw");
             }
         </script>
 
