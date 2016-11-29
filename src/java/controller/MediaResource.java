@@ -132,7 +132,7 @@ public class MediaResource {
         for (Media m : mal) {
         JsonObject mediaValue = Json.createObjectBuilder()
                 .add("id", m.getId())
-                .add("medialocation", m.getMediaLocation())
+                .add("mediaLocation", m.getMediaLocation())
                 .add("title", m.getTitle())
                 .add("nsfw", m.getNsfw())
                 .build();
