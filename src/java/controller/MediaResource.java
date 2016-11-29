@@ -8,6 +8,7 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -19,7 +20,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
@@ -27,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 import model.Comment;
 import model.Media;
 import model.MediaTag;
+import model.User;
 
 /**
  * REST Web Service
@@ -104,17 +108,40 @@ public class MediaResource {
     }
 
     @GET
-    @Path("/get/{numberOfImagesWanted}")
+    @Path("/latest/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getThisAmountOfImagesJson(@PathParam("numberOfImagesWanted") int images) {
+    public String getNLatestsMediasJson(@PathParam("numberOfMediasWanted") int medias) {
+        //TODO return proper representation object
+        //System.out.println("getting latest:" + medias + " medias");
+        List<Media> ml = mssb.readNLatestMedias(medias);
+
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : ml) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+
+        JsonArray media = builder.build();
+        return media.toString();
+    }
+
+    @GET
+    @Path("/get/{numberOfMediasWanted}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getThisAmountOfMediasJson(@PathParam("numberOfMediasWanted") int media) {
         //TODO return proper representation object
         int last = mssb.readLastIndexOfMedias();
-        System.out.println(last);
+        //System.out.println(last);
 
         Random rnd = new Random();
         ArrayList<Media> mal = new ArrayList<Media>();
 
-        while (mal.size() < 4) {
+        while (mal.size() < media) {
             Media m = mssb.readMediaByMediaID(rnd.nextInt(last) + 1);
             if (m != null) {
                 if (!mal.contains(m)) {
@@ -130,17 +157,79 @@ public class MediaResource {
 
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : mal) {
-        JsonObject mediaValue = Json.createObjectBuilder()
-                .add("id", m.getId())
-                .add("mediaLocation", m.getMediaLocation())
-                .add("title", m.getTitle())
-                .add("nsfw", m.getNsfw())
-                .build();
-        builder.add(mediaValue);
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
         }
 
-        JsonArray media = builder.build();
-        return media.toString();
+        JsonArray mediaA = builder.build();
+        return mediaA.toString();
+    }
+
+    @POST
+    @Path("/search/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String postSignIn(@FormParam("search") String search) {
+        System.out.println("Search: " + search);
+
+        List<Media> ml = null;
+        List<Media> ul = null;
+        List<Media> tl = null;
+
+        try {
+            ml = mssb.searchMediaByTitle(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no media\"}";
+        }
+        try {
+            ul = mssb.searchMediaByUserLogin(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no users\"}";
+        }
+        try {
+            tl = mssb.searchMediaByTag(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no tags\"}";
+        }
+        JsonArrayBuilder wholeList = Json.createArrayBuilder();
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : ml) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        for (Media m : ul) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        for (Media m : tl) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        JsonArray mediaA = wholeList.build();
+
+        return mediaA.toString();
     }
 
     /**
@@ -162,6 +251,7 @@ public class MediaResource {
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    public void putJson(String content
+    ) {
     }
 }

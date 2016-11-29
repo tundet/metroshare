@@ -83,10 +83,27 @@ public class MetroShareSB {
         return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult();
     }
     
+    public List<Media> searchMediaByTag(String word) {
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word +"%'", Media.class).getResultList();
+        return mlst;
+    }
+    
+    public List<Media> searchMediaByUserLogin(String word) {
+        // TODO FIIIIX!!
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM media, user WHERE media.userId = user.ID AND user.Login LIKE '%" + word +"%'", Media.class).getResultList();
+        return mlst;
+    }
+    
     public List<Media> readNLatestMedias(int num) {
-        return em.createNativeQuery("SELECT * FROM `media` ORDER BY date DESC, ID DESC LIMIT " + num).getResultList();
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM `media` ORDER BY date DESC, ID DESC LIMIT " + num, Media.class).getResultList();
+        return mlst;
     }
 
+    public List<Media> searchMediaByTitle(String word) {
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM `media` WHERE title LIKE '%" + word +"%'", Media.class).getResultList();
+        return mlst;
+    }
+    
     public List<Media> readAllMedias() {
         List<Media> ilst = em.createNamedQuery("Media.findAll").getResultList();
         if (ilst == null) {

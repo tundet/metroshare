@@ -1,215 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home | MetroShare</title>
-    <link href="css/style.css" type="text/css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#navbar-mobile").hide();
-            $(".navbar-dropdown-toggle").click(function () {
-                $("#navbar-mobile").slideToggle(500);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home | MetroShare</title>
+        <link href="css/style.css" type="text/css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#navbar-mobile").hide();
+                $(".navbar-dropdown-toggle").click(function () {
+                    $("#navbar-mobile").slideToggle(500);
+                });
             });
-        });
-    </script>
-</head>
-<body>
+        </script>
+    </head>
+    <body>
 
-<div class="container-fluid navbar-dropdown-toggle-container visible-mobile">
-    <a href="#" class="navbar-dropdown-toggle"><i class="fa fa-2x fa-bars"></i></a>
-</div>
-
-<div class="container-fluid">
-    <div class="navbar-secondary visible-desktop">
-        <div class="container">
-            <ul>
-                <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a>
-                </li>
-                <li class="left"><a href="index.html">Statistics</a></li>
-                <li class="left"><a href="index.html">About</a></li>
-                <li class="right">
-                    <form>
-                        <input type="text" name="username" placeholder="Username" required>
-                        <input type="password" name="password" placeholder="Password" required>
-                        <input type="submit" value="Log in">
-                    </form>
-                </li>
-            </ul>
+        <div class="container-fluid navbar-dropdown-toggle-container visible-mobile">
+            <a href="#" class="navbar-dropdown-toggle"><i class="fa fa-2x fa-bars"></i></a>
         </div>
-    </div>
-</div>
 
-<div class="container-fluid navbar-secondary-container">
-    <div class="container">
-        <div class="navbar visible-desktop" id="navbar-desktop">
-            <ul>
-                <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
-                <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
-                <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="navbar visible-mobile" id="navbar-mobile">
-    <div class="container">
-        <ul>
-            <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
-            <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
-            <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
-        </ul>
-    </div>
-</div>
-
-<div class="container-fluid" style="background: linear-gradient(45deg, #73b9ff, white)">
-    <div class="container">
-        <div class="col-12">
-            <ul>
-                <form><input type="text" name="search" placeholder="Search" required>
-                    <input type="submit" value="Search">
-                </form>
-            </ul>
-        </div>
-    </div>
-
-    <div class="container-fluid" style="background-color: #73b9ff">
-        <div class="container">
-            <div class="col-12">
-                <h1>TOP PICTURES OF THE DAY</h1>
+        <div class="container-fluid">
+            <div class="navbar-secondary visible-desktop">
+                <div class="container">
+                    <ul>
+                        <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a>
+                        </li>
+                        <li class="left"><a href="index.html">Statistics</a></li>
+                        <li class="left"><a href="index.html">About</a></li>
+                        <li class="right">
+                            <form>
+                                <input type="text" name="username" placeholder="Username" required>
+                                <input type="password" name="password" placeholder="Password" required>
+                                <input type="submit" value="Log in">
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="paskaa">
+        </div>
 
-                <div class="col-3">
-                    <div class="imageholder">
-                        <img src="images/test/img_1.jpg" alt=""
-                             style="width: 100%; display:block; border-style: solid; border-color: white">
-                        <div class="caption"><br>Caption goes here? Click to view?</div>
+        <div class="container-fluid navbar-secondary-container">
+            <div class="container">
+                <div class="navbar visible-desktop" id="navbar-desktop">
+                    <ul>
+                        <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                        <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar visible-mobile" id="navbar-mobile">
+            <div class="container">
+                <ul>
+                    <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                    <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                    <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="background: linear-gradient(45deg, #73b9ff, white)">
+            <div class="container">
+                <div class="col-12">
+                    <ul>
+                        <li>
+                            <form id="search-media" method="post" action="">
+                                <input type="text" name="search" placeholder="Search" required>
+                                <button type="submit">Search</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="container-fluid" style="background-color: #73b9ff">
+                <div class="container search-results">
+                    <div class="col-12">
+                        <h1 id="latest-media-headin">N Latest Medias</h1>
+                    </div>
+                    <div id="latest-media">
                     </div>
                 </div>
-
-                <div class="col-3">
-                    <div class="imageholder">
-						<img src="images/test/img_2.jpg" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here? Like?</div>
-					</div>
-                </div>
-                <div class="col-3">
-                    <div class="imageholder">
-						<img src="images/test/img_3.jpg" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here? Like?</div>
-					</div>
-                </div>
-                <div class="col-3">
-                    <div class="imageholder">
-						<img src="images/test/img_4.jpg" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here? Like?</div>
-					</div>
-                </div>
-                <div class="col-3">
-                    <div class="imageholder">
-						<img src="images/test/img_5.jpg" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>FIX THIS BIRB</div>
-					</div>
-                </div>
-                <div class="col-3">
-					<div class="imageholder">
-						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here?</div>
-					</div>
-                </div>
-                <div class="col-3">
-					<div class="imageholder">
-						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here?</div>
-					</div>
-                </div>
-                <div class="col-3">
-					<div class="imageholder">
-						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here?</div>
-					</div>
-                </div>
-                <div class="col-3">
-					<div class="imageholder">
-						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
-                         style="width: 100%; display:block; border-style: solid; border-color: white">
-						<div class="caption"><br>Caption goes here?</div>
-					</div>
-                </div>
-                <p><a href="javascript:nextImage();">Load more</a></p>
             </div>
-        </div>
-    </div>
 
-    <div class="container">
-        <div class="col-12">
-            <h1>RANDOM PICKS</h1>
-        </div>
-        <div class="col-3">
-            <div class="imageholder">
-                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
-				style="width: 100%; display:block; border-style: solid; border-color: white">
-                <div class="caption"><br>Caption goes here? Paskaa</div>
+            <div class="container-fluid">
+                <div class="container">
+                    <div class="col-12">
+                        <h1 id="random-media-headin">N TOP PICTURES OF THE DAY</h1>
+                    </div>
+                    <div id="random-media">
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-3">
-            <div class="imageholder">
-                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
-				style="width: 100%; display:block; border-style: solid; border-color: white">
-                <div class="caption"><br>Caption goes here? Paskaa</div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="imageholder">
-                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
-				style="width: 100%; display:block; border-style: solid; border-color: white">
-                <div class="caption"><br>Caption goes here? Paskaa</div>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="imageholder">
-                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
-				style="width: 100%; display:block; border-style: solid; border-color: white">
-                <div class="caption"><br>Caption goes here? Paskaa</div>
-            </div>
-        </div>
-    </div>
 
-    <footer class="container-fluid">
-        <div class="container">
-            <ul class="col-4">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Browse</a></li>
-                <li><a href="#">Upload</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
+            <footer class="container-fluid">
+                <div class="container">
+                    <ul class="col-4">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Upload</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
 
-            <ul class="col-4">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Browse</a></li>
-                <li><a href="#">Upload</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
+                    <ul class="col-4">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Upload</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
 
-            <ul class="col-4">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Browse</a></li>
-                <li><a href="#">Upload</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
+                    <ul class="col-4">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Browse</a></li>
+                        <li><a href="#">Upload</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+            </footer>
         </div>
-    </footer>
-</div>
-</body>
+
+        <script type="text/javascript">
+            $("#search-media").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/media/search/",
+                    data: $("#search-media").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        //alert(data);
+                        var jsondata = JSON.parse(data);
+                        //alert(jsondata[0]);
+                        //alert(jsondata[1]);
+                        //alert(jsondata[2]);
+
+                        var searchResults = document.querySelector(".search-results");
+                        searchResults.innerHTML = "";
+
+                        if (jsondata[0].length > 0) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[0].length + " found by media title";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by title
+                            for (i = 0; i < jsondata[0].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[0][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[0][i].title;
+                                if (jsondata[0][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+                        
+                        if (jsondata[1].length > 0) {
+                            console.log("by uploader");
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[1].length + " found by uploaders user name";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by uploader login name
+                            for (i = 0; i < jsondata[1].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[1][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[1][i].title;
+                                if (jsondata[1][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+                        
+                        if (jsondata[2].length > 0) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[2].length + " found by tag";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by tag
+                            for (i = 0; i < jsondata[2].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[2][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[2][i].title;
+                                if (jsondata[2][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/4",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+
+                        //console.log(jsondata[0]);
+
+                        var headin = jsondata.length + " random media of the moment";
+                        document.querySelector("#random-media-headin").innerHTML = headin;
+
+                        // Random media
+                        for (i = 0; i < jsondata.length; i++) {
+                            var col3 = document.createElement("div");
+                            col3.setAttribute("class", "col-3");
+                            var imageholder = document.createElement("DIV");
+                            imageholder.setAttribute("class", "imageholder");
+                            var img = document.createElement("IMG");
+                            img.src = jsondata[i].mediaLocation; //TODO fix path
+                            img.classList.add("image");
+                            imageholder.appendChild(img);
+                            var caption = document.createElement("DIV");
+                            caption.setAttribute("class", "caption");
+                            caption.innerText = jsondata[i].title;
+                            if (jsondata[i].nsfw == true) {
+                                img.classList.add("nsfw");
+                                img.setAttribute("onclick", "unBlur(this)");
+                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
+                            }
+                            imageholder.appendChild(caption);
+                            col3.appendChild(imageholder);
+                            document.querySelector("#random-media").appendChild(col3); // where to
+                            //console.log(col3);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/latest/8",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+
+                        console.log(jsondata[0]);
+
+                        var headin = jsondata.length + " Latest media";
+                        document.querySelector("#latest-media-headin").innerHTML = headin;
+
+                        // Adding latest media
+                        for (i = 0; i < jsondata.length; i++) {
+                            var col3 = document.createElement("div");
+                            col3.setAttribute("class", "col-3");
+                            var imageholder = document.createElement("DIV");
+                            imageholder.setAttribute("class", "imageholder");
+                            var img = document.createElement("IMG");
+                            img.src = jsondata[i].mediaLocation; //TODO fix path
+                            img.classList.add("image");
+                            imageholder.appendChild(img);
+                            var caption = document.createElement("DIV");
+                            caption.setAttribute("class", "caption");
+                            caption.innerText = jsondata[i].title;
+                            if (jsondata[i].nsfw == true) {
+                                img.classList.add("nsfw");
+                                img.setAttribute("onclick", "unBlur(this)");
+                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
+                            }
+                            imageholder.appendChild(caption);
+                            col3.appendChild(imageholder);
+                            document.querySelector("#latest-media").appendChild(col3); // where to
+                            //console.log(col3);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            function unBlur(nsfwobject) {
+                nsfwobject.classList.remove("nsfw");
+            }
+        </script>
+    </body>
 </html>
