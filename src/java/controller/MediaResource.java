@@ -108,7 +108,7 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getThisAmountOfImagesJson(@PathParam("numberOfImagesWanted") int images) {
         //TODO return proper representation object
-        int last = mssb.readLastIndexOfImages();
+        int last = mssb.readLastIndexOfMedias();
         System.out.println(last);
 
         Random rnd = new Random();

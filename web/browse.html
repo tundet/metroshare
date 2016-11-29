@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | MetroShare</title>
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#navbar-mobile").hide();
+            $(".navbar-dropdown-toggle").click(function () {
+                $("#navbar-mobile").slideToggle(500);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div class="container-fluid navbar-dropdown-toggle-container visible-mobile">
+    <a href="#" class="navbar-dropdown-toggle"><i class="fa fa-2x fa-bars"></i></a>
+</div>
+
+<div class="container-fluid">
+    <div class="navbar-secondary visible-desktop">
+        <div class="container">
+            <ul>
+                <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a>
+                </li>
+                <li class="left"><a href="index.html">Statistics</a></li>
+                <li class="left"><a href="index.html">About</a></li>
+                <li class="right">
+                    <form>
+                        <input type="text" name="username" placeholder="Username" required>
+                        <input type="password" name="password" placeholder="Password" required>
+                        <input type="submit" value="Log in">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid navbar-secondary-container">
+    <div class="container">
+        <div class="navbar visible-desktop" id="navbar-desktop">
+            <ul>
+                <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="navbar visible-mobile" id="navbar-mobile">
+    <div class="container">
+        <ul>
+            <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+            <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+            <li><a href="index.html"><i class="fa fa-upload"></i>Upload</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container-fluid" style="background: linear-gradient(45deg, #73b9ff, white)">
+    <div class="container">
+        <div class="col-12">
+            <ul>
+                <form><input type="text" name="search" placeholder="Search" required>
+                    <input type="submit" value="Search">
+                </form>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid" style="background-color: #73b9ff">
+        <div class="container">
+            <div class="col-12">
+                <h1>TOP PICTURES OF THE DAY</h1>
+            </div>
+            <div id="paskaa">
+
+                <div class="col-3">
+                    <div class="imageholder">
+                        <img src="images/test/img_1.jpg" alt=""
+                             style="width: 100%; display:block; border-style: solid; border-color: white">
+                        <div class="caption"><br>Caption goes here? Click to view?</div>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="imageholder">
+						<img src="images/test/img_2.jpg" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here? Like?</div>
+					</div>
+                </div>
+                <div class="col-3">
+                    <div class="imageholder">
+						<img src="images/test/img_3.jpg" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here? Like?</div>
+					</div>
+                </div>
+                <div class="col-3">
+                    <div class="imageholder">
+						<img src="images/test/img_4.jpg" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here? Like?</div>
+					</div>
+                </div>
+                <div class="col-3">
+                    <div class="imageholder">
+						<img src="images/test/img_5.jpg" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>FIX THIS BIRB</div>
+					</div>
+                </div>
+                <div class="col-3">
+					<div class="imageholder">
+						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here?</div>
+					</div>
+                </div>
+                <div class="col-3">
+					<div class="imageholder">
+						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here?</div>
+					</div>
+                </div>
+                <div class="col-3">
+					<div class="imageholder">
+						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here?</div>
+					</div>
+                </div>
+                <div class="col-3">
+					<div class="imageholder">
+						<img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt=""
+                         style="width: 100%; display:block; border-style: solid; border-color: white">
+						<div class="caption"><br>Caption goes here?</div>
+					</div>
+                </div>
+                <p><a href="javascript:nextImage();">Load more</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-12">
+            <h1>RANDOM PICKS</h1>
+        </div>
+        <div class="col-3">
+            <div class="imageholder">
+                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
+				style="width: 100%; display:block; border-style: solid; border-color: white">
+                <div class="caption"><br>Caption goes here? Paskaa</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="imageholder">
+                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
+				style="width: 100%; display:block; border-style: solid; border-color: white">
+                <div class="caption"><br>Caption goes here? Paskaa</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="imageholder">
+                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
+				style="width: 100%; display:block; border-style: solid; border-color: white">
+                <div class="caption"><br>Caption goes here? Paskaa</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="imageholder">
+                <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="" 
+				style="width: 100%; display:block; border-style: solid; border-color: white">
+                <div class="caption"><br>Caption goes here? Paskaa</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid">
+        <div class="container">
+            <ul class="col-4">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Browse</a></li>
+                <li><a href="#">Upload</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+
+            <ul class="col-4">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Browse</a></li>
+                <li><a href="#">Upload</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+
+            <ul class="col-4">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Browse</a></li>
+                <li><a href="#">Upload</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
