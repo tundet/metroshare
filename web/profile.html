@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>My Profile -  MetroShare</title>
-        <link href="style.css" type="text/css" rel="stylesheet">
+        <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
@@ -170,14 +170,14 @@
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
-                            img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png"; //TODO fix path
-                            img.style = "width: 100%; margin-top: 25px; transform: scale(0.8) display:block; border-style: solid; border-color: white";
+                            img.src = jsondata[0].media[i].mediaLocation; //TODO fix path
+                            img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[0].media[i].title;
                             if (jsondata[0].media[i].nsfw == true) {
-                                img.style.filter = "blur(3px)";
+                                img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
                                 caption.innerText = jsondata[0].media[i].title + "\nNSFW\n(Click to see content)";
                             }
@@ -214,7 +214,7 @@
 
         <script type="text/javascript">
             function unBlur(nsfwobject) {
-                nsfwobject.style.filter = "blur(0px)";
+                nsfwobject.classList.remove("nsfw");
             }
         </script>
 

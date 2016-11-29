@@ -855,8 +855,16 @@ footer ul li a {
 }
 
 .nsfw {
-    -webkit-filter: blur(3px);
-    filter: blur(3px);
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+}
+
+.image {
+    width: 100%;
+    margin-top: 25px;
+    display: block;
+    border-style: solid;
+    border-color: white
 }
 
 /* ---------------------------*/
