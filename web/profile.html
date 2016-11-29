@@ -170,7 +170,7 @@
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
-                            img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png"; //TODO fix path
+                            img.src = jsondata[0].media[i].mediaLocation; //TODO fix path
                             img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
@@ -214,7 +214,7 @@
 
         <script type="text/javascript">
             function unBlur(nsfwobject) {
-                nsfwobject.classList.remove("nsfw")";
+                nsfwobject.classList.remove("nsfw");
             }
         </script>
 
