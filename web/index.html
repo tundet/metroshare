@@ -89,12 +89,7 @@ and open the template in the editor.
             </div>
         </div>
 
-        <div class="div container">
-            <div class="col-12">
-                <div id="media">
-                    
-                </div>
-            </div>
+        <div id="media" class="container media-container">
         </div>
 
         <footer class="container-fluid">
@@ -240,7 +235,7 @@ and open the template in the editor.
             $(document).ready(function (event) {
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/get/6",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/8",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
 

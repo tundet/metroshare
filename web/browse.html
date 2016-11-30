@@ -80,12 +80,12 @@
             </div>
 
             <div class="container-fluid" style="background-color: #73b9ff">
-                <div class="container search-results">
+                <div class="container">
                     <div class="col-12">
                         <h1 id="latest-media-headin">N Latest Medias</h1>
-                    </div>
-                    <div id="latest-media">
-                    </div>
+                    </div>  
+                </div>
+                <div id="latest-media" class="container media-container search-results">
                 </div>
             </div>
 
@@ -94,8 +94,8 @@
                     <div class="col-12">
                         <h1 id="random-media-headin">N TOP PICTURES OF THE DAY</h1>
                     </div>
-                    <div id="random-media">
-                    </div>
+                </div>
+                <div id="random-media" class="container media-container">
                 </div>
             </div>
 
@@ -143,6 +143,15 @@
                         var searchResults = document.querySelector(".search-results");
                         searchResults.innerHTML = "";
 
+                        if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = "No media found!";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                        }
+
                         if (jsondata[0].length > 0) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
@@ -176,7 +185,7 @@
                             }
                             searchResults.append(div);
                         }
-                        
+
                         if (jsondata[1].length > 0) {
                             console.log("by uploader");
                             var col12 = document.createElement("div");
@@ -211,7 +220,7 @@
                             }
                             searchResults.append(div);
                         }
-                        
+
                         if (jsondata[2].length > 0) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
@@ -258,7 +267,7 @@
             $(document).ready(function (event) {
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/get/4",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/8",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
 
