@@ -140,9 +140,13 @@
 
         <script type="text/javascript">
             $(document).ready(function (event) {
+                var loc = document.location.toString();
+                loc = loc.substring(loc.indexOf("?")+1);
+                var qparam = loc.split("=")
+                console.log(qparam);
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/users/matti",
+                    url: "http://localhost:8080/MetroShare/webresources/users/" + qparam[1],
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         var matti = $('#matti');

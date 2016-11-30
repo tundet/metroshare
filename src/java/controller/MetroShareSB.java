@@ -84,8 +84,8 @@ public class MetroShareSB {
     }
     
     public List<Media> searchMediaByTag(String word) {
-        List<Media> mlst = em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word +"%'", Media.class).getResultList();
-        return mlst;
+        return em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word +"%'", Media.class).getResultList();
+         
     }
     
     public List<Media> searchMediaByUserLogin(String word) {
