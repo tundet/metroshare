@@ -792,23 +792,31 @@ footer ul li a {
 /* ---------------------------*/
 
 .panel {
-    border: 1px solid #333333;
+    border: 2px solid #D32F2F;
+    border-radius: 25px;
+    background-color: #D32F2F;
 }
 
 .panel-heading {
     min-height: 40px;
     padding: 1px 10px;
-    border-bottom: 1px solid #333333;
+    border-bottom: 2px solid #D32F2F;
+    border-radius: 25px 25px 0px 0px;
+    background-color: #D32F2F;
+
 }
 
 .panel-heading > h3 {
     margin: 10px;
+    color:#ffffff;
 }
 
 .panel-body {
     min-height: 100px;
     padding: 10px;
     background-color: #ffffff;
+    color: #000000;
+    border-radius: 0px 0px 25px 25px;
 }
 
 .panel-footer {
@@ -818,11 +826,11 @@ footer ul li a {
 }
 
 .panel-primary > .panel-heading {
-    background-color: #73b9ff;
+    background-color: #D32F2F;
 }
 
 .panel-success > .panel-heading {
-    background-color: #67e355;
+    background-color: #D32F2F;
 }
 
 .panel-alert > .panel-heading {
@@ -841,20 +849,22 @@ footer ul li a {
     position: relative;
     display: inline-block;
     vertical-align: top; /* Display text at top */
+    border-radius: 0x 0x 25px 25px;
 }
 
 .imageholder .caption {
     opacity: 0;
     position: absolute;
-    height: 30%;
+    height: relative;
     width: 100%;
     bottom: 3px;
     left: 0;
     padding: 0 15px;
     margin: 0;
-    color: black;
-    background: white;
+    color: white;
+    background: #222222;
     text-align: center;
+    border-radius: 0x 0x 25px 25px;
 }
 
 .imageholder:hover .caption {
@@ -864,14 +874,17 @@ footer ul li a {
 .nsfw {
     -webkit-filter: blur(10px);
     filter: blur(10px);
+    border-color: #D32F2F;
+    background-color: #D32F2F;
 }
 
 .image {
     width: 100%;
     margin-top: 25px;
     display: block;
-    border-style: solid;
-    border-color: white
+    border: 2px solid #303F9F;
+    border-radius: 25px;
+    background-color: #303F9F;
 }
 
 /* ---------------------------*/
