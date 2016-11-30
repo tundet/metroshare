@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid" id="latest-media-container">
             <div class="container">
                 <div class="col-12">
                     <h1 id="latest-media-headin">N Latest Medias</h1>
@@ -124,238 +124,417 @@
                 </ul>
             </div>
         </footer>
-    </div>
 
-    <script type="text/javascript">
-        $("#search-media").submit(function (event) {
-            event.preventDefault();
-
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8080/MetroShare/webresources/media/search/",
-                data: $("#search-media").serialize(),
-                success: function (data, textStatus, xhr) {
-                    //alert(data);
-                    var jsondata = JSON.parse(data);
-                    //alert(jsondata[0]);
-                    //alert(jsondata[1]);
-                    //alert(jsondata[2]);
-
-                    var searchResults = document.querySelector(".search-results");
-                    searchResults.innerHTML = "";
-
-                    if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
-                        var col12 = document.createElement("div");
-                        col12.setAttribute("class", "col-12");
-                        var h1 = document.createElement("h1");
-                        h1.innerHTML = "No media found!";
-                        col12.append(h1);
-                        searchResults.append(col12);
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                var loc = document.location.toString();
+                //console.log(loc);
+                var qparam;
+                var tag = false;
+                var user = false;
+                var title = false;
+                if (loc.indexOf("?") >= 0) {
+                    loc = loc.substring(loc.indexOf("?") + 1);
+                    //console.log(loc);
+                    if (loc.indexOf("&") > -1) {
+                        var allqparams = loc.split("&");
+                        //console.log(allqparams);
+                        for (i in allqparams) {
+                            //keyword for qparam
+                            if (allqparams[i].startsWith("search") && allqparams[i].indexOf("=") > -1) {
+                                qparam = allqparams[i].split("=");
+                                //console.log(qparam);
+                            }
+                            if (allqparams[i].startsWith("tag") && allqparams[i].endsWith("1")) {
+                                tag = true;
+                                //console.log(qparam);
+                            }
+                            if (allqparams[i].startsWith("user") && allqparams[i].endsWith("1")) {
+                                user = true;
+                                //console.log(qparam);
+                            }
+                            if (allqparams[i].startsWith("title") && allqparams[i].endsWith("1")) {
+                                title = true;
+                                //console.log(qparam);
+                            }
+                        }
+                    } else {
+                        //keyword for qparam
+                        if (loc.startsWith("search") && loc.indexOf("=") > 0) {
+                            qparam = loc.split("=");
+                            //console.log(qparam);
+                        }
                     }
+                }
+                
+                if (!tag && !title && !user){
+                    tag = true;
+                    user = true;
+                    title = true;
+                }
+                if (qparam != null) {
+                    console.log(qparam);
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:8080/MetroShare/webresources/media/search/" + qparam[1],
+                        success: function (data, textStatus, xhr) {
+                            //alert(data);
+                            var jsondata = JSON.parse(data);
+                            //alert(jsondata[0]);
+                            //alert(jsondata[1]);
+                            //alert(jsondata[2]);
 
-                    if (jsondata[0].length > 0) {
-                        var col12 = document.createElement("div");
-                        col12.setAttribute("class", "col-12");
-                        var h1 = document.createElement("h1");
-                        h1.innerHTML = jsondata[0].length + " found by media title";
-                        col12.append(h1);
-                        searchResults.append(col12);
-                        var div = document.createElement("div");
-                        // Adding Media found by title
-                        for (i = 0; i < jsondata[0].length; i++) {
+                            var searchResults = document.querySelector("#latest-media-container");
+                            searchResults.innerHTML = "";
+                            var mediacontainer = document.createElement("div");
+                            mediacontainer.setAttribute("class", "container");
+                            
+                            if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
+                                var col12 = document.createElement("div");
+                                col12.setAttribute("class", "col-12");
+                                var h1 = document.createElement("h1");
+                                h1.innerHTML = "No media found!";
+                                col12.append(h1);
+                                mediacontainer.append(col12);
+                            }
+
+                            if (jsondata[0].length > 0 && title) {
+                                var col12 = document.createElement("div");
+                                col12.setAttribute("class", "col-12");
+                                var h1 = document.createElement("h1");
+                                h1.innerHTML = jsondata[0].length + " found by media title";
+                                col12.append(h1);
+                                mediacontainer.append(col12);
+                                var div = document.createElement("div");
+                                // Adding Media found by title
+                                for (i = 0; i < jsondata[0].length; i++) {
+                                    var col3 = document.createElement("div");
+                                    col3.setAttribute("class", "col-3");
+                                    var imageholder = document.createElement("DIV");
+                                    imageholder.setAttribute("class", "imageholder");
+                                    var img = document.createElement("IMG");
+                                    img.src = jsondata[0][i].mediaLocation; //TODO fix path
+                                    img.classList.add("image");
+                                    imageholder.appendChild(img);
+                                    var caption = document.createElement("DIV");
+                                    caption.setAttribute("class", "caption");
+                                    caption.innerText = jsondata[0][i].title;
+                                    if (jsondata[0][i].nsfw == true) {
+                                        img.classList.add("nsfw");
+                                        img.setAttribute("onclick", "unBlur(this)");
+                                        caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
+                                    }
+                                    imageholder.appendChild(caption);
+                                    col3.appendChild(imageholder);
+                                    div.appendChild(col3); // where to
+                                    //console.log(col3);
+                                }
+                                mediacontainer.append(div);
+                            }
+
+                            if (jsondata[1].length > 0 && user) {
+                                console.log("by uploader");
+                                var col12 = document.createElement("div");
+                                col12.setAttribute("class", "col-12");
+                                var h1 = document.createElement("h1");
+                                h1.innerHTML = jsondata[1].length + " found by uploaders user name";
+                                col12.append(h1);
+                                mediacontainer.append(col12);
+                                var div = document.createElement("div");
+                                // Adding Media found by uploader login name
+                                for (i = 0; i < jsondata[1].length; i++) {
+                                    var col3 = document.createElement("div");
+                                    col3.setAttribute("class", "col-3");
+                                    var imageholder = document.createElement("DIV");
+                                    imageholder.setAttribute("class", "imageholder");
+                                    var img = document.createElement("IMG");
+                                    img.src = jsondata[1][i].mediaLocation; //TODO fix path
+                                    img.classList.add("image");
+                                    imageholder.appendChild(img);
+                                    var caption = document.createElement("DIV");
+                                    caption.setAttribute("class", "caption");
+                                    caption.innerText = jsondata[1][i].title;
+                                    if (jsondata[1][i].nsfw == true) {
+                                        img.classList.add("nsfw");
+                                        img.setAttribute("onclick", "unBlur(this)");
+                                        caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
+                                    }
+                                    imageholder.appendChild(caption);
+                                    col3.appendChild(imageholder);
+                                    div.appendChild(col3); // where to
+                                    //console.log(col3);
+                                }
+                                mediacontainer.append(div);
+                            }
+
+                            if (jsondata[2].length > 0 && tag) {
+                                var col12 = document.createElement("div");
+                                col12.setAttribute("class", "col-12");
+                                var h1 = document.createElement("h1");
+                                h1.innerHTML = jsondata[2].length + " found by tag";
+                                col12.append(h1);
+                                mediacontainer.append(col12);
+                                var div = document.createElement("div");
+                                // Adding Media found by tag
+                                for (i = 0; i < jsondata[2].length; i++) {
+                                    var col3 = document.createElement("div");
+                                    col3.setAttribute("class", "col-3");
+                                    var imageholder = document.createElement("DIV");
+                                    imageholder.setAttribute("class", "imageholder");
+                                    var img = document.createElement("IMG");
+                                    img.src = jsondata[2][i].mediaLocation; //TODO fix path
+                                    img.classList.add("image");
+                                    imageholder.appendChild(img);
+                                    var caption = document.createElement("DIV");
+                                    caption.setAttribute("class", "caption");
+                                    caption.innerText = jsondata[2][i].title;
+                                    if (jsondata[2][i].nsfw == true) {
+                                        img.classList.add("nsfw");
+                                        img.setAttribute("onclick", "unBlur(this)");
+                                        caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
+                                    }
+                                    imageholder.appendChild(caption);
+                                    col3.appendChild(imageholder);
+                                    div.appendChild(col3); // where to
+                                    //console.log(col3);
+                                }
+                                mediacontainer.append(div);
+                            }
+                            searchResults.append(mediacontainer);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log("Error: " + errorThrown);
+                        }
+                    });
+                }
+            });
+        </script>
+
+        <script type="text/javascript">
+            $("#search-media").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/media/search/",
+                    data: $("#search-media").serialize(),
+                    success: function (data, textStatus, xhr) {
+                        //alert(data);
+                        var jsondata = JSON.parse(data);
+                        //alert(jsondata[0]);
+                        //alert(jsondata[1]);
+                        //alert(jsondata[2]);
+
+                        var searchResults = document.querySelector(".search-results");
+                        searchResults.innerHTML = "";
+                        
+                        if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = "No media found!";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                        }
+
+                        if (jsondata[0].length > 0) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[0].length + " found by media title";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by title
+                            for (i = 0; i < jsondata[0].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[0][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[0][i].title;
+                                if (jsondata[0][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+
+                        if (jsondata[1].length > 0) {
+                            console.log("by uploader");
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[1].length + " found by uploaders user name";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by uploader login name
+                            for (i = 0; i < jsondata[1].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[1][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[1][i].title;
+                                if (jsondata[1][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+
+                        if (jsondata[2].length > 0) {
+                            var col12 = document.createElement("div");
+                            col12.setAttribute("class", "col-12");
+                            var h1 = document.createElement("h1");
+                            h1.innerHTML = jsondata[2].length + " found by tag";
+                            col12.append(h1);
+                            searchResults.append(col12);
+                            var div = document.createElement("div");
+                            // Adding Media found by tag
+                            for (i = 0; i < jsondata[2].length; i++) {
+                                var col3 = document.createElement("div");
+                                col3.setAttribute("class", "col-3");
+                                var imageholder = document.createElement("DIV");
+                                imageholder.setAttribute("class", "imageholder");
+                                var img = document.createElement("IMG");
+                                img.src = jsondata[2][i].mediaLocation; //TODO fix path
+                                img.classList.add("image");
+                                imageholder.appendChild(img);
+                                var caption = document.createElement("DIV");
+                                caption.setAttribute("class", "caption");
+                                caption.innerText = jsondata[2][i].title;
+                                if (jsondata[2][i].nsfw == true) {
+                                    img.classList.add("nsfw");
+                                    img.setAttribute("onclick", "unBlur(this)");
+                                    caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
+                                }
+                                imageholder.appendChild(caption);
+                                col3.appendChild(imageholder);
+                                div.appendChild(col3); // where to
+                                //console.log(col3);
+                            }
+                            searchResults.append(div);
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            }
+            );
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/8",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        //console.log(jsondata[0]);
+
+                        var headin = jsondata.length + " random media of the moment";
+                        document.querySelector("#random-media-headin").innerHTML = headin;
+                        // Random media
+                        for (i = 0; i < jsondata.length; i++) {
                             var col3 = document.createElement("div");
                             col3.setAttribute("class", "col-3");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
-                            img.src = jsondata[0][i].mediaLocation; //TODO fix path
+                            img.src = jsondata[i].mediaLocation; //TODO fix path
                             img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[0][i].title;
-                            if (jsondata[0][i].nsfw == true) {
+                            caption.innerText = jsondata[i].title;
+                            if (jsondata[i].nsfw == true) {
                                 img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
-                                caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
+                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
                             }
                             imageholder.appendChild(caption);
                             col3.appendChild(imageholder);
-                            div.appendChild(col3); // where to
+                            document.querySelector("#random-media").appendChild(col3); // where to
                             //console.log(col3);
                         }
-                        searchResults.append(div);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
                     }
+                });
+            });
+        </script>
 
-                    if (jsondata[1].length > 0) {
-                        console.log("by uploader");
-                        var col12 = document.createElement("div");
-                        col12.setAttribute("class", "col-12");
-                        var h1 = document.createElement("h1");
-                        h1.innerHTML = jsondata[1].length + " found by uploaders user name";
-                        col12.append(h1);
-                        searchResults.append(col12);
-                        var div = document.createElement("div");
-                        // Adding Media found by uploader login name
-                        for (i = 0; i < jsondata[1].length; i++) {
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/latest/8",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        console.log(jsondata[0]);
+                        var headin = jsondata.length + " Latest media";
+                        document.querySelector("#latest-media-headin").innerHTML = headin;
+                        // Adding latest media
+                        for (i = 0; i < jsondata.length; i++) {
                             var col3 = document.createElement("div");
                             col3.setAttribute("class", "col-3");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
                             var img = document.createElement("IMG");
-                            img.src = jsondata[1][i].mediaLocation; //TODO fix path
+                            img.src = jsondata[i].mediaLocation; //TODO fix path
                             img.classList.add("image");
                             imageholder.appendChild(img);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[1][i].title;
-                            if (jsondata[1][i].nsfw == true) {
+                            caption.innerText = jsondata[i].title;
+                            if (jsondata[i].nsfw == true) {
                                 img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
-                                caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
+                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
                             }
                             imageholder.appendChild(caption);
                             col3.appendChild(imageholder);
-                            div.appendChild(col3); // where to
+                            document.querySelector("#latest-media").appendChild(col3); // where to
                             //console.log(col3);
                         }
-                        searchResults.append(div);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
                     }
-
-                    if (jsondata[2].length > 0) {
-                        var col12 = document.createElement("div");
-                        col12.setAttribute("class", "col-12");
-                        var h1 = document.createElement("h1");
-                        h1.innerHTML = jsondata[2].length + " found by tag";
-                        col12.append(h1);
-                        searchResults.append(col12);
-                        var div = document.createElement("div");
-                        // Adding Media found by tag
-                        for (i = 0; i < jsondata[2].length; i++) {
-                            var col3 = document.createElement("div");
-                            col3.setAttribute("class", "col-3");
-                            var imageholder = document.createElement("DIV");
-                            imageholder.setAttribute("class", "imageholder");
-                            var img = document.createElement("IMG");
-                            img.src = jsondata[2][i].mediaLocation; //TODO fix path
-                            img.classList.add("image");
-                            imageholder.appendChild(img);
-                            var caption = document.createElement("DIV");
-                            caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[2][i].title;
-                            if (jsondata[2][i].nsfw == true) {
-                                img.classList.add("nsfw");
-                                img.setAttribute("onclick", "unBlur(this)");
-                                caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
-                            }
-                            imageholder.appendChild(caption);
-                            col3.appendChild(imageholder);
-                            div.appendChild(col3); // where to
-                            //console.log(col3);
-                        }
-                        searchResults.append(div);
-                    }
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error: " + errorThrown);
-                }
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script type="text/javascript">
-        $(document).ready(function (event) {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/MetroShare/webresources/media/get/8",
-                success: function (data, textStatus, xhr) {
-                    var jsondata = JSON.parse(data);
-
-                    //console.log(jsondata[0]);
-
-                    var headin = jsondata.length + " random media of the moment";
-                    document.querySelector("#random-media-headin").innerHTML = headin;
-
-                    // Random media
-                    for (i = 0; i < jsondata.length; i++) {
-                        var col3 = document.createElement("div");
-                        col3.setAttribute("class", "col-3");
-                        var imageholder = document.createElement("DIV");
-                        imageholder.setAttribute("class", "imageholder");
-                        var img = document.createElement("IMG");
-                        img.src = jsondata[i].mediaLocation; //TODO fix path
-                        img.classList.add("image");
-                        imageholder.appendChild(img);
-                        var caption = document.createElement("DIV");
-                        caption.setAttribute("class", "caption");
-                        caption.innerText = jsondata[i].title;
-                        if (jsondata[i].nsfw == true) {
-                            img.classList.add("nsfw");
-                            img.setAttribute("onclick", "unBlur(this)");
-                            caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
-                        }
-                        imageholder.appendChild(caption);
-                        col3.appendChild(imageholder);
-                        document.querySelector("#random-media").appendChild(col3); // where to
-                        //console.log(col3);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error: " + errorThrown);
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function (event) {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/MetroShare/webresources/media/latest/8",
-                success: function (data, textStatus, xhr) {
-                    var jsondata = JSON.parse(data);
-
-                    console.log(jsondata[0]);
-
-                    var headin = jsondata.length + " Latest media";
-                    document.querySelector("#latest-media-headin").innerHTML = headin;
-
-                    // Adding latest media
-                    for (i = 0; i < jsondata.length; i++) {
-                        var col3 = document.createElement("div");
-                        col3.setAttribute("class", "col-3");
-                        var imageholder = document.createElement("DIV");
-                        imageholder.setAttribute("class", "imageholder");
-                        var img = document.createElement("IMG");
-                        img.src = jsondata[i].mediaLocation; //TODO fix path
-                        img.classList.add("image");
-                        imageholder.appendChild(img);
-                        var caption = document.createElement("DIV");
-                        caption.setAttribute("class", "caption");
-                        caption.innerText = jsondata[i].title;
-                        if (jsondata[i].nsfw == true) {
-                            img.classList.add("nsfw");
-                            img.setAttribute("onclick", "unBlur(this)");
-                            caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
-                        }
-                        imageholder.appendChild(caption);
-                        col3.appendChild(imageholder);
-                        document.querySelector("#latest-media").appendChild(col3); // where to
-                        //console.log(col3);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Error: " + errorThrown);
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        function unBlur(nsfwobject) {
-            nsfwobject.classList.remove("nsfw");
-        }
-    </script>
-</body>
+        <script type="text/javascript">
+            function unBlur(nsfwobject) {
+                nsfwobject.classList.remove("nsfw");
+            }
+        </script>
+    </body>
 </html>

@@ -170,10 +170,72 @@ public class MediaResource {
         return mediaA.toString();
     }
 
+    @GET
+    @Path("/search/{searchword}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getSearch(@PathParam("searchword") String search) {
+        System.out.println("Search: " + search);
+
+        List<Media> ml = null;
+        List<Media> ul = null;
+        List<Media> tl = null;
+
+        try {
+            ml = mssb.searchMediaByTitle(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no media\"}";
+        }
+        try {
+            ul = mssb.searchMediaByUserLogin(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no users\"}";
+        }
+        try {
+            tl = mssb.searchMediaByTag(search);
+        } catch (Exception e) {
+            return "{\"error\": \"no tags\"}";
+        }
+        JsonArrayBuilder wholeList = Json.createArrayBuilder();
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : ml) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        for (Media m : ul) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        for (Media m : tl) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("id", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+        wholeList.add(builder.build());
+        JsonArray mediaA = wholeList.build();
+
+        return mediaA.toString();
+    }
+    
     @POST
     @Path("/search/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String postSignIn(@FormParam("search") String search) {
+    public String postSearch(@FormParam("search") String search) {
         System.out.println("Search: " + search);
 
         List<Media> ml = null;
