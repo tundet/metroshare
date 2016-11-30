@@ -853,29 +853,23 @@ footer ul li a {
 }
 
 .imageholder .caption {
+
     opacity: 0;
     position: absolute;
     height: relative;
     width: 100%;
-    bottom: 3px;
+    bottom: 1px;
     left: 0;
     padding: 0 15px;
     margin: 0;
     color: white;
     background: #222222;
     text-align: center;
-    border-radius: 0x 0x 25px 25px;
+    border-radius: 0 0 0 10px;
 }
 
 .imageholder:hover .caption {
     opacity: 0.7;
-}
-
-.nsfw {
-    -webkit-filter: blur(10px);
-    filter: blur(10px);
-    border-color: #D32F2F;
-    background-color: #D32F2F;
 }
 
 .image {
@@ -883,8 +877,15 @@ footer ul li a {
     margin-top: 25px;
     display: block;
     border: 2px solid #303F9F;
-    border-radius: 25px;
+    border-radius: 0 10px 0 10px;
     background-color: #303F9F;
+}
+
+.nsfw {
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+    border: 2px solid #D32F2F !important;
+    background-color: #D32F2F;
 }
 
 /* ---------------------------*/
