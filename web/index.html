@@ -248,16 +248,21 @@ and open the template in the editor.
                             col3.setAttribute("class", "col-3");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
+                            var a = document.createElement("A");
+                            a.href = "media.html?id=" + jsondata[i].id;
                             var img = document.createElement("IMG");
                             img.src = jsondata[i].mediaLocation; //TODO fix path
                             img.classList.add("image");
-                            imageholder.appendChild(img);
+                            a.append(img);
+                            imageholder.appendChild(a);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[i].title;
                             if (jsondata[i].nsfw == true) {
                                 img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
+                                $(img).attr("realhref", img.closest("a").href);
+                                img.closest("a").removeAttribute("href");
                                 caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
                             }
                             imageholder.appendChild(caption);
@@ -276,9 +281,18 @@ and open the template in the editor.
         <script type="text/javascript">
             function unBlur(nsfwobject) {
                 nsfwobject.classList.remove("nsfw");
+                makeLink(nsfwobject);
             }
         </script>
 
+        <script type="text/javascript">
+            function makeLink(nsfwobject) {
+                setTimeout(function () {
+                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
+                },10);
+            }
+        </script>
+        
         <script type="text/javascript">
             $("#admin-users").submit(function (event) {
                 event.preventDefault();
