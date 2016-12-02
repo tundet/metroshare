@@ -8,6 +8,7 @@
         <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="JS/Utils.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
         <script type="text/javascript">
             $(document).ready(function () {
@@ -132,26 +133,23 @@
 
         </table>
 
-        <script>
-            var fadeElementOut = function (event) {
-                $(e.target).fadeOut(500);
-            };
-        </script>
-
         <script type="text/javascript">
             $(document).ready(function (event) {
                 var loc = document.location.toString();
-                loc = loc.substring(loc.indexOf("?") + 1);
-                var qparam = loc.split("=")
-                console.log(qparam);
+                var username;
+                qparams = readQParamsToList(loc);
+                //console.log(qparams);
+                if (qparams[0][0] != 0) {
+                    username = returnValueOf(qparams, "login");
+                } else {
+                    console.log("NO QERRY PARAMS FOUND!");
+                }
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/users/" + qparam[1],
+                    url: "http://localhost:8080/MetroShare/webresources/users/" + username,
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        console.log("hmm");
-
-                        console.log(jsondata[0]);
+                        //console.log(jsondata[0]);
 
                         // Example how to insert user name to page after load 
                         var h3 = document.createElement("H3");
@@ -160,34 +158,9 @@
                         var loginArea = $('#login');
                         loginArea.append(h3);
 
-
                         // Adding user's photos
                         for (i = 0; i < jsondata[0].media.length; i++) {
-                            var col4 = document.createElement("DIV");
-                            col4.setAttribute("class", "col-4");
-                            var imageholder = document.createElement("DIV");
-                            imageholder.setAttribute("class", "imageholder");
-                            var a = document.createElement("A");
-                            a.href = "media.html?id=" + jsondata[0].media[i].mediaId;
-                            var img = document.createElement("IMG");
-                            img.src = jsondata[0].media[i].mediaLocation; //TODO fix path
-                            img.classList.add("image");
-                            a.append(img);
-                            imageholder.appendChild(a);
-                            var caption = document.createElement("DIV");
-                            caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[0].media[i].title;
-                            if (jsondata[0].media[i].nsfw == true) {
-                                img.classList.add("nsfw");
-                                img.setAttribute("onclick", "unBlur(this)");
-                                $(img).attr("realhref", img.closest("a").href);
-                                img.closest("a").removeAttribute("href");
-                                caption.innerText = jsondata[0].media[i].title + "\nNSFW\n(Click to see content)";
-                            }
-                            imageholder.appendChild(caption);
-                            col4.appendChild(imageholder);
-                            document.querySelector("#media").appendChild(col4);
-                            console.log(col4);
+                            document.querySelector("#media").appendChild(generateMedia(jsondata[0].media[i]));
                         }
 
                         // Friends
@@ -214,47 +187,6 @@
                 });
             });
         </script>
-
-        <script type="text/javascript">
-            function unBlur(nsfwobject) {
-                nsfwobject.classList.remove("nsfw");
-                setTimeout(function () {
-                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-                }, 10);
-            }
-        </script>
-
-        <script type="text/javascript">
-            function arrayToTable(arrayToBeTable) {
-                console.log(arrayToBeTable);
-                var table = document.getElementById("tables");
-                table.innerHTML = '';
-                var thead = document.createElement("THEAD");
-                var tbody = document.createElement("TBODY");
-                var tr = document.createElement("TR");
-                for (i = 0; i < arrayToBeTable.length; i++) {
-                    if (i == 0) {
-                        for (var header in arrayToBeTable[i]) {
-                            var th = document.createElement("TH");
-                            th.textContent = arrayToBeTable[i][header];
-                            tr.appendChild(th);
-                        }
-                        thead.appendChild(tr);
-                        table.appendChild(thead);
-                    } else {
-                        tr = document.createElement("TR");
-                        for (var value in arrayToBeTable[i]) {
-                            var th = document.createElement("TD");
-                            th.textContent = arrayToBeTable[i][value];
-                            tr.appendChild(th);
-                        }
-                        tbody.appendChild(tr);
-                        table.appendChild(tbody);
-                    }
-                }
-            }
-        </script>
-
 
     </body>
 </html>
