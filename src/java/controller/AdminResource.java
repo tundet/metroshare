@@ -6,6 +6,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -242,13 +243,13 @@ public class AdminResource {
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
     public String postSignIn(@FormParam("username") String username, @FormParam("password") String password) {
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
         try {
             User user = mssb.readUserByLogin(username);
 
             if (user.getLogin().equals(username) && user.getPassword().equals(password)) {
+                user.setSessionID(nextSessionId());
+                mssb.update(user);
+                
                 return user.getSessionID();
             } else {
                 return "false";
@@ -258,13 +259,16 @@ public class AdminResource {
         }
     }
 
-    /**
-     * PUT method for updating or creating an instance of AdminResource
-     *
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
+    public String nextSessionId() {
+        char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-!@+&=?#".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 64; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        String sessionid = sb.toString();
+        return sessionid;
+
     }
 }
