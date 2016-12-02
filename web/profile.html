@@ -52,16 +52,16 @@
 
         <div class="navbar visible-mobile" id="navbar-mobile">
             <div class="container">
-                <ul>
-                    <form>
+                <form>
+                    <ul>
                         <li><input type="text" name="username" placeholder="Username" required></li>
                         <li><input type="password" name="password" placeholder="Password" required></li>
                         <li><input type="submit" value="Log in"></li>
-                    </form>
-                    <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
-                    <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
-                    <li><a href="upload.html"><i class="fa fa-upload"></i>Upload</a></li>
-                </ul>
+                        <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                        <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
+                        <li><a href="upload.html"><i class="fa fa-upload"></i>Upload</a></li>
+                    </ul>
+                </form>
             </div>
         </div>
 
@@ -141,7 +141,7 @@
         <script type="text/javascript">
             $(document).ready(function (event) {
                 var loc = document.location.toString();
-                loc = loc.substring(loc.indexOf("?")+1);
+                loc = loc.substring(loc.indexOf("?") + 1);
                 var qparam = loc.split("=")
                 console.log(qparam);
                 $.ajax({
@@ -149,7 +149,7 @@
                     url: "http://localhost:8080/MetroShare/webresources/users/" + qparam[1],
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        var matti = $('#matti');
+                        console.log("hmm");
 
                         console.log(jsondata[0]);
 
@@ -167,16 +167,21 @@
                             col4.setAttribute("class", "col-4");
                             var imageholder = document.createElement("DIV");
                             imageholder.setAttribute("class", "imageholder");
+                            var a = document.createElement("A");
+                            a.href = "media.html?id=" + jsondata[0].media[i].mediaId;
                             var img = document.createElement("IMG");
                             img.src = jsondata[0].media[i].mediaLocation; //TODO fix path
                             img.classList.add("image");
-                            imageholder.appendChild(img);
+                            a.append(img);
+                            imageholder.appendChild(a);
                             var caption = document.createElement("DIV");
                             caption.setAttribute("class", "caption");
                             caption.innerText = jsondata[0].media[i].title;
                             if (jsondata[0].media[i].nsfw == true) {
                                 img.classList.add("nsfw");
                                 img.setAttribute("onclick", "unBlur(this)");
+                                $(img).attr("realhref", img.closest("a").href);
+                                img.closest("a").removeAttribute("href");
                                 caption.innerText = jsondata[0].media[i].title + "\nNSFW\n(Click to see content)";
                             }
                             imageholder.appendChild(caption);
@@ -213,6 +218,9 @@
         <script type="text/javascript">
             function unBlur(nsfwobject) {
                 nsfwobject.classList.remove("nsfw");
+                setTimeout(function () {
+                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
+                }, 10);
             }
         </script>
 
