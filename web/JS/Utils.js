@@ -1,3 +1,25 @@
+// ----------------------------------*/
+// --------- Cookie cookker! ------- */
+// ----------------------------------*/
+
+function readSessionIdFromCookie() {
+    //console.log(document.cookie);
+    var cookies = [];
+    if (document.cookie.indexOf("; ") > -1) {
+        cookies = document.cookie.split("; ");
+    } else {
+        cookies.push(document.cookie);
+    }
+    for (i in cookies) {
+        var cookie = cookies[i].split("=")
+        if (cookie[0] == "SessionID") {
+            console.log(cookie[1]);
+            return cookie[1];
+        }
+    }
+    return null;
+}
+
 // --------------------------------*/
 // --------- Querry params ------- */
 // --------------------------------*/
@@ -80,6 +102,26 @@ function generateMedia(json) {
 // --------- Json/Array to table ------- */
 // --------------------------------------*/
 
+function jsonArrayToArray(jsonArray) {
+    var a = [];
+    var b = [];
+    for (key in jsonArray) {
+        b.push(key);
+    }
+    a.push(b);
+    for (key in jsonArray) {
+        b = [];
+        if (jsonArray[key].length > 1) {
+            for (value in jsonArray[key]) {
+                b.push(jsonArray[key][value]);
+            }
+        } else {
+            b.push(jsonArray[key]);
+        }
+        a.push(b);
+    }
+}
+
 function arrayToTable(arrayToBeTable) {
     console.log(arrayToBeTable);
     var table = document.getElementById("tables");
@@ -109,3 +151,108 @@ function arrayToTable(arrayToBeTable) {
     }
 }
 
+// --------------------------------------*/
+// ----------- Signin Form  ------------ */
+// --------------------------------------*/
+
+function onSignIn(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/signin",
+        data: $(".signin-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            console.log(data);
+            document.cookie = "SessionID = " + data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Signup Form  ----------- */
+// --------------------------------------*/
+
+function onSignUp(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/signup",
+        data: $(".signup-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            console.log(JSON.parse(data));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Upload Form  ----------- */
+// --------------------------------------*/
+
+function onUpload(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/upload",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: new FormData($(event.target)[0]),
+        success: function (data, textStatus, xhr) {
+            console.log(JSON.parse(data));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Friend List  ----------- */
+// --------------------------------------*/
+
+
+$("#friend-list-heading").click(function () {
+    if ($("#friend-list .panel-body").is(":visible")) {
+        $("#friend-list .panel-body").slideUp();
+    } else {
+        $("#friend-list .panel-body").slideDown();
+    }
+});
+
+// --------------------------------------*/
+// ---------- Navigation Bar  ---------- */
+// --------------------------------------*/
+
+$(document).ready(function () {
+    $("#navbar-mobile").hide();
+    $(".navbar-dropdown-toggle").click(function ()
+    {
+        $("#navbar-mobile").slideToggle(500);
+    });
+});
+
+// --------------------------------------*/
+// ----- Get User From Session ID  ----- */
+// --------------------------------------*/
+
+function checkIfLoggedIn() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/users/sessionid/" + readSessionIdFromCookie(),
+        success: function (data, textStatus, xhr) {
+            console.log("Logged in as: " + JSON.parse(data).username);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}

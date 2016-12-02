@@ -10,19 +10,11 @@ and open the template in the editor.
         <title>Home | MetroShare</title>
         <meta charset="UTF-8">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="JS/Utils.js"></script>
         <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
         <script type="text/javascript" src="JS/Utils.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#navbar-mobile").hide();
-                $(".navbar-dropdown-toggle").click(function ()
-                {
-                    $("#navbar-mobile").slideToggle(500);
-                });
-            });
-        </script>
 
         <style>
             .test li {display: inline-block;}
@@ -42,7 +34,7 @@ and open the template in the editor.
                         <li class="left"><a href="index.html">Statistics</a></li>
                         <li class="left"><a href="index.html">About</a></li>
                         <li class="right">
-                            <form>
+                            <form class="signin-form" method="post" onsubmit="onSignIn(event);">
                                 <input type="text" name="username" placeholder="Username" required>
                                 <input type="password" name="password" placeholder="Password" required>
                                 <input type="submit" value="Log in">
@@ -211,6 +203,7 @@ and open the template in the editor.
 
         <script type="text/javascript">
             $(document).ready(function (event) {
+                readSessionIdFromCookie();
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:8080/MetroShare/webresources/media/get/10",

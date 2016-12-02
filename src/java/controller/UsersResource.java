@@ -93,7 +93,24 @@ public class UsersResource {
 
         return value.toString();
     }
-
+    
+    /**
+     * Retrieves representation of an instance of controller.UsersResource
+     *
+     * @param login
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Path("/sessionid/{sessionid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getSessionJson(@PathParam("sessionid") String sessionid) {
+        //TODO return proper representation object
+        String r = "";
+        User u = mssb.readUserBySessionID(sessionid);
+        r += "{\"username\":\"" + u.getLogin() + "\"}";
+        return r;
+    }
+    
     /**
      * Retrieves representation of an instance of controller.UsersResource
      *
@@ -107,7 +124,7 @@ public class UsersResource {
         //TODO return proper representation object
         String ua = "";
         User u = mssb.readUserByLogin(login);
-        ua += "{ activity: '" + u.getActivity() + "'}";
+        ua += "{\"activity\":\"" + u.getActivity() + "\"}";
         return ua;
     }
 

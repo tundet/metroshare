@@ -60,13 +60,11 @@ public class MetroShareSB {
     }
 
     public User readUserByLogin(String login) {
-        User u = (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
-        if (u == null) {
-            u = new User(null);
-            return u;
-        } else {
-            return u;
-        }
+        return (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
+    }
+    
+    public User readUserBySessionID(String sessionid) {
+        return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid +"'", User.class).getSingleResult();
     }
 
     // Media
