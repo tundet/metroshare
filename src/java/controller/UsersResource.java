@@ -124,7 +124,7 @@ public class UsersResource {
         //TODO return proper representation object
         String ua = "";
         User u = mssb.readUserByLogin(login);
-        ua += "{ activity: '" + u.getActivity() + "'}";
+        ua += "{\"activity\":\"" + u.getActivity() + "\"}";
         return ua;
     }
 
