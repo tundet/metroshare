@@ -13,9 +13,10 @@ and open the template in the editor.
         <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-        <!--<script type="text/javascript" src="JS/Utils.js"></script>-->
+        <script type="text/javascript" src="JS/Utils.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
+                test();
                 $("#navbar-mobile").hide();
                 $(".navbar-dropdown-toggle").click(function ()
                 {
@@ -281,18 +282,12 @@ and open the template in the editor.
         <script type="text/javascript">
             function unBlur(nsfwobject) {
                 nsfwobject.classList.remove("nsfw");
-                makeLink(nsfwobject);
+                setTimeout(function () {
+                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
+                }, 10);
             }
         </script>
 
-        <script type="text/javascript">
-            function makeLink(nsfwobject) {
-                setTimeout(function () {
-                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-                },10);
-            }
-        </script>
-        
         <script type="text/javascript">
             $("#admin-users").submit(function (event) {
                 event.preventDefault();
