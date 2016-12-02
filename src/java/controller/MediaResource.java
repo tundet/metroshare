@@ -53,11 +53,11 @@ public class MediaResource {
     }
 
     @GET
-    @Path("/{mediaid}")
+    @Path("/{mediaId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson(@PathParam("mediaid") int mediaid) {
+    public String getJson(@PathParam("mediaId") int mediaId) {
         //TODO return proper representation object
-        Media m = mssb.readMediaByMediaID(mediaid);
+        Media m = mssb.readMediaByMediaID(mediaId);
 
         //comments
         JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -65,7 +65,7 @@ public class MediaResource {
             JsonObjectBuilder commentValue = Json.createObjectBuilder();
             commentValue.add("commentID", c.getId());
             commentValue.add("userName", c.getUserId().getLogin());
-            commentValue.add("mediaID", c.getMediaId().getId());
+            commentValue.add("mediaId", c.getMediaId().getId());
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd @ hh:mm:ss");
             Date date = c.getDate();
@@ -91,7 +91,7 @@ public class MediaResource {
         // TODO likes here
         builder = Json.createArrayBuilder();
         JsonObject mediaValue = Json.createObjectBuilder()
-                .add("id", m.getId())
+                .add("mediaId", m.getId())
                 .add("uploaderuser", m.getUserId().getLogin())
                 .add("medialocation", m.getMediaLocation())
                 .add("title", m.getTitle())
@@ -118,7 +118,7 @@ public class MediaResource {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -158,7 +158,7 @@ public class MediaResource {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : mal) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -199,7 +199,7 @@ public class MediaResource {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -209,7 +209,7 @@ public class MediaResource {
         wholeList.add(builder.build());
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -219,7 +219,7 @@ public class MediaResource {
         wholeList.add(builder.build());
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -261,7 +261,7 @@ public class MediaResource {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -271,7 +271,7 @@ public class MediaResource {
         wholeList.add(builder.build());
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
@@ -281,7 +281,7 @@ public class MediaResource {
         wholeList.add(builder.build());
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("id", m.getId())
+                    .add("mediaId", m.getId())
                     .add("mediaLocation", m.getMediaLocation())
                     .add("title", m.getTitle())
                     .add("nsfw", m.getNsfw())
