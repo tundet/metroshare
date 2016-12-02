@@ -68,10 +68,15 @@
         <div class="container-fluid" style="background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center; color:#ffffff;">
             <div class="container">
                 <div class="col-12">
-                        <form id="search-media" method="post" action="" style="margin-top: 25px;">
-                            <input type="text" name="search" placeholder="Search">
-                            <button type="submit" class="redbtn"><i class="fa fa-search"></i>Search</button><br>
-                        </form>
+                    <form id="search-media" method="post" action="" style="margin-top: 25px; white-space: nowrap;">
+                        <input type="text" name="search" placeholder="Search">
+                        <button type="submit" class="redbtn redbtn-search"><i class="fa fa-search"></i></button><br>
+                    </form>
+                    <ul>
+                        <li><input type="checkbox" value="true" id="titles" name="titles" checked />Titles</li>
+                        <li><input type="checkbox" value="true" id="tags" name="tags" checked />Tags</li>
+                        <li><input type="checkbox" value="true" id="users" name="users" checked />Users</li>
+                    </ul>
                 </div>
             </div>
         </div>

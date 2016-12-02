@@ -785,8 +785,10 @@ footer ul li a {
     margin-bottom: 20px;
     transition: box-shadow 0.5s;
     display: inline-block;
-    border: none;
-    outline:none;
+}
+
+.redbtn-search {
+    padding: 10px 10px 10px 20px;
 }
 
 /* ---------------------------*/
@@ -918,7 +920,7 @@ footer ul li a {
 /* Search form */
 
 input[name=search] {
-    width: 100%;
+    width: 90%;
     box-sizing: border-box;
     border-radius: 4px;
     font-size: 16px;
@@ -927,6 +929,10 @@ input[name=search] {
     margin-bottom: 20px;
     transition: box-shadow 0.5s;
     display: inline-block;
+}
+
+li {
+    display:inline-block;
 }
 
 /* ---------------------------*/
