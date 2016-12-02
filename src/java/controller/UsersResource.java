@@ -107,7 +107,7 @@ public class UsersResource {
         //TODO return proper representation object
         String r = "";
         User u = mssb.readUserBySessionID(sessionid);
-        r += "{ username: '" + u.getLogin() + "'}";
+        r += "{\"username\":\"" + u.getLogin() + "\"}";
         return r;
     }
     
