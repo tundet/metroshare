@@ -249,12 +249,12 @@ public class AdminResource {
             User user = mssb.readUserByLogin(username);
 
             if (user.getLogin().equals(username) && user.getPassword().equals(password)) {
-                return "{\"status\": \"true\"}";
+                return user.getSessionID();
             } else {
-                return "{\"status\": \"false\"}";
+                return "false";
             }
         } catch (Exception e) {
-            return "{\"status\": \"false\"}";
+            return "false";
         }
     }
 

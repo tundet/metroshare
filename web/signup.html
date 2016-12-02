@@ -32,7 +32,7 @@
                         <li class="left"><a href="index.html">Statistics</a></li>
                         <li class="left"><a href="index.html">About</a></li>
                         <li class="right">
-                            <form>
+                            <form method="post" class="signin-form">
                                 <input type="text" name="username" placeholder="Username" required>
                                 <input type="password" name="password" placeholder="Password" required>
                                 <input type="submit" value="Log in">
@@ -156,7 +156,8 @@
                     url: "http://localhost:8080/MetroShare/webresources/admin/signin",
                     data: $(".signin-form").serialize(),
                     success: function (data, textStatus, xhr) {
-                        console.log(JSON.parse(data));
+                        console.log(data);
+                        document.cookie = "SessionID = " + data;
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
