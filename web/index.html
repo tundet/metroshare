@@ -16,7 +16,6 @@ and open the template in the editor.
         <script type="text/javascript" src="JS/Utils.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                test();
                 $("#navbar-mobile").hide();
                 $(".navbar-dropdown-toggle").click(function ()
                 {
@@ -90,7 +89,7 @@ and open the template in the editor.
             </div>
         </div>
 
-        <div id="media" class="container media-container">
+        <div id="media" class="container-fluid media-container">
         </div>
 
         <footer class="container-fluid">
@@ -191,11 +190,6 @@ and open the template in the editor.
 
             </table>
         </div>
-        <!--<script type="text/javascript">
-            $.get("http://localhost:8080/MetroShare/webresources/users/matti/activity", function (data) {
-                alert("Loaded user: " + data.activity);
-            });
-        </script>-->
 
         <script type="text/javascript">
             $("#login-form").submit(function (event) {
@@ -216,6 +210,28 @@ and open the template in the editor.
         </script>
 
         <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/get/10",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+
+                        // Random media
+                        for (i = 0; i < jsondata.length; i++) {
+                            document.querySelector("#media").appendChild(generateMedia(jsondata[i]));
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <!-- Admin functions -->
+        
+        <script type="text/javascript">
             $("#get-images").submit(function (event) {
                 event.preventDefault();
 
@@ -230,62 +246,6 @@ and open the template in the editor.
                     }
                 });
             });
-        </script>
-
-        <script type="text/javascript">
-            $(document).ready(function (event) {
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/get/8",
-                    success: function (data, textStatus, xhr) {
-                        var jsondata = JSON.parse(data);
-
-                        console.log(jsondata[0]);
-
-
-                        // Adding user's photos
-                        for (i = 0; i < jsondata.length; i++) {
-                            var col3 = document.createElement("div");
-                            col3.setAttribute("class", "col-3");
-                            var imageholder = document.createElement("DIV");
-                            imageholder.setAttribute("class", "imageholder");
-                            var a = document.createElement("A");
-                            a.href = "media.html?id=" + jsondata[i].id;
-                            var img = document.createElement("IMG");
-                            img.src = jsondata[i].mediaLocation; //TODO fix path
-                            img.classList.add("image");
-                            a.append(img);
-                            imageholder.appendChild(a);
-                            var caption = document.createElement("DIV");
-                            caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[i].title;
-                            if (jsondata[i].nsfw == true) {
-                                img.classList.add("nsfw");
-                                img.setAttribute("onclick", "unBlur(this)");
-                                $(img).attr("realhref", img.closest("a").href);
-                                img.closest("a").removeAttribute("href");
-                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
-                            }
-                            imageholder.appendChild(caption);
-                            col3.appendChild(imageholder);
-                            document.querySelector("#media").appendChild(col3);
-                            console.log(col3);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            });
-        </script>
-
-        <script type="text/javascript">
-            function unBlur(nsfwobject) {
-                nsfwobject.classList.remove("nsfw");
-                setTimeout(function () {
-                    nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-                }, 10);
-            }
         </script>
 
         <script type="text/javascript">
@@ -430,37 +390,6 @@ and open the template in the editor.
                     }
                 });
             });
-        </script>
-
-        <script type="text/javascript">
-            function arrayToTable(arrayToBeTable) {
-                console.log(arrayToBeTable);
-                var table = document.getElementById("tables");
-                table.innerHTML = '';
-                var thead = document.createElement("THEAD");
-                var tbody = document.createElement("TBODY");
-                var tr = document.createElement("TR");
-                for (i = 0; i < arrayToBeTable.length; i++) {
-                    if (i == 0) {
-                        for (var header in arrayToBeTable[i]) {
-                            var th = document.createElement("TH");
-                            th.textContent = arrayToBeTable[i][header];
-                            tr.appendChild(th);
-                        }
-                        thead.appendChild(tr);
-                        table.appendChild(thead);
-                    } else {
-                        tr = document.createElement("TR");
-                        for (var value in arrayToBeTable[i]) {
-                            var th = document.createElement("TD");
-                            th.textContent = arrayToBeTable[i][value];
-                            tr.appendChild(th);
-                        }
-                        tbody.appendChild(tr);
-                        table.appendChild(tbody);
-                    }
-                }
-            }
         </script>
     </body>
 </html>
