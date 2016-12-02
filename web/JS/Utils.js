@@ -80,6 +80,26 @@ function generateMedia(json) {
 // --------- Json/Array to table ------- */
 // --------------------------------------*/
 
+function jsonArrayToArray(jsonArray) {
+    var a = [];
+    var b = [];
+    for (key in jsonArray) {
+        b.push(key);
+    }
+    a.push(b);
+    for (key in jsonArray) {
+        b = [];
+        if (jsonArray[key].length > 1) {
+            for (value in jsonArray[key]) {
+                b.push(jsonArray[key][value]);
+            }
+        } else {
+            b.push(jsonArray[key]);
+        }
+        a.push(b);
+    }
+}
+
 function arrayToTable(arrayToBeTable) {
     console.log(arrayToBeTable);
     var table = document.getElementById("tables");
