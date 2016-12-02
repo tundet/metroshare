@@ -15,3 +15,4 @@ nbdist/
 *.log
 *.private.xml
 .idea/
+web/.idea/
