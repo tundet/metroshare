@@ -7,16 +7,8 @@
         <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="JS/Utils.js"></script>
         <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#navbar-mobile").hide();
-                $(".navbar-dropdown-toggle").click(function ()
-                {
-                    $("#navbar-mobile").slideToggle(500);
-                });
-            });
-        </script>
     </head>
     <body>
 
@@ -32,7 +24,7 @@
                         <li class="left"><a href="index.html">Statistics</a></li>
                         <li class="left"><a href="index.html">About</a></li>
                         <li class="right">
-                            <form method="post" class="signin-form">
+                            <form method="post" class="signin-form" onsubmit="onSignIn(event);">
                                 <input type="text" name="username" placeholder="Username" required>
                                 <input type="password" name="password" placeholder="Password" required>
                                 <input type="submit" value="Log in">
@@ -82,7 +74,7 @@
             <div class="col-4">
             </div>
             <div class="col-4">
-                <form method="post" class="signup-form" action="webresources/admin/signup">
+                <form method="post" class="signup-form" action="webresources/admin/signup" onsubmit="onSignUp(event);">
                     <label>
                         Username
                         <input type="text" name="username" required class="signup-form-username">
@@ -122,49 +114,5 @@
                 </ul>
             </div>
         </footer>
-
-        <script type="text/javascript">
-            $("#friend-list-heading").click(function () {
-                if ($("#friend-list .panel-body").is(":visible")) {
-                    $("#friend-list .panel-body").slideUp();
-                } else {
-                    $("#friend-list .panel-body").slideDown();
-                }
-            });
-
-            $(".signup-form").submit(function (event) {
-                event.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/MetroShare/webresources/admin/signup",
-                    data: $(".signup-form").serialize(),
-                    success: function (data, textStatus, xhr) {
-                        console.log(JSON.parse(data));
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            });
-
-            $(".signin-form").submit(function (event) {
-                event.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/MetroShare/webresources/admin/signin",
-                    data: $(".signin-form").serialize(),
-                    success: function (data, textStatus, xhr) {
-                        console.log(data);
-                        document.cookie = "SessionID = " + data;
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            });
-        </script>
-
     </body>
 </html>

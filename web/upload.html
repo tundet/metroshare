@@ -7,16 +7,8 @@
     <link href="css/style.css" type="text/css" rel="stylesheet">
     <link href="font-awesome.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="JS/Utils.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#navbar-mobile").hide();
-            $(".navbar-dropdown-toggle").click(function()
-            {
-                $("#navbar-mobile").slideToggle(500);
-            });
-        });
-    </script>
 </head>
 <body>
 
@@ -32,7 +24,7 @@
                 <li class="left"><a href="index.html">Statistics</a></li>
                 <li class="left"><a href="index.html">About</a></li>
                 <li class="right">
-                    <form class="signin-form" method="post">
+                    <form class="signin-form" method="post" onsubmit="onSignIn(event);">
                         <input type="text" name="username" placeholder="Username" required>
                         <input type="password" name="password" placeholder="Password" required>
                         <input type="submit" value="Log in">
@@ -70,7 +62,7 @@
     <div class="col-4">
     </div>
     <div class="col-4">
-        <form method="post" enctype="multipart/form-data" class="upload-form" action="javascript:;">
+        <form method="post" enctype="multipart/form-data" class="upload-form" onsubmit="onUpload(event);">
             <label>
                 Title
                 <input type="text" name="title" required class="upload-form-username">
@@ -108,35 +100,6 @@
         </ul>
     </div>
 </footer>
-
-<script type="text/javascript">
-    $("#friend-list-heading").click(function() {
-        if ($("#friend-list .panel-body").is(":visible")) {
-            $("#friend-list .panel-body").slideUp();
-        } else {
-            $("#friend-list .panel-body").slideDown();
-        }
-    });
-    
-    $(".upload-form").submit(function (event) {
-        event.preventDefault();
-
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/MetroShare/upload",
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: new FormData($(this)[0]),
-            success: function (data, textStatus, xhr) {
-                console.log(JSON.parse(data));
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("Error: " + errorThrown);
-            }
-        });
-    });
-</script>
 
 </body>
 </html>

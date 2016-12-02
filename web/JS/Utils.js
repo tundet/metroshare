@@ -109,3 +109,91 @@ function arrayToTable(arrayToBeTable) {
     }
 }
 
+// --------------------------------------*/
+// ----------- Signin Form  ------------ */
+// --------------------------------------*/
+
+function onSignIn(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/signin",
+        data: $(".signin-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            console.log(data);
+            document.cookie = "SessionID = " + data;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Signup Form  ----------- */
+// --------------------------------------*/
+
+function onSignUp(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/signup",
+        data: $(".signup-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            console.log(JSON.parse(data));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Upload Form  ----------- */
+// --------------------------------------*/
+
+function onUpload(event) {
+    event.preventDefault();
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/upload",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: new FormData($(event.target)[0]),
+        success: function (data, textStatus, xhr) {
+            console.log(JSON.parse(data));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+// --------------------------------------*/
+// ------------ Friend List  ----------- */
+// --------------------------------------*/
+
+
+$("#friend-list-heading").click(function () {
+    if ($("#friend-list .panel-body").is(":visible")) {
+        $("#friend-list .panel-body").slideUp();
+    } else {
+        $("#friend-list .panel-body").slideDown();
+    }
+});
+
+// --------------------------------------*/
+// ---------- Navigation Bar  ---------- */
+// --------------------------------------*/
+
+$(document).ready(function () {
+    $("#navbar-mobile").hide();
+    $(".navbar-dropdown-toggle").click(function ()
+    {
+        $("#navbar-mobile").slideToggle(500);
+    });
+});
