@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.util.HashMap;
@@ -16,10 +11,8 @@ import javax.json.JsonObject;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Friend;
@@ -28,8 +21,6 @@ import model.User;
 
 /**
  * REST Web Service
- *
- * @author Mafields
  */
 @Path("users")
 public class UsersResource {
@@ -41,27 +32,21 @@ public class UsersResource {
     private MetroShareSB mssb;
 
     /**
-     * Creates a new instance of UsersResource
-     */
-    public UsersResource() {
-    }
-
-    /**
-     * Retrieves representation of an instance of controller.UsersResource
+     * Create a JSON object from the given user containing,
+     *  the username and also friends and media of the user.
      *
-     * @param login
-     * @return an instance of java.lang.String
+     * @param login Username of the user
+     * @return JSON object
      */
     @GET
     @Path("/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@PathParam("login") String login) {
-        //TODO return proper representation object
         User u = mssb.readUserByLogin(login);
         Map<String, Object> config = new HashMap<String, Object>();
         JsonBuilderFactory factory = Json.createBuilderFactory(config);
         
-        //Media
+        // Media
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : u.getMediaCollection()) {
             JsonObject mediaValue = Json.createObjectBuilder()
@@ -74,7 +59,7 @@ public class UsersResource {
         }
         JsonArray mediaA = builder.build();
         
-        //Friends
+        // Friends
         builder = Json.createArrayBuilder();
         for (Friend f : u.getFriendCollection()) {
             JsonObject friendValue = Json.createObjectBuilder()
@@ -95,16 +80,15 @@ public class UsersResource {
     }
     
     /**
-     * Retrieves representation of an instance of controller.UsersResource
+     * Get the matching username from the given session ID.
      *
-     * @param login
-     * @return an instance of java.lang.String
+     * @param sessionid Session ID of the user
+     * @return Username of the matching user
      */
     @GET
     @Path("/sessionid/{sessionid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getSessionJson(@PathParam("sessionid") String sessionid) {
-        //TODO return proper representation object
         String r = "";
         User u = mssb.readUserBySessionID(sessionid);
         r += "{\"username\":\"" + u.getLogin() + "\"}";
@@ -112,29 +96,20 @@ public class UsersResource {
     }
     
     /**
-     * Retrieves representation of an instance of controller.UsersResource
+     * Get last activity time of the given user.
+     * 
+     * Last activity time is specified in format YYYY-MM-DD HH:MM:SS.
      *
-     * @param login
-     * @return an instance of java.lang.String
+     * @param login Username of the user
+     * @return Last activity time
      */
     @GET
     @Path("/{login}/activity")
     @Produces(MediaType.APPLICATION_JSON)
     public String getUserJson(@PathParam("login") String login) {
-        //TODO return proper representation object
         String ua = "";
         User u = mssb.readUserByLogin(login);
         ua += "{\"activity\":\"" + u.getActivity() + "\"}";
         return ua;
-    }
-
-    /**
-     * PUT method for updating or creating an instance of UsersResource
-     *
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content) {
     }
 }
