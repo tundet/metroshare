@@ -68,14 +68,10 @@
         <div class="container-fluid" style="background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center; color:#ffffff;">
             <div class="container">
                 <div class="col-12">
-                    <ul>
-                        <li>
-                            <form id="search-media" method="post" action="">
-                                <input type="text" name="search" placeholder="Search" required>
-                                <button type="submit">Search</button>
-                            </form>
-                        </li>
-                    </ul>
+                        <form id="search-media" method="post" action="" style="margin-top: 25px;">
+                            <input type="text" name="search" placeholder="Search">
+                            <button type="submit" class="redbtn"><i class="fa fa-search"></i>Search</button><br>
+                        </form>
                 </div>
             </div>
         </div>
@@ -166,8 +162,8 @@
                         }
                     }
                 }
-                
-                if (!tag && !title && !user){
+
+                if (!tag && !title && !user) {
                     tag = true;
                     user = true;
                     title = true;
@@ -188,7 +184,7 @@
                             searchResults.innerHTML = "";
                             var mediacontainer = document.createElement("div");
                             mediacontainer.setAttribute("class", "container");
-                            
+
                             if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
                                 var col12 = document.createElement("div");
                                 col12.setAttribute("class", "col-12");
@@ -326,7 +322,7 @@
 
                         var searchResults = document.querySelector(".search-results");
                         searchResults.innerHTML = "";
-                        
+
                         if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
