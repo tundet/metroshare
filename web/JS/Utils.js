@@ -239,3 +239,20 @@ $(document).ready(function () {
         $("#navbar-mobile").slideToggle(500);
     });
 });
+
+// --------------------------------------*/
+// ----- Get User From Session ID  ----- */
+// --------------------------------------*/
+
+function checkIfLoggedIn() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/users/sessionid/" + readSessionIdFromCookie(),
+        success: function (data, textStatus, xhr) {
+            console.log("Logged in as: " + JSON.parse(data).username);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
