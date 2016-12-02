@@ -121,7 +121,10 @@ public class MetroShareSB {
             return null;
         }
         return m;
-
+    }
+    
+    public List<Media> readMediaFromFriends(String ids) {
+        return em.createNativeQuery("SELECT * FROM `media` WHERE userId in (" + ids +") LIMIT 6", Media.class).getResultList();
     }
 
     public List<Media> readMediaByUserID(int id) {

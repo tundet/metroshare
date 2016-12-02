@@ -1,3 +1,39 @@
+// -------------------------------*/
+// --------- check user! -------- */
+// -------------------------------*/
+$(document).ready(function () {
+    if (readSessionIdFromCookie()) {
+        // user name instead of login area
+        var LOGINNAME = checkIfLoggedIn().username;
+        $(".login-area").text("");
+        var a = document.createElement("a");
+        a.href = "profile.html?login=" + LOGINNAME;
+        a.innerHTML = LOGINNAME;
+        $(".login-area").append(a);
+
+        // friend pictures instead of page description
+        $(".header-container").text("");
+        var h3 = document.createElement("h3");
+        h3.innerHTML = "Friends latest posts!";
+        $(".header-container").append(h3);
+
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "http://localhost:8080/MetroShare/webresources/users/friends/media/" + LOGINNAME,
+            success: function (data, textStatus, xhr) {
+                //console.log(JSON.parse(data));
+                var json = JSON.parse(data);
+                for (i in json){
+                    $(".header-container").append(generateMedia(json[i]));
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error: " + errorThrown);
+            }
+        });
+    }
+});
 // ----------------------------------*/
 // --------- Cookie cookker! ------- */
 // ----------------------------------*/
@@ -13,7 +49,7 @@ function readSessionIdFromCookie() {
     for (i in cookies) {
         var cookie = cookies[i].split("=")
         if (cookie[0] == "SessionID") {
-            console.log(cookie[1]);
+            //console.log(cookie[1]);
             return cookie[1];
         }
     }
@@ -69,7 +105,7 @@ function unBlur(nsfwobject) {
 }
 
 function generateMedia(json) {
-    console.log(json);
+    //console.log(json);
     var col2 = document.createElement("DIV");
     col2.setAttribute("class", "col-2");
     var imageholder = document.createElement("DIV");
@@ -93,7 +129,7 @@ function generateMedia(json) {
     }
     imageholder.appendChild(caption);
     col2.appendChild(imageholder);
-    console.log(col2);
+    //console.log(col2);
     return col2;
 }
 
@@ -163,7 +199,7 @@ function onSignIn(event) {
         url: "http://localhost:8080/MetroShare/webresources/admin/signin",
         data: $(".signin-form").serialize(),
         success: function (data, textStatus, xhr) {
-            console.log(data);
+            //console.log(data);
             document.cookie = "SessionID = " + data;
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -245,14 +281,19 @@ $(document).ready(function () {
 // --------------------------------------*/
 
 function checkIfLoggedIn() {
+    var json;
     $.ajax({
         type: "GET",
+        async: false,
         url: "http://localhost:8080/MetroShare/webresources/users/sessionid/" + readSessionIdFromCookie(),
         success: function (data, textStatus, xhr) {
-            console.log("Logged in as: " + JSON.parse(data).username);
+            //console.log(JSON.parse(data));
+            json = JSON.parse(data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
         }
     });
+    //console.log(json);
+    return json;
 }
