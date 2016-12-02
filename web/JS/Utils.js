@@ -1,3 +1,25 @@
+// ----------------------------------*/
+// --------- Cookie cookker! ------- */
+// ----------------------------------*/
+
+function readSessionIdFromCookie() {
+    //console.log(document.cookie);
+    var cookies = [];
+    if (document.cookie.indexOf("; ") > -1) {
+        cookies = document.cookie.split("; ");
+    } else {
+        cookies.push(document.cookie);
+    }
+    for (i in cookies) {
+        var cookie = cookies[i].split("=")
+        if (cookie[0] == "SessionID") {
+            console.log(cookie[1]);
+            return cookie[1];
+        }
+    }
+    return null;
+}
+
 // --------------------------------*/
 // --------- Querry params ------- */
 // --------------------------------*/

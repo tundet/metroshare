@@ -203,6 +203,7 @@ and open the template in the editor.
 
         <script type="text/javascript">
             $(document).ready(function (event) {
+                readSessionIdFromCookie();
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:8080/MetroShare/webresources/media/get/10",
