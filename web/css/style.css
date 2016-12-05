@@ -23,7 +23,7 @@ body {
 /* ---------- Fonts --------- */
 /* ---------------------------*/
 
-h1, h2, h3, h4, h5, p, span, a {
+* {
     font-family: 'Raleway', sans-serif;
 }
 
@@ -926,13 +926,41 @@ input[name=search] {
     font-size: 16px;
     background-color: white;
     padding: 8px 20px 8px 20px;
-    margin-bottom: 20px;
     transition: box-shadow 0.5s;
     display: inline-block;
 }
 
-li {
+.search-media ul {
+    margin:0 0 10px 0;
+    padding: 0;
+}
+
+.search-media li {
     display:inline-block;
+}
+
+.checkboxlabel {
+    display: inline-block;
+    position: relative;
+    padding: 6px 10px 10px 8px;
+    vertical-align: top;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type=checkbox] {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #fff;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input[type=checkbox]:checked {
+    background: url(http://i.imgur.com/SnRA1MY.png) no-repeat center center;
+    background-size: 100%;
 }
 
 /* ---------------------------*/
