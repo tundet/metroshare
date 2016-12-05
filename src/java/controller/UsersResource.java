@@ -156,6 +156,19 @@ public class UsersResource {
      * @return an instance of java.lang.String
      */
     @GET
+    @Path("/getuser/{sessionid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUserBySession(@PathParam("sessionid") String sessionid) {
+        return mssb.readUserBySessionID(sessionid);
+    }
+    
+    /**
+     * Retrieves representation of an instance of controller.UsersResource
+     *
+     * @param login
+     * @return an instance of java.lang.String
+     */
+    @GET
     @Path("/{login}/activity")
     @Produces(MediaType.APPLICATION_JSON)
     public String getUserJson(@PathParam("login") String login) {
