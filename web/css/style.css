@@ -788,7 +788,8 @@ footer ul li a {
 }
 
 .redbtn-search {
-    padding: 10px 10px 10px 20px;
+    padding: 3px 5px 6px 15px;
+    font-size: 20px;
 }
 
 /* ---------------------------*/
@@ -931,34 +932,37 @@ input[name=search] {
 }
 
 .search-media ul {
-    margin:0 0 10px 0;
+    margin:0 0 20px 0;
     padding: 0;
 }
 
 .search-media li {
     display:inline-block;
+    margin-right: 20px;
 }
 
-.checkboxlabel {
-    display: inline-block;
-    position: relative;
-    padding: 6px 10px 10px 8px;
-    vertical-align: top;
-    cursor: pointer;
-    font-size: 16px;
+label.checkbox {
+    display: inline;
 }
 
-input[type=checkbox] {
+label.checkbox input[type="checkbox"] {
+    display:none;
+}
+
+label.checkbox span {
     position: relative;
     width: 25px;
     height: 25px;
     border: 2px solid #fff;
     border-radius: 2px;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
+    padding: 0 10px 0 10px;
+    margin-right: 5px;
 }
 
-input[type=checkbox]:checked {
+label.checkbox :checked + span {
     background: url(http://i.imgur.com/SnRA1MY.png) no-repeat center center;
     background-size: 100%;
 }
