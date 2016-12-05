@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -86,6 +87,43 @@ public class UsersResource {
      * @return Username of the matching user
      */
     @GET
+    @Path("/friends/media/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getFriendsMediaJson(@PathParam("username") String username) {
+        //TODO return proper representation object
+        String r = "";
+        User u = mssb.readUserByLogin(username);
+        String ids = "";
+        for(Friend f : u.getFriendCollection()) {
+            ids += f.getFriendId().getId() + ",";
+        }
+        System.out.println(ids);
+        if (ids.endsWith(",")){
+            ids = ids.substring(0, ids.length() -1);
+        }
+        List<Media> mlst = mssb.readMediaFromFriends(ids);
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : mlst) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("mediaId", m.getId())
+                    .add("mediaLocation", m.getMediaLocation())
+                    .add("title", m.getTitle())
+                    .add("nsfw", m.getNsfw())
+                    .build();
+            builder.add(mediaValue);
+        }
+
+        JsonArray mediaA = builder.build();
+        return mediaA.toString();
+    }
+    
+    /**
+     * Retrieves representation of an instance of controller.UsersResource
+     *
+     * @param login
+     * @return an instance of java.lang.String
+     */
+    @GET
     @Path("/sessionid/{sessionid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getSessionJson(@PathParam("sessionid") String sessionid) {
@@ -102,6 +140,19 @@ public class UsersResource {
      *
      * @param login Username of the user
      * @return Last activity time
+     */
+    @GET
+    @Path("/getuser/{sessionid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getUserBySession(@PathParam("sessionid") String sessionid) {
+        return mssb.readUserBySessionID(sessionid);
+    }
+    
+    /**
+     * Retrieves representation of an instance of controller.UsersResource
+     *
+     * @param login
+     * @return an instance of java.lang.String
      */
     @GET
     @Path("/{login}/activity")
