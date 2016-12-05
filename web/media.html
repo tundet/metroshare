@@ -72,9 +72,7 @@
             </div>
 
             <div class="container">
-                <div class="col-12">
-                    <div class="comments">
-                    </div>
+                <div class="col-12 comments">
                 </div>
             </div>
 
@@ -104,21 +102,10 @@
             </footer>
         </div>
 
-        <table id="tables">
-
-        </table>
-        
-        <div class="col-3">
-            
-        </div>
-        <div class="col-9">
-            
-        </div>
-
         <script type="text/javascript">
             $(document).ready(function (event) {
                 var loc = document.location.toString();
-                loc = loc.substring(loc.indexOf("?")+1);
+                loc = loc.substring(loc.indexOf("?") + 1);
                 var qparam = loc.split("=")
                 console.log(qparam);
                 $.ajax({
@@ -167,39 +154,87 @@
                         }
                         figure.append(figcaption);
 
-                        // comment
                         var comments = $(".comments");
-                        for (i in a[1][5]) {
-                            console.log(a[1][5][i].date);
-                            var contdiv = document.createElement("div");
-                            contdiv.classList.add("comment");
 
-                            var leftColumn = document.createElement("div");
-                            leftColumn.classList.add("col-3");
-                            contdiv.append(leftColumn);
+                        // comment make area
+                        var LOGINNAME = checkIfLoggedIn().username;
+                        if (LOGINNAME != null) {
+                            console.log("Logged in as " + LOGINNAME);
+                            var makeCommentDiv = document.createElement("div");
+                            var commentForm = document.createElement("form");
                             
-                            var rightColumn = document.createElement("div");
-                            rightColumn.classList.add("col-9");
-                            contdiv.append(rightColumn);
+                            var sender = document.createElement("input");
+                            sender.type = "hidden";
+                            sender.value = readSessionIdFromCookie();
+                            commentForm.append(sender);
                             
-                            var unameh2 = document.createElement("h2");
-                            unameh2.innerHTML = a[1][5][i].userName;
-                            leftColumn.append(unameh2);
-
-                            var datespan = document.createElement("span");
-                            datespan.classList.add("comment-date");
-                            datespan.innerHTML = a[1][5][i].date;
-                            leftColumn.append(datespan);
-
-                            var messagep = document.createElement("p");
-                            messagep.classList.add("comment-message");
-                            messagep.innerHTML = a[1][5][i].message;
-                            rightColumn.append(messagep);
-
-                            comments.append(contdiv);
+                            var commentText = document.createElement("textarea");
+                            commentText.rows = "2";
+                            commentText.name = "comment";
+                            commentText.placeholder = "Type comment here!";
+                            commentText.maxlength = "255";
+                            commentText.autofocus = "autofocus";
+                            commentText.required = "required";
+                            commentText.wrap = "soft";
+                            commentForm.append(commentText);
+                            
+                            var summaryDiv = document.createElement("div");
+                            summaryDiv.classList.add("comment-summary");
+                            
+                            var aRules = document.createElement("a");
+                            aRules.href = "#";
+                            aRules.innerHTML = "Remember community rules";
+                            summaryDiv.append(aRules);
+                            
+                            var sendButton = document.createElement("button");
+                            sendButton.type = "submit";
+                            sendButton.classList.add("redbtn");
+                            sendButton.classList.add("redbtn-search");
+                            sendButton.innerHTML = "<i class=\"fa fa-commenting-o\"></i>";
+                            summaryDiv.append(sendButton);
+                            commentForm.append(summaryDiv);
+                            
+                            makeCommentDiv.append(commentForm);
+                            comments.append(makeCommentDiv);
                         }
+                        
+                        console.log(a[1][5].length)
+                        if (a[1][5].length > 0) {
+                            for (i in a[1][5]) {
+                                console.log(a[1][5][i].date);
+                                var contdiv = document.createElement("div");
+                                contdiv.classList.add("comment");
 
-                        arrayToTable(a);
+                                var leftColumn = document.createElement("div");
+                                leftColumn.classList.add("col-3");
+                                contdiv.append(leftColumn);
+
+                                var rightColumn = document.createElement("div");
+                                rightColumn.classList.add("col-9");
+                                contdiv.append(rightColumn);
+
+                                var unameh2 = document.createElement("h2");
+                                unameh2.innerHTML = a[1][5][i].userName;
+                                leftColumn.append(unameh2);
+
+                                var datespan = document.createElement("span");
+                                datespan.classList.add("comment-date");
+                                datespan.innerHTML = a[1][5][i].date;
+                                leftColumn.append(datespan);
+
+                                var messagep = document.createElement("p");
+                                messagep.classList.add("comment-message");
+                                messagep.innerHTML = a[1][5][i].message;
+                                rightColumn.append(messagep);
+
+                                comments.append(contdiv);
+                            }
+                        } else {
+                            var h2 = document.createElement("h2");
+                            h2.innerHTML = "No comments yet!";
+                            comments.append(h2);
+                        }
+                        
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
