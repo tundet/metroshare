@@ -87,7 +87,6 @@ public class MetroShareSB {
     }
     
     public List<Media> searchMediaByUserLogin(String word) {
-        // TODO FIIIIX!!
         List<Media> mlst = em.createNativeQuery("SELECT * FROM media, user WHERE media.userId = user.ID AND user.Login LIKE '%" + word +"%'", Media.class).getResultList();
         return mlst;
     }

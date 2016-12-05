@@ -999,9 +999,39 @@ input[type=checkbox]:checked {
     background-color: #73b9ff;
 }
 
-.comments h1{
-    margin-bottom: 0;
+.comments h2{
+    margin-bottom: 10px;
     padding-left: 10px;
+}
+
+.comments textArea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    padding: 8px 20px 8px 20px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    transition: box-shadow 0.5s;
+    display: inline-block;
+    white-space:pre;
+}
+
+.comments form {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.comments button {
+    margin: 0px;
 }
 
 .comments hr {
