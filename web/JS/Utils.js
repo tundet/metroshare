@@ -3,20 +3,18 @@
 // -------------------------------*/
 $(document).ready(function () {
     if (readSessionIdFromCookie()) {
-        // user name instead of login area
+// user name instead of login area
         var LOGINNAME = checkIfLoggedIn().username;
         $(".login-area").text("");
         var a = document.createElement("a");
         a.href = "profile.html?login=" + LOGINNAME;
         a.innerHTML = LOGINNAME;
         $(".login-area").append(a);
-
         // friend pictures instead of page description
         $(".header-container").text("");
         var h3 = document.createElement("h3");
         h3.innerHTML = "Friends latest posts!";
         $(".header-container").append(h3);
-
         $.ajax({
             type: "GET",
             async: false,
@@ -24,7 +22,7 @@ $(document).ready(function () {
             success: function (data, textStatus, xhr) {
                 //console.log(JSON.parse(data));
                 var json = JSON.parse(data);
-                for (i in json){
+                for (i in json) {
                     $(".header-container").append(generateMedia(json[i]));
                 }
             },
@@ -70,7 +68,7 @@ function readQParamsToList(loc) {
             var allqparams = loc.split("&");
             //console.log(allqparams);
             for (i in allqparams) {
-                //keyword for qparam
+//keyword for qparam
                 qparams.push(allqparams[i].split("="));
                 //console.log(qparams);
             }
@@ -105,7 +103,7 @@ function unBlur(nsfwobject) {
 }
 
 function generateMedia(json) {
-    //console.log(json);
+//console.log(json);
     var col2 = document.createElement("DIV");
     col2.setAttribute("class", "col-2");
     var imageholder = document.createElement("DIV");
@@ -193,7 +191,6 @@ function arrayToTable(arrayToBeTable) {
 
 function onSignIn(event) {
     event.preventDefault();
-
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/MetroShare/webresources/admin/signin",
@@ -214,7 +211,6 @@ function onSignIn(event) {
 
 function onSignUp(event) {
     event.preventDefault();
-
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/MetroShare/webresources/admin/signup",
@@ -234,7 +230,6 @@ function onSignUp(event) {
 
 function onUpload(event) {
     event.preventDefault();
-
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/MetroShare/upload",
@@ -263,7 +258,6 @@ $("#friend-list-heading").click(function () {
         $("#friend-list .panel-body").slideDown();
     }
 });
-
 // --------------------------------------*/
 // ---------- Navigation Bar  ---------- */
 // --------------------------------------*/
@@ -273,6 +267,25 @@ $(document).ready(function () {
     $(".navbar-dropdown-toggle").click(function ()
     {
         $("#navbar-mobile").slideToggle(500);
+    });
+});
+// --------------------------------------*/
+// ----- Make comment to media  -------- */
+// --------------------------------------*/
+
+$(document).querySelector("#make-comment-form").submit(function (event) {
+    console.log("piu");
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/media/comment",
+        data: "#make-comment-form".serialize(),
+        success: function (data, textStatus, xhr) {
+            console.log(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
     });
 });
 
