@@ -162,12 +162,21 @@
                             console.log("Logged in as " + LOGINNAME);
                             var makeCommentDiv = document.createElement("div");
                             var commentForm = document.createElement("form");
-                            
+                            commentForm.id = "make-comment-form";
+                            commentForm.method = "POST";
+
                             var sender = document.createElement("input");
                             sender.type = "hidden";
                             sender.value = readSessionIdFromCookie();
+                            sender.name = "sender";
                             commentForm.append(sender);
-                            
+
+                            var media = document.createElement("input");
+                            media.type = "hidden";
+                            media.value = qparam[1];
+                            media.name = "mediaid";
+                            commentForm.append(media);
+
                             var commentText = document.createElement("textarea");
                             commentText.rows = "2";
                             commentText.name = "comment";
@@ -177,15 +186,15 @@
                             commentText.required = "required";
                             commentText.wrap = "soft";
                             commentForm.append(commentText);
-                            
+
                             var summaryDiv = document.createElement("div");
                             summaryDiv.classList.add("comment-summary");
-                            
+
                             var aRules = document.createElement("a");
                             aRules.href = "#";
                             aRules.innerHTML = "Remember community rules";
                             summaryDiv.append(aRules);
-                            
+
                             var sendButton = document.createElement("button");
                             sendButton.type = "submit";
                             sendButton.classList.add("redbtn");
@@ -193,11 +202,11 @@
                             sendButton.innerHTML = "<i class=\"fa fa-commenting-o\"></i>";
                             summaryDiv.append(sendButton);
                             commentForm.append(summaryDiv);
-                            
+
                             makeCommentDiv.append(commentForm);
                             comments.append(makeCommentDiv);
                         }
-                        
+
                         console.log(a[1][5].length)
                         if (a[1][5].length > 0) {
                             for (i in a[1][5]) {
@@ -234,7 +243,7 @@
                             h2.innerHTML = "No comments yet!";
                             comments.append(h2);
                         }
-                        
+
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);

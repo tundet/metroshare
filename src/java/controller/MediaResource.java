@@ -107,6 +107,25 @@ public class MediaResource {
         return media.toString();
     }
 
+    @POST
+    @Path("/comment/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String makeCommentToMedia(@FormParam("sender") String sender, @FormParam("mediaid") String mediaid, @FormParam("comment") String comment) {
+        //TODO return proper representation object
+        System.out.println("getting user by sessionid:" + sender);
+        
+        Comment c = new Comment();
+        c.setUserId(mssb.readUserBySessionID(sender));
+        c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
+        c.setMessage(comment);
+        c = mssb.insert(c);
+        if (c.getId() != null) {
+            return "{\"succes\": \"commentid " + c.getId() +"\"}";
+        } else {
+            return "{\"error\": \"no comment saved\"}";
+        }
+    }
+    
     @GET
     @Path("/latest/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
