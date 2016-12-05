@@ -1,3 +1,5 @@
+package upload;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,14 +20,20 @@ import javax.servlet.http.Part;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import controller.MetroShareSB;
+import java.nio.file.Files;
+import javax.ejb.EJB;
+import javax.servlet.ServletContext;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import model.User;
 
-/**
- *
- * @author jukka
- */
 @WebServlet(urlPatterns = {"/upload"})
 @MultipartConfig(location = "/tmp")
 public class upload extends HttpServlet {
+    
+    @EJB
+    private MetroShareSB mssb;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,16 +89,29 @@ public class upload extends HttpServlet {
     @Produces(MediaType.APPLICATION_JSON)
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getPart("file").write(getFilename(request.getPart("file")));
+        String fileName = getFilename(request.getPart("file"));
+        int lastIndexOfDot = fileName.lastIndexOf(".");
+        fileName = mssb.getNextMediaId() + fileName.substring(lastIndexOfDot);
+        
+        User user = mssb.readUserBySessionID(request.getParameter("sessionid"));
+        
+        String uploadDirectoryPath = getServletContext().getRealPath("/uploads") + File.separator + user.getId() + File.separator;
+                
+        request.getPart("file").write(fileName);
+        
+        Path file = FileSystems.getDefault().getPath("/tmp" + File.separator + fileName);
+
+        Path destinationFile = FileSystems.getDefault().getPath(uploadDirectoryPath + fileName);
+        Files.move(file, destinationFile);
     }
 
-    private static String getFilename(Part part) {
+    private String getFilename(Part part) {
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
                 return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
             }
         }
-        return "{\"result\": \"" + "true" + "\"}";
+        return "{\"result:\" \"success\"}";
     }
 
     /**
