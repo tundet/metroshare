@@ -26,6 +26,9 @@ import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.Calendar;
+import model.Media;
 import model.User;
 
 @WebServlet(urlPatterns = {"/upload"})
@@ -102,7 +105,21 @@ public class upload extends HttpServlet {
         Path file = FileSystems.getDefault().getPath("/tmp" + File.separator + fileName);
 
         Path destinationFile = FileSystems.getDefault().getPath(uploadDirectoryPath + fileName);
-        Files.move(file, destinationFile);
+        Files.move(file, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+        
+        System.out.println("NSFW: " + request.getParameter("nsfw"));
+        
+        Media image = new Media();
+        image.setUserId(user);
+        image.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        image.setMediaLocation("uploads/" + user.getId() + "/" + fileName);
+        image.setTitle(request.getParameter("title"));
+        if (request.getParameter("nsfw") == null) {
+            image.setNsfw(false);
+        } else {
+            image.setNsfw(true);
+        }
+        mssb.insert(image);
     }
 
     private String getFilename(Part part) {
