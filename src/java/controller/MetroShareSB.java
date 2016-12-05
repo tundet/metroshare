@@ -81,6 +81,10 @@ public class MetroShareSB {
         return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult();
     }
     
+    public int getNextMediaId() {
+        return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult() + 1;
+    }
+    
     public List<Media> searchMediaByTag(String word) {
         return em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word +"%'", Media.class).getResultList();
          
