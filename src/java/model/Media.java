@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -69,7 +70,7 @@ public class Media implements Serializable {
     private boolean nsfw;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mediaId")
     private Collection<MediaTag> mediaTagCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mediaId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mediaId", fetch = FetchType.EAGER)
     private Collection<Comment> commentCollection;
     @JoinColumn(name = "userId", referencedColumnName = "ID")
     @ManyToOne(optional = false)
@@ -123,7 +124,7 @@ public class Media implements Serializable {
         this.nsfw = nsfw;
     }
 
-    @XmlTransient
+    //@XmlTransient
     public Collection<MediaTag> getMediaTagCollection() {
         return mediaTagCollection;
     }
@@ -132,7 +133,7 @@ public class Media implements Serializable {
         this.mediaTagCollection = mediaTagCollection;
     }
 
-    @XmlTransient
+    //@XmlTransient
     public Collection<Comment> getCommentCollection() {
         return commentCollection;
     }
@@ -149,7 +150,7 @@ public class Media implements Serializable {
         this.userId = userId;
     }
 
-    @XmlTransient
+    //@XmlTransient
     public Collection<MediaLike> getMediaLikeCollection() {
         return mediaLikeCollection;
     }

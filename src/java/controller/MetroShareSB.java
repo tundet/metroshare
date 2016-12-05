@@ -117,12 +117,8 @@ public class MetroShareSB {
     }
 
     public Media readMediaByMediaID(int id) {
-        Media m = new Media(null);
-        try {
-            m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
+        Media m = (Media)em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
+        em.refresh(m); // <--- IMPORTANT
         return m;
     }
     
@@ -168,17 +164,7 @@ public class MetroShareSB {
 
     public List<Comment> readCommentByMediaID(int id) {
         Media m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
-        List<Comment> clst = new ArrayList<Comment>();
-        for (Comment c : m.getCommentCollection()) {
-            clst.add(c);
-        }
-        if (clst == null) {
-            Comment c = new Comment(null);
-            clst.add(c);
-            return clst;
-        } else {
-            return clst;
-        }
+        return new ArrayList<Comment>(m.getCommentCollection());
     }
 
     public List<Comment> readCommentByUserID(int id) {

@@ -162,6 +162,7 @@
                             console.log("Logged in as " + LOGINNAME);
                             var makeCommentDiv = document.createElement("div");
                             var commentForm = document.createElement("form");
+                            commentForm.addEventListener("submit", makeCommentFunction)
                             commentForm.id = "make-comment-form";
                             commentForm.method = "POST";
 

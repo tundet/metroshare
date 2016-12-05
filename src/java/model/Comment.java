@@ -38,8 +38,6 @@ public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -47,8 +45,6 @@ public class Comment implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "message")
     private String message;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;

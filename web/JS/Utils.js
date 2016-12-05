@@ -273,21 +273,24 @@ $(document).ready(function () {
 // ----- Make comment to media  -------- */
 // --------------------------------------*/
 
-$(document).querySelector("#make-comment-form").submit(function (event) {
-    console.log("piu");
+function makeCommentFunction(event) {
     event.preventDefault();
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/MetroShare/webresources/media/comment",
-        data: "#make-comment-form".serialize(),
+        async: false,
+        url: "http://localhost:8080/MetroShare/webresources/media/comment/",
+        data: $("#make-comment-form").serialize(),
         success: function (data, textStatus, xhr) {
-            console.log(data);
+            if (data) {
+                location.reload();
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
         }
     });
-});
+};
+
 
 // --------------------------------------*/
 // ----- Get User From Session ID  ----- */

@@ -119,11 +119,7 @@ public class MediaResource {
         c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
         c.setMessage(comment);
         c = mssb.insert(c);
-        if (c.getId() != null) {
-            return "{\"succes\": \"commentid " + c.getId() +"\"}";
-        } else {
-            return "{\"error\": \"no comment saved\"}";
-        }
+      return "{\"succes\": \"1\"}";
     }
     
     @GET
