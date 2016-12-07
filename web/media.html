@@ -108,9 +108,13 @@
                 loc = loc.substring(loc.indexOf("?") + 1);
                 var qparam = loc.split("=")
                 console.log(qparam);
+                var sessionId = readSessionIdFromCookie();
+                if (sessionId == null){
+                    sessionId = "0";
+                }
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/" + qparam[1],
+                    url: "http://localhost:8080/MetroShare/webresources/media/" + qparam[1] + "/" + sessionId,
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         var a = [];

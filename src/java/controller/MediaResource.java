@@ -29,6 +29,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import model.Comment;
 import model.Media;
+import model.MediaLike;
 import model.MediaTag;
 import model.User;
 
@@ -53,10 +54,14 @@ public class MediaResource {
     }
 
     @GET
-    @Path("/{mediaId}")
+    @Path("/{mediaId}/{sessionid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson(@PathParam("mediaId") int mediaId) {
+    public String getJson(@PathParam("mediaId") int mediaId, @PathParam("sessionid") String sessionid) {
         //TODO return proper representation object
+        User u = null;
+        if (!sessionid.equals("0")) {
+            u = mssb.readUserBySessionID(sessionid);
+        }
         Media m = mssb.readMediaByMediaID(mediaId);
 
         //comments
@@ -89,6 +94,30 @@ public class MediaResource {
         JsonArray tagA = builder.build();
 
         // TODO likes here
+        int likes = 0;
+        int dislikes = 0;
+        boolean userHasOpinion = false;
+        boolean userOpinion = false;
+        for (MediaLike ml : m.getMediaLikeCollection()) {
+            if (!sessionid.equals("0")) {
+                if (ml.getUserId() == u) {
+                    userHasOpinion = true;
+                    userOpinion = ml.getLikeBoolean();
+                }
+            }
+            if (ml.getLikeBoolean()) {
+                likes++;
+            } else {
+                dislikes++;
+            }
+        }
+        JsonObject likesValue = Json.createObjectBuilder()
+                .add("likes", likes)
+                .add("dislikes", dislikes)
+                .add("userhasopinion", userHasOpinion)
+                .add("useropinion", userOpinion)
+                .build();
+
         builder = Json.createArrayBuilder();
         JsonObject mediaValue = Json.createObjectBuilder()
                 .add("mediaId", m.getId())
@@ -98,7 +127,7 @@ public class MediaResource {
                 .add("nsfw", m.getNsfw())
                 .add("comments", commentA)
                 .add("tags", tagA)
-                .add("likes", true)
+                .add("likes", likesValue)
                 .build();
         builder.add(mediaValue);
 
@@ -113,15 +142,15 @@ public class MediaResource {
     public String makeCommentToMedia(@FormParam("sender") String sender, @FormParam("mediaid") String mediaid, @FormParam("comment") String comment) {
         //TODO return proper representation object
         System.out.println("getting user by sessionid:" + sender);
-        
+
         Comment c = new Comment();
         c.setUserId(mssb.readUserBySessionID(sender));
         c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
         c.setMessage(comment);
         c = mssb.insert(c);
-      return "{\"succes\": \"1\"}";
+        return "{\"succes\": \"1\"}";
     }
-    
+
     @GET
     @Path("/latest/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -157,7 +186,7 @@ public class MediaResource {
         ArrayList<Media> mal = new ArrayList<Media>();
 
         List<Media> midal = mssb.readAllMediaIds();
-        
+
         while (mal.size() < media) {
             int id = (rnd.nextInt(last) + 1);
             if (midal.contains(id)) {
@@ -249,7 +278,7 @@ public class MediaResource {
 
         return mediaA.toString();
     }
-    
+
     @POST
     @Path("/search/")
     @Produces(MediaType.APPLICATION_JSON)
