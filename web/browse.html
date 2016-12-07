@@ -65,9 +65,9 @@
                         <input type="text" name="search" placeholder="Search">
                         <button type="submit" class="redbtn redbtn-search"><i class="fa fa-search"></i></button>
                         <ul>
-                            <li><label class="checkbox"><input type="checkbox" id="titles" value="true" checked><span></span></label>Titles</li>
-                            <li><label class="checkbox"><input type="checkbox" id="tags" value="true" checked><span></span></label>Tags</li>
-                            <li><label class="checkbo"><input type="checkbox" id="users" value="true" checked><span></span></label>Users</li>
+                            <li><label class="checkbox"><input type="checkbox" id="titles" value="true" checked class="checked"><span></span></label>Titles</li>
+                            <li><label class="checkbox"><input type="checkbox" id="tags" value="true" checked class="checked"><span></span></label>Tags</li>
+                            <li><label class="checkbox"><input type="checkbox" id="users" value="true" checked class="checked"><span></span></label>Users</li>
                         </ul>
                     </form>
                 </div>
@@ -75,17 +75,17 @@
         </div>
 
         <div class="container-fluid" id="latest-media-container">
-                <div class="col-12">
-                    <h1 id="latest-media-headin">N Latest Medias</h1>
-                </div>  
+            <div class="col-12">
+                <h1 id="latest-media-headin">N Latest Medias</h1>
+            </div>  
         </div>
         <div id="latest-media" class="container-fluid media-container search-results">
         </div>
 
         <div class="container-fluid">
-                <div class="col-12">
-                    <h1 id="random-media-headin">N TOP PICTURES OF THE DAY</h1>
-                </div>
+            <div class="col-12">
+                <h1 id="random-media-headin">N TOP PICTURES OF THE DAY</h1>
+            </div>
         </div>
         <div id="random-media" class="container-fluid media-container">
         </div>
@@ -120,7 +120,7 @@
                 var loc = document.location.toString();
                 var qparamsl = readQParamsToList(loc);
                 console.log(qparamsl);
-                
+
                 var tag = returnValueOf(qparamsl, "tag");
                 var user = returnValueOf(qparamsl, "user");
                 var title = returnValueOf(qparamsl, "title");
@@ -154,7 +154,7 @@
                                 mediacontainer.append(col12);
                             }
 
-                            if (jsondata[0].length > 0 && title && $(titles).is(':checked')) {
+                            if (jsondata[0].length > 0 && title) {
                                 var col12 = document.createElement("div");
                                 col12.setAttribute("class", "col-12");
                                 var h1 = document.createElement("h1");
@@ -203,9 +203,11 @@
             });
         </script>
 
+
         <script type="text/javascript">
-            $('.span').click(function () {
-                $(this).toggleClass('check');
+            //give class "checked" to checkbox when clicking on its span
+            $('span').click(function () {
+                $(this).parents("label").find("input").toggleClass("checked");
             });
         </script>
 
@@ -234,7 +236,7 @@
                             searchResults.append(col12);
                         }
 
-                        if (jsondata[0].length > 0) {
+                        if (jsondata[0].length > 0 && $("#titles").hasClass("checked")) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
                             var h1 = document.createElement("h1");
@@ -247,7 +249,7 @@
                             }
                         }
 
-                        if (jsondata[1].length > 0) {
+                        if (jsondata[1].length > 0 && $("#users").hasClass("checked")) {
                             console.log("by uploader");
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
@@ -257,11 +259,11 @@
                             searchResults.append(col12);
                             // Adding Media found by uploader login name
                             for (i = 0; i < jsondata[1].length; i++) {
-                                 searchResults.append(generateMedia(jsondata[1][i]));
+                                searchResults.append(generateMedia(jsondata[1][i]));
                             }
                         }
 
-                        if (jsondata[2].length > 0) {
+                        if (jsondata[2].length > 0 && $("#tags").hasClass("checked")) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
                             var h1 = document.createElement("h1");
@@ -270,7 +272,7 @@
                             searchResults.append(col12);
                             // Adding Media found by tag
                             for (i = 0; i < jsondata[2].length; i++) {
-                                 searchResults.append(generateMedia(jsondata[2][i]));
+                                searchResults.append(generateMedia(jsondata[2][i]));
                             }
                         }
 
