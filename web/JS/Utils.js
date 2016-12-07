@@ -72,7 +72,7 @@ function readQParamsToList(loc) {
             var allqparams = loc.split("&");
             //console.log(allqparams);
             for (i in allqparams) {
-//keyword for qparam
+                //keyword for qparam
                 qparams.push(allqparams[i].split("="));
                 //console.log(qparams);
             }
@@ -102,8 +102,9 @@ function returnValueOf(array, slotName) {
 function unBlur(nsfwobject) {
     nsfwobject.classList.remove("nsfw");
     setTimeout(function () {
+        console.log(nsfwobject.getAttribute("realhref"));
         nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-    }, 10);
+    }, 100);
 }
 
 function generateMedia(json) {

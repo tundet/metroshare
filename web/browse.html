@@ -75,23 +75,19 @@
         </div>
 
         <div class="container-fluid" id="latest-media-container">
-            <div class="container">
                 <div class="col-12">
                     <h1 id="latest-media-headin">N Latest Medias</h1>
                 </div>  
-            </div>
-            <div id="latest-media" class="container media-container search-results">
-            </div>
+        </div>
+        <div id="latest-media" class="container-fluid media-container search-results">
         </div>
 
         <div class="container-fluid">
-            <div class="container">
                 <div class="col-12">
                     <h1 id="random-media-headin">N TOP PICTURES OF THE DAY</h1>
                 </div>
-            </div>
-            <div id="random-media" class="container media-container">
-            </div>
+        </div>
+        <div id="random-media" class="container-fluid media-container">
         </div>
 
         <footer class="container-fluid">
@@ -122,66 +118,32 @@
         <script type="text/javascript">
             $(document).ready(function (event) {
                 var loc = document.location.toString();
-                //console.log(loc);
-                var qparam;
-                var tag = false;
-                var user = false;
-                var title = false;
-                if (loc.indexOf("?") >= 0) {
-                    loc = loc.substring(loc.indexOf("?") + 1);
-                    //console.log(loc);
-                    if (loc.indexOf("&") > -1) {
-                        var allqparams = loc.split("&");
-                        //console.log(allqparams);
-                        for (i in allqparams) {
-                            //keyword for qparam
-                            if (allqparams[i].startsWith("search") && allqparams[i].indexOf("=") > -1) {
-                                qparam = allqparams[i].split("=");
-                                //console.log(qparam);
-                            }
-                            if (allqparams[i].startsWith("tag") && allqparams[i].endsWith("1")) {
-                                tag = true;
-                                //console.log(qparam);
-                            }
-                            if (allqparams[i].startsWith("user") && allqparams[i].endsWith("1")) {
-                                user = true;
-                                //console.log(qparam);
-                            }
-                            if (allqparams[i].startsWith("title") && allqparams[i].endsWith("1")) {
-                                title = true;
-                                //console.log(qparam);
-                            }
-                        }
-                    } else {
-                        //keyword for qparam
-                        if (loc.startsWith("search") && loc.indexOf("=") > 0) {
-                            qparam = loc.split("=");
-                            //console.log(qparam);
-                        }
-                    }
-                }
+                var qparamsl = readQParamsToList(loc);
+                console.log(qparamsl);
+                
+                var tag = returnValueOf(qparamsl, "tag");
+                var user = returnValueOf(qparamsl, "user");
+                var title = returnValueOf(qparamsl, "title");
+                var search = returnValueOf(qparamsl, "search");
 
                 if (!tag && !title && !user) {
                     tag = true;
                     user = true;
                     title = true;
                 }
-                if (qparam != null) {
-                    console.log(qparam);
+                if (search != null) {
+                    console.log(search);
                     $.ajax({
                         type: "GET",
-                        url: "http://localhost:8080/MetroShare/webresources/media/search/" + qparam[1],
+                        url: "http://localhost:8080/MetroShare/webresources/media/search/" + search,
                         success: function (data, textStatus, xhr) {
                             //alert(data);
                             var jsondata = JSON.parse(data);
-                            //alert(jsondata[0]);
-                            //alert(jsondata[1]);
-                            //alert(jsondata[2]);
 
                             var searchResults = document.querySelector("#latest-media-container");
                             searchResults.innerHTML = "";
                             var mediacontainer = document.createElement("div");
-                            mediacontainer.setAttribute("class", "container");
+                            mediacontainer.setAttribute("class", "container-fluid");
 
                             if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
                                 var col12 = document.createElement("div");
@@ -199,31 +161,10 @@
                                 h1.innerHTML = jsondata[0].length + " found by media title";
                                 col12.append(h1);
                                 mediacontainer.append(col12);
-                                var div = document.createElement("div");
                                 // Adding Media found by title
                                 for (i = 0; i < jsondata[0].length; i++) {
-                                    var col3 = document.createElement("div");
-                                    col3.setAttribute("class", "col-3");
-                                    var imageholder = document.createElement("DIV");
-                                    imageholder.setAttribute("class", "imageholder");
-                                    var img = document.createElement("IMG");
-                                    img.src = jsondata[0][i].mediaLocation; //TODO fix path
-                                    img.classList.add("image");
-                                    imageholder.appendChild(img);
-                                    var caption = document.createElement("DIV");
-                                    caption.setAttribute("class", "caption");
-                                    caption.innerText = jsondata[0][i].title;
-                                    if (jsondata[0][i].nsfw == true) {
-                                        img.classList.add("nsfw");
-                                        img.setAttribute("onclick", "unBlur(this)");
-                                        caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
-                                    }
-                                    imageholder.appendChild(caption);
-                                    col3.appendChild(imageholder);
-                                    div.appendChild(col3); // where to
-                                    //console.log(col3);
+                                    mediacontainer.append(generateMedia(jsondata[0][i]));
                                 }
-                                mediacontainer.append(div);
                             }
 
                             if (jsondata[1].length > 0 && user) {
@@ -234,31 +175,10 @@
                                 h1.innerHTML = jsondata[1].length + " found by uploaders user name";
                                 col12.append(h1);
                                 mediacontainer.append(col12);
-                                var div = document.createElement("div");
                                 // Adding Media found by uploader login name
                                 for (i = 0; i < jsondata[1].length; i++) {
-                                    var col3 = document.createElement("div");
-                                    col3.setAttribute("class", "col-3");
-                                    var imageholder = document.createElement("DIV");
-                                    imageholder.setAttribute("class", "imageholder");
-                                    var img = document.createElement("IMG");
-                                    img.src = jsondata[1][i].mediaLocation; //TODO fix path
-                                    img.classList.add("image");
-                                    imageholder.appendChild(img);
-                                    var caption = document.createElement("DIV");
-                                    caption.setAttribute("class", "caption");
-                                    caption.innerText = jsondata[1][i].title;
-                                    if (jsondata[1][i].nsfw == true) {
-                                        img.classList.add("nsfw");
-                                        img.setAttribute("onclick", "unBlur(this)");
-                                        caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
-                                    }
-                                    imageholder.appendChild(caption);
-                                    col3.appendChild(imageholder);
-                                    div.appendChild(col3); // where to
-                                    //console.log(col3);
+                                    mediacontainer.append(generateMedia(jsondata[1][i]));
                                 }
-                                mediacontainer.append(div);
                             }
 
                             if (jsondata[2].length > 0 && tag) {
@@ -268,31 +188,10 @@
                                 h1.innerHTML = jsondata[2].length + " found by tag";
                                 col12.append(h1);
                                 mediacontainer.append(col12);
-                                var div = document.createElement("div");
                                 // Adding Media found by tag
                                 for (i = 0; i < jsondata[2].length; i++) {
-                                    var col3 = document.createElement("div");
-                                    col3.setAttribute("class", "col-3");
-                                    var imageholder = document.createElement("DIV");
-                                    imageholder.setAttribute("class", "imageholder");
-                                    var img = document.createElement("IMG");
-                                    img.src = jsondata[2][i].mediaLocation; //TODO fix path
-                                    img.classList.add("image");
-                                    imageholder.appendChild(img);
-                                    var caption = document.createElement("DIV");
-                                    caption.setAttribute("class", "caption");
-                                    caption.innerText = jsondata[2][i].title;
-                                    if (jsondata[2][i].nsfw == true) {
-                                        img.classList.add("nsfw");
-                                        img.setAttribute("onclick", "unBlur(this)");
-                                        caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
-                                    }
-                                    imageholder.appendChild(caption);
-                                    col3.appendChild(imageholder);
-                                    div.appendChild(col3); // where to
-                                    //console.log(col3);
+                                    mediacontainer.append(generateMedia(jsondata[2][i]));
                                 }
-                                mediacontainer.append(div);
                             }
                             searchResults.append(mediacontainer);
                         },
@@ -337,31 +236,10 @@
                             h1.innerHTML = jsondata[0].length + " found by media title";
                             col12.append(h1);
                             searchResults.append(col12);
-                            var div = document.createElement("div");
                             // Adding Media found by title
                             for (i = 0; i < jsondata[0].length; i++) {
-                                var col3 = document.createElement("div");
-                                col3.setAttribute("class", "col-3");
-                                var imageholder = document.createElement("DIV");
-                                imageholder.setAttribute("class", "imageholder");
-                                var img = document.createElement("IMG");
-                                img.src = jsondata[0][i].mediaLocation; //TODO fix path
-                                img.classList.add("image");
-                                imageholder.appendChild(img);
-                                var caption = document.createElement("DIV");
-                                caption.setAttribute("class", "caption");
-                                caption.innerText = jsondata[0][i].title;
-                                if (jsondata[0][i].nsfw == true) {
-                                    img.classList.add("nsfw");
-                                    img.setAttribute("onclick", "unBlur(this)");
-                                    caption.innerText = jsondata[0][i].title + "\nNSFW\n(Click to see content)";
-                                }
-                                imageholder.appendChild(caption);
-                                col3.appendChild(imageholder);
-                                div.appendChild(col3); // where to
-                                //console.log(col3);
+                                searchResults.append(generateMedia(jsondata[0][i]));
                             }
-                            searchResults.append(div);
                         }
 
                         if (jsondata[1].length > 0) {
@@ -372,31 +250,10 @@
                             h1.innerHTML = jsondata[1].length + " found by uploaders user name";
                             col12.append(h1);
                             searchResults.append(col12);
-                            var div = document.createElement("div");
                             // Adding Media found by uploader login name
                             for (i = 0; i < jsondata[1].length; i++) {
-                                var col3 = document.createElement("div");
-                                col3.setAttribute("class", "col-3");
-                                var imageholder = document.createElement("DIV");
-                                imageholder.setAttribute("class", "imageholder");
-                                var img = document.createElement("IMG");
-                                img.src = jsondata[1][i].mediaLocation; //TODO fix path
-                                img.classList.add("image");
-                                imageholder.appendChild(img);
-                                var caption = document.createElement("DIV");
-                                caption.setAttribute("class", "caption");
-                                caption.innerText = jsondata[1][i].title;
-                                if (jsondata[1][i].nsfw == true) {
-                                    img.classList.add("nsfw");
-                                    img.setAttribute("onclick", "unBlur(this)");
-                                    caption.innerText = jsondata[1][i].title + "\nNSFW\n(Click to see content)";
-                                }
-                                imageholder.appendChild(caption);
-                                col3.appendChild(imageholder);
-                                div.appendChild(col3); // where to
-                                //console.log(col3);
+                                 searchResults.append(generateMedia(jsondata[1][i]));
                             }
-                            searchResults.append(div);
                         }
 
                         if (jsondata[2].length > 0) {
@@ -406,31 +263,10 @@
                             h1.innerHTML = jsondata[2].length + " found by tag";
                             col12.append(h1);
                             searchResults.append(col12);
-                            var div = document.createElement("div");
                             // Adding Media found by tag
                             for (i = 0; i < jsondata[2].length; i++) {
-                                var col3 = document.createElement("div");
-                                col3.setAttribute("class", "col-3");
-                                var imageholder = document.createElement("DIV");
-                                imageholder.setAttribute("class", "imageholder");
-                                var img = document.createElement("IMG");
-                                img.src = jsondata[2][i].mediaLocation; //TODO fix path
-                                img.classList.add("image");
-                                imageholder.appendChild(img);
-                                var caption = document.createElement("DIV");
-                                caption.setAttribute("class", "caption");
-                                caption.innerText = jsondata[2][i].title;
-                                if (jsondata[2][i].nsfw == true) {
-                                    img.classList.add("nsfw");
-                                    img.setAttribute("onclick", "unBlur(this)");
-                                    caption.innerText = jsondata[2][i].title + "\nNSFW\n(Click to see content)";
-                                }
-                                imageholder.appendChild(caption);
-                                col3.appendChild(imageholder);
-                                div.appendChild(col3); // where to
-                                //console.log(col3);
+                                 searchResults.append(generateMedia(jsondata[2][i]));
                             }
-                            searchResults.append(div);
                         }
 
                     },
@@ -455,26 +291,7 @@
                         document.querySelector("#random-media-headin").innerHTML = headin;
                         // Random media
                         for (i = 0; i < jsondata.length; i++) {
-                            var col3 = document.createElement("div");
-                            col3.setAttribute("class", "col-3");
-                            var imageholder = document.createElement("DIV");
-                            imageholder.setAttribute("class", "imageholder");
-                            var img = document.createElement("IMG");
-                            img.src = jsondata[i].mediaLocation; //TODO fix path
-                            img.classList.add("image");
-                            imageholder.appendChild(img);
-                            var caption = document.createElement("DIV");
-                            caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[i].title;
-                            if (jsondata[i].nsfw == true) {
-                                img.classList.add("nsfw");
-                                img.setAttribute("onclick", "unBlur(this)");
-                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
-                            }
-                            imageholder.appendChild(caption);
-                            col3.appendChild(imageholder);
-                            document.querySelector("#random-media").appendChild(col3); // where to
-                            //console.log(col3);
+                            document.querySelector("#random-media").append(generateMedia(jsondata[i])); // where to
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -496,26 +313,7 @@
                         document.querySelector("#latest-media-headin").innerHTML = headin;
                         // Adding latest media
                         for (i = 0; i < jsondata.length; i++) {
-                            var col3 = document.createElement("div");
-                            col3.setAttribute("class", "col-3");
-                            var imageholder = document.createElement("DIV");
-                            imageholder.setAttribute("class", "imageholder");
-                            var img = document.createElement("IMG");
-                            img.src = jsondata[i].mediaLocation; //TODO fix path
-                            img.classList.add("image");
-                            imageholder.appendChild(img);
-                            var caption = document.createElement("DIV");
-                            caption.setAttribute("class", "caption");
-                            caption.innerText = jsondata[i].title;
-                            if (jsondata[i].nsfw == true) {
-                                img.classList.add("nsfw");
-                                img.setAttribute("onclick", "unBlur(this)");
-                                caption.innerText = jsondata[i].title + "\nNSFW\n(Click to see content)";
-                            }
-                            imageholder.appendChild(caption);
-                            col3.appendChild(imageholder);
-                            document.querySelector("#latest-media").appendChild(col3); // where to
-                            //console.log(col3);
+                            document.querySelector("#latest-media").append(generateMedia(jsondata[i])); // where to
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
