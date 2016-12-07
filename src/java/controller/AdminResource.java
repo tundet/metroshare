@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.util.List;
@@ -16,12 +11,10 @@ import javax.json.JsonObjectBuilder;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import model.Comment;
 import model.Media;
@@ -30,9 +23,10 @@ import model.Tag;
 import model.User;
 
 /**
- * REST Web Service
- *
- * @author Mafields
+ * Admin resource.
+ * 
+ * Contains logic for miscellaneous features, such as login and signup
+ * implementations and to get comments for media.
  */
 @Path("admin")
 public class AdminResource {
@@ -44,34 +38,14 @@ public class AdminResource {
     private MetroShareSB mssb;
 
     /**
-     * Creates a new instance of AdminResource
-     */
-    public AdminResource() {
-    }
-
-    /**
-     * Retrieves representation of an instance of controller.AdminResource
+     * Retrieves all users as JSON.
      *
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Retrieves representation of an instance of controller.AdminResource
-     *
-     * @return an instance of java.lang.String
+     * @return All users as JSON
      */
     @POST
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     public String getUsersJson() {
-        //TODO return proper representation object
-
         List<User> ulst = mssb.readAllUsers();
         // user found and returning json data about login priviliges and activity        
         JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -96,15 +70,14 @@ public class AdminResource {
     }
 
     /**
-     * Retrieves representation of an instance of controller.AdminResource
+     * Retrieves all comments as JSON.
      *
-     * @return an instance of java.lang.String
+     * @return All comments as JSON
      */
     @POST
     @Path("/comments")
     @Produces(MediaType.APPLICATION_JSON)
     public String getCommentsJson() {
-        //TODO return proper representation object
         List<Comment> clst = mssb.readAllComments();
 
         // user found and returning json data about login priviliges and activity
@@ -124,15 +97,14 @@ public class AdminResource {
     }
 
     /**
-     * Retrieves representation of an instance of controller.AdminResource
+     * Retrieves all media as JSON.
      *
-     * @return an instance of java.lang.String
+     * @return All media as JSON.
      */
     @POST
     @Path("/medias")
     @Produces(MediaType.APPLICATION_JSON)
     public String getMediasJson() {
-        //TODO return proper representation object
         List<Media> mlst = mssb.readAllMedias();
 
         // user found and returning json data about login priviliges and activity
@@ -163,52 +135,17 @@ public class AdminResource {
         JsonArray mediaA = builder.build();
 
         return mediaA.toString();
-
-        // NEVER AGAIN!!!
-//        String ml = "{ \"medias\": [";
-//        for (Media m : mlst) {
-//            ml += "{\"id\": \"" + m.getId() + "\", ";
-//            ml += "\"userid\": \"" + m.getUserId() + "\", ";
-//            ml += "\"medialocation\": \"" + m.getMediaLocation() + "\", ";
-//            ml += "\"date\": \"" + m.getDate() + "\", ";
-//            ml += "\"nsfw\": \"" + m.getNsfw() + "\", ";
-//            if (m == mlst.get(mlst.size() - 1)) {
-//                ml += "\"tags\": [";
-//                for (MediaTag mt : m.getMediaTagCollection()) {
-//                    ml += "{\"tagid\": \"" + mt.getTagId().getId() + "\", ";
-//                    if (mt == m.getMediaTagCollection().toArray()[m.getMediaTagCollection().size() - 1]) {
-//                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" }";
-//                    } else {
-//                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" },";
-//                    }
-//                }
-//                ml += "]}";
-//            } else {
-//                ml += "\"tags\": [";
-//                for (MediaTag mt : m.getMediaTagCollection()) {
-//                    ml += "{\"tagid\": \"" + mt.getTagId().getId() + "\", ";
-//                    if (mt == m.getMediaTagCollection().toArray()[m.getMediaTagCollection().size() - 1]) {
-//                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" }";
-//                    } else {
-//                        ml += "\"tag\": \"" + mt.getTagId().getTag() + "\" },";
-//                    }
-//                }
-//                ml += "]},";
-//            }
-//        }
-//        ml += "]}";
     }
 
     /**
-     * Retrieves representation of an instance of controller.AdminResource
+     * Return all tags as JSON.
      *
-     * @return an instance of java.lang.String
+     * @return All tags as JSON.
      */
     @POST
     @Path("/tags")
     @Produces(MediaType.APPLICATION_JSON)
     public String getTagsJson() {
-        //TODO return proper representation object
         List<Tag> tlst = mssb.readAllTags();
 
         // user found and returning json data about login priviliges and activity
@@ -223,7 +160,16 @@ public class AdminResource {
 
         return tagA.toString();
     }
-
+    
+    /**
+     * Create a new user.
+     * 
+     * Save a new user in the database.
+     * 
+     * @param username Username of the user
+     * @param password Password of the user
+     * @return Status message as a string
+     */
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
@@ -239,6 +185,17 @@ public class AdminResource {
         return "{\"status\": \"true\"}";
     }
 
+    /**
+     * Sign a user in.
+     * 
+     * Check if the user provided a correct password upon signing in.
+     * If yes, generate a new session ID and send it to the user.
+     * If the login was not successful, return "false".
+     * 
+     * @param username Username of the user
+     * @param password Password of the user
+     * @return Session ID if successful, false if wrong password.
+     */
     @POST
     @Path("/signin")
     @Produces(MediaType.APPLICATION_JSON)
@@ -259,6 +216,14 @@ public class AdminResource {
         }
     }
 
+    /**
+     * Generate a new session ID.
+     * 
+     * Generate a random 64 characters long session ID from
+     * a list of predefined characters.
+     * 
+     * @return Session ID as a string
+     */
     public String nextSessionId() {
         char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
         StringBuilder sb = new StringBuilder();
@@ -268,7 +233,7 @@ public class AdminResource {
             sb.append(c);
         }
         String sessionid = sb.toString();
+        
         return sessionid;
-
     }
 }
