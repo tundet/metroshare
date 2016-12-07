@@ -138,6 +138,10 @@ p {
     align-items: center;
 }
 
+.bubble-container {
+    background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center;
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     .container {
@@ -1010,6 +1014,7 @@ label.checkbox :checked + span {
 .comments {
     margin-top: 25px;
     box-shadow: 1px 1px 5px 1px rgba(150, 150, 150, 0.7);
+    background-color: #303F9F;
 }
 
 .comments h2{
@@ -1041,6 +1046,10 @@ label.checkbox :checked + span {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    color: #fff;
+}
+
+.comment-summary a, a:visited{
     color: #fff;
 }
 
@@ -1078,6 +1087,7 @@ label.checkbox :checked + span {
 
 .comment .col-3 {
     padding: 0px;
+    color: #fff;
 }
 
 .comment .col-9 {
