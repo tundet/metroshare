@@ -24,7 +24,13 @@
                         <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a></li>
                         <li class="left"><a href="index.html">Statistics</a></li>
                         <li class="left"><a href="index.html">About</a></li>
-                        <li class="right"><a href="profile.html" id="loginname">JohnDoe</a></li>
+                        <li class="right login-area">
+                            <form class="signin-form" method="post" onsubmit="onSignIn(event);">
+                                <input type="text" name="username" placeholder="Username" required>
+                                <input type="password" name="password" placeholder="Password" required>
+                                <input type="submit" value="Log in">
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -44,16 +50,11 @@
 
         <div class="navbar visible-mobile" id="navbar-mobile">
             <div class="container">
-                <form>
-                    <ul>
-                        <li><input type="text" name="username" placeholder="Username" required></li>
-                        <li><input type="password" name="password" placeholder="Password" required></li>
-                        <li><input type="submit" value="Log in"></li>
-                        <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
-                        <li><a href="index.html"><i class="fa fa-search"></i>Browse</a></li>
-                        <li><a href="upload.html"><i class="fa fa-upload"></i>Upload</a></li>
-                    </ul>
-                </form>
+                <ul>
+                    <li><a href="index.html"><i class="fa fa-home"></i>Home</a></li>
+                    <li><a href="browse.html"><i class="fa fa-search"></i>Browse</a></li>
+                    <li><a href="upload.html"><i class="fa fa-upload"></i>Upload</a></li>
+                </ul>
             </div>
         </div>
 
