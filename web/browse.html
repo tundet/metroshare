@@ -131,6 +131,20 @@
                     user = true;
                     title = true;
                 }
+
+                if (title == null) {
+                    $("#titles").toggleClass("checked");
+                    $("#titles").removeAttr("checked");
+                }
+                if (!user) {
+                    $("#users").toggleClass("checked");
+                    $("#users").removeAttr("checked");
+                }
+                if (!tag) {
+                    $("#tags").toggleClass("checked");
+                    $("#tags").removeAttr("checked");
+                }
+
                 if (search != null) {
                     console.log(search);
                     $.ajax({
@@ -206,7 +220,7 @@
 
         <script type="text/javascript">
             //give class "checked" to checkbox when clicking on its span
-            $('span').click(function () {
+            $('span').click(function (event) {
                 $(this).parents("label").find("input").toggleClass("checked");
             });
         </script>
