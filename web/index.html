@@ -200,13 +200,12 @@ and open the template in the editor.
 
         <script type="text/javascript">
             $(document).ready(function (event) {
-                readSessionIdFromCookie();
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:8080/MetroShare/webresources/media/get/10",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-
+                        console.log(jsondata);
                         // Random media
                         for (i = 0; i < jsondata.length; i++) {
                             document.querySelector("#media").appendChild(generateMedia(jsondata[i]));

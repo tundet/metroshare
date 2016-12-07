@@ -151,14 +151,17 @@ public class MediaResource {
     public String getThisAmountOfMediasJson(@PathParam("numberOfMediasWanted") int media) {
         //TODO return proper representation object
         int last = mssb.readLastIndexOfMedias();
-        //System.out.println(last);
+        System.err.println(last);
 
         Random rnd = new Random();
         ArrayList<Media> mal = new ArrayList<Media>();
 
+        List<Media> midal = mssb.getAllMediaIds();
+        
         while (mal.size() < media) {
-            Media m = mssb.readMediaByMediaID(rnd.nextInt(last) + 1);
-            if (m != null) {
+            int id = (rnd.nextInt(last) + 1);
+            if (midal.contains(id)) {
+                Media m = mssb.readMediaByMediaID(id);
                 if (!mal.contains(m)) {
                     mal.add(m);
                 }
