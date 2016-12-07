@@ -203,6 +203,7 @@ function onSignIn(event) {
         success: function (data, textStatus, xhr) {
             //console.log(data);
             document.cookie = "SessionID = " + data;
+            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
