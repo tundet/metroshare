@@ -59,10 +59,10 @@
         </div>
 
         <div class="container-fluid">
-            <div class="container-fluid">
+            <div class="container-fluid" style="background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center;">
                 <div class="container browse-media-container">
                     <div class="col-12">
-                        <h3 class="img-title">Title</h3>
+                        <h3 class="img-title" style="color:#fff;">Title</h3>
                         <figure class="show-media-figure">
                             <img src="http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png" alt="{{ mediaTitle }}">
                             <figcaption>{{ mediaTitle }}</figcaption>
@@ -109,7 +109,7 @@
                 var qparam = loc.split("=")
                 console.log(qparam);
                 var sessionId = readSessionIdFromCookie();
-                if (sessionId == null){
+                if (sessionId == null) {
                     sessionId = "0";
                 }
                 $.ajax({
@@ -146,6 +146,7 @@
                         //console.log("/images" + a[1][2]);
                         //img.src = "http://nemanjakovacevic.net/wp-content/uploads/2013/07/placeholder.png";
                         img.src = a[1][2];
+                        img.style = "border: 5px solid #fff;";
                         figure.append(img);
 
                         var figcaption = document.createElement("figcaption");
