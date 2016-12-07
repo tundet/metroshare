@@ -104,7 +104,7 @@ function unBlur(nsfwobject) {
     setTimeout(function () {
         console.log(nsfwobject.getAttribute("realhref"));
         nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-    }, 100);
+    }, 10);
 }
 
 function generateMedia(json) {
