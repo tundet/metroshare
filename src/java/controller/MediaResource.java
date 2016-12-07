@@ -156,7 +156,7 @@ public class MediaResource {
         Random rnd = new Random();
         ArrayList<Media> mal = new ArrayList<Media>();
 
-        List<Media> midal = mssb.getAllMediaIds();
+        List<Media> midal = mssb.readAllMediaIds();
         
         while (mal.size() < media) {
             int id = (rnd.nextInt(last) + 1);
