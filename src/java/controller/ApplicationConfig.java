@@ -24,7 +24,6 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(controller.AdminResource.class);
-        resources.add(controller.EngineResource.class);
         resources.add(controller.HomeResource.class);
         resources.add(controller.MediaResource.class);
         resources.add(controller.UsersResource.class);
