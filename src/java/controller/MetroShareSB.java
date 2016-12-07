@@ -39,24 +39,11 @@ public class MetroShareSB {
     }
 
     public List<User> readAllUsers() {
-        List<User> ulst = em.createNamedQuery("User.findAll").getResultList();
-        if (ulst == null) {
-            User u = new User(0, "Error", "Users not found", "user");
-            ulst.add(u);
-            return ulst;
-        } else {
-            return ulst;
-        }
+        return em.createNamedQuery("User.findAll").getResultList();
     }
 
     public User readUserByID(int id) {
-        User u = em.find(User.class, id);
-        if (u == null) {
-            u = new User(0, "Error", "User not found", "user");
-            return u;
-        } else {
-            return u;
-        }
+        return em.find(User.class, id);
     }
 
     public User readUserByLogin(String login) {
@@ -106,14 +93,7 @@ public class MetroShareSB {
     }
     
     public List<Media> readAllMedias() {
-        List<Media> ilst = em.createNamedQuery("Media.findAll").getResultList();
-        if (ilst == null) {
-            Media i = new Media(null);
-            ilst.add(i);
-            return ilst;
-        } else {
-            return ilst;
-        }
+        return em.createNamedQuery("Media.findAll").getResultList();
     }
 
     public Media readMediaByMediaID(int id) {
@@ -127,18 +107,7 @@ public class MetroShareSB {
     }
 
     public List<Media> readMediaByUserID(int id) {
-        User u = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
-        List<Media> mlst = new ArrayList<Media>();
-        for (Media m : u.getMediaCollection()) {
-            mlst.add(m);
-        }
-        if (mlst == null) {
-            Media i = new Media(null);
-            mlst.add(i);
-            return mlst;
-        } else {
-            return mlst;
-        }
+        return em.createNamedQuery("User.findById").setParameter("id", id).getResultList();
     }
 
     // Comments
@@ -152,14 +121,7 @@ public class MetroShareSB {
     }
 
     public List<Comment> readAllComments() {
-        List<Comment> clst = em.createNamedQuery("Comment.findAll").getResultList();
-        if (clst == null) {
-            Comment c = new Comment(null);
-            clst.add(c);
-            return clst;
-        } else {
-            return clst;
-        }
+        return em.createNamedQuery("Comment.findAll").getResultList();
     }
 
     public List<Comment> readCommentByMediaID(int id) {
@@ -169,17 +131,7 @@ public class MetroShareSB {
 
     public List<Comment> readCommentByUserID(int id) {
         User u = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
-        List<Comment> clst = new ArrayList<Comment>();
-        for (Comment c : u.getCommentCollection()) {
-            clst.add(c);
-        }
-        if (clst == null) {
-            Comment c = new Comment(null);
-            clst.add(c);
-            return clst;
-        } else {
-            return clst;
-        }
+        return new ArrayList<Comment>(u.getCommentCollection());
     }
 
     // Friend
@@ -193,44 +145,17 @@ public class MetroShareSB {
     }
 
     public List<Friend> readAllFriends() {
-        List<Friend> flst = em.createNamedQuery("Friend.findAll").getResultList();
-        if (flst == null) {
-            Friend f = new Friend(null);
-            flst.add(f);
-            return flst;
-        } else {
-            return flst;
-        }
+        return em.createNamedQuery("Friend.findAll").getResultList();
     }
 
     public List<Friend> readFriendByOwnerID(int id) {
         User u = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
-        List<Friend> flst = new ArrayList<Friend>();
-        for (Friend f : u.getFriendCollection()) {
-            flst.add(f);
-        }
-        if (flst == null) {
-            Friend f = new Friend(null);
-            flst.add(f);
-            return flst;
-        } else {
-            return flst;
-        }
+        return new ArrayList<Friend>(u.getFriendCollection());
     }
 
     public List<Friend> readFriendByFriendID(int id) {
         User u = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
-        List<Friend> flst = new ArrayList<Friend>();
-        for (Friend f : u.getFriendCollection1()) {
-            flst.add(f);
-        }
-        if (flst == null) {
-            Friend f = new Friend(null);
-            flst.add(f);
-            return flst;
-        } else {
-            return flst;
-        }
+        return new ArrayList<Friend>(u.getFriendCollection1());
     }
 
     // MediaLike
@@ -244,44 +169,17 @@ public class MetroShareSB {
     }
 
     public List<MediaLike> readAllMediaLikes() {
-        List<MediaLike> imgllst = em.createNamedQuery("MediaLike.findAll").getResultList();
-        if (imgllst == null) {
-            MediaLike l = new MediaLike(null);
-            imgllst.add(l);
-            return imgllst;
-        } else {
-            return imgllst;
-        }
+        return em.createNamedQuery("MediaLike.findAll").getResultList();
     }
 
     public List<MediaLike> readLikeByMediaID(int id) {
         Media m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
-        List<MediaLike> mllst = new ArrayList<MediaLike>();
-        for (MediaLike ml : m.getMediaLikeCollection()) {
-            mllst.add(ml);
-        }
-        if (mllst == null) {
-            MediaLike l = new MediaLike(null);
-            mllst.add(l);
-            return mllst;
-        } else {
-            return mllst;
-        }
+        return new ArrayList<MediaLike>(m.getMediaLikeCollection());
     }
 
     public List<MediaLike> readLikeByUserID(int id) {
         User u = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
-        List<MediaLike> mllst = new ArrayList<MediaLike>();
-        for (MediaLike ml : u.getMediaLikeCollection()) {
-            mllst.add(ml);
-        }
-        if (mllst == null) {
-            MediaLike ml = new MediaLike(null);
-            mllst.add(ml);
-            return mllst;
-        } else {
-            return mllst;
-        }
+        return new ArrayList<MediaLike>(u.getMediaLikeCollection());
     }
 
     // MediaTag
@@ -295,44 +193,17 @@ public class MetroShareSB {
     }
 
     public List<MediaTag> readAllMediaTags() {
-        List<MediaTag> imgtlst = em.createNamedQuery("MediaTag.findAll").getResultList();
-        if (imgtlst == null) {
-            MediaTag it = new MediaTag(null);
-            imgtlst.add(it);
-            return imgtlst;
-        } else {
-            return imgtlst;
-        }
+        return em.createNamedQuery("MediaTag.findAll").getResultList();
     }
 
     public List<MediaTag> readMediaTagByMediaID(int id) {
         Media m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
-        List<MediaTag> mtlst = new ArrayList<MediaTag>();
-        for (MediaTag mt : m.getMediaTagCollection()) {
-            mtlst.add(mt);
-        }
-        if (mtlst == null) {
-            MediaTag it = new MediaTag(null);
-            mtlst.add(it);
-            return mtlst;
-        } else {
-            return mtlst;
-        }
+        return new ArrayList<MediaTag>(m.getMediaTagCollection());
     }
 
     public List<MediaTag> readMediaTagByTagID(int id) {
         Tag t = (Tag) em.createNamedQuery("Tag.findById").setParameter("id", id).getSingleResult();
-        List<MediaTag> mtlst = new ArrayList<MediaTag>();
-        for (MediaTag mt : t.getMediaTagCollection()) {
-            mtlst.add(mt);
-        }
-        if (mtlst == null) {
-            MediaTag mt = new MediaTag(null);
-            mtlst.add(mt);
-            return mtlst;
-        } else {
-            return mtlst;
-        }
+        return new ArrayList<MediaTag>(t.getMediaTagCollection());
     }
 
     // Tag
@@ -346,35 +217,14 @@ public class MetroShareSB {
     }
 
     public List<Tag> readAllTags() {
-        List<Tag> tlst = em.createNamedQuery("Tag.findAll").getResultList();
-        if (tlst == null) {
-            Tag t = new Tag(null);
-            tlst.add(t);
-            return tlst;
-        } else {
-            return tlst;
-        }
+        return em.createNamedQuery("Tag.findAll").getResultList();
     }
 
     public List<Tag> readTagById(int id) {
-        List<Tag> tlst = em.createNamedQuery("Tag.findById").setParameter("id", id).getResultList();
-        if (tlst == null) {
-            Tag l = new Tag(null);
-            tlst.add(l);
-            return tlst;
-        } else {
-            return tlst;
-        }
+        return em.createNamedQuery("Tag.findById").setParameter("id", id).getResultList();
     }
 
     public List<Tag> readTagByTag(String tag) {
-        List<Tag> tlst = em.createNamedQuery("Tag.findByTag").setParameter("tag", tag).getResultList();
-        if (tlst == null) {
-            Tag l = new Tag(null);
-            tlst.add(l);
-            return tlst;
-        } else {
-            return tlst;
-        }
+        return em.createNamedQuery("Tag.findByTag").setParameter("tag", tag).getResultList();
     }
 }
