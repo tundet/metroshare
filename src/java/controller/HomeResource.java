@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import javax.ejb.EJB;
@@ -20,14 +15,13 @@ import model.User;
 import util.MakeTableFromList;
 
 /**
- * REST Web Service
- *
- * @author Mafields
+ * Home page resource.
+ * 
+ * This resource contains logic used by the home page.
  */
 @Path("home")
 public class HomeResource {
-
-    private MakeTableFromList mkfl = new MakeTableFromList();
+    private final MakeTableFromList mkfl = new MakeTableFromList();
 
     @Context
     private UriInfo context;
@@ -39,28 +33,14 @@ public class HomeResource {
     private MetroShareSB mssb;
 
     /**
-     * Creates a new instance of HomeResource
-     */
-    public HomeResource() {
-    }
-
-    /**
-     * Retrieves representation of an instance of controller.HomeResource
-     *
-     * @return an instance of java.lang.String
+     * Generate debug information at the bottom of the page.
+     * 
+     * @return HTML code as a string 
      */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String getHtml() {
         String s = "Session Stuff:</BR>";
-        //s += h.getRequestHeaders().toString();
-        
-        
-        // Does not work!
-        // Cookie login = new Cookie("MetroShare", "MetroShareSessionID");
-        // h.getCookies().putIfAbsent("Metroshare", login);
-        
-        
         for (Cookie c : h.getCookies().values()){
             s += "Domain: " + c.getDomain() + "</br>";
             s += "Name: " + c.getName() + "</br>";
@@ -69,7 +49,6 @@ public class HomeResource {
             s += c.toString() + "</br>";
         }
         s += "</BR></BR>";
-        //TODO return proper representation object
         String r = s + "USER TABLE QUERIES</BR>";
         r += "</BR>USER BY ALL SHOW ALL:</BR>";
         r += mkfl.TableForUsers(mssb.readAllUsers(), true);
@@ -135,15 +114,5 @@ public class HomeResource {
         r += "</BR>";
 
         return r;
-    }
-
-    /**
-     * PUT method for updating or creating an instance of HomeResource
-     *
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.TEXT_HTML)
-    public void putHtml(String content) {
     }
 }
