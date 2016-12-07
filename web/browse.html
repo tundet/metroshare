@@ -65,9 +65,9 @@
                         <input type="text" name="search" placeholder="Search">
                         <button type="submit" class="redbtn redbtn-search"><i class="fa fa-search"></i></button>
                         <ul>
-                            <li><label class="checkbox"><input type="checkbox" name="titles" value="true" checked><span></span></label>Titles</li>
-                            <li><label class="checkbox"><input type="checkbox" name="tags" value="true" checked><span></span></label>Tags</li>
-                            <li><label class="checkbox"><input type="checkbox" name="users" value="true" checked><span></span></label>Users</li>
+                            <li><label class="checkbox"><input type="checkbox" id="titles" value="true" checked><span></span></label>Titles</li>
+                            <li><label class="checkbox"><input type="checkbox" id="tags" value="true" checked><span></span></label>Tags</li>
+                            <li><label class="checkbo"><input type="checkbox" id="users" value="true" checked><span></span></label>Users</li>
                         </ul>
                     </form>
                 </div>
@@ -192,7 +192,7 @@
                                 mediacontainer.append(col12);
                             }
 
-                            if (jsondata[0].length > 0 && title) {
+                            if (jsondata[0].length > 0 && title && $(titles).is(':checked')) {
                                 var col12 = document.createElement("div");
                                 col12.setAttribute("class", "col-12");
                                 var h1 = document.createElement("h1");
@@ -305,6 +305,12 @@
         </script>
 
         <script type="text/javascript">
+            $('.span').click(function () {
+                $(this).toggleClass('check');
+            });
+        </script>
+
+        <script type="text/javascript">
             $("#search-media").submit(function (event) {
                 event.preventDefault();
                 $.ajax({
@@ -320,7 +326,6 @@
 
                         var searchResults = document.querySelector(".search-results");
                         searchResults.innerHTML = "";
-
                         if (jsondata[0].length < 1 && jsondata[1].length < 1 && jsondata[2].length < 1) {
                             var col12 = document.createElement("div");
                             col12.setAttribute("class", "col-12");
