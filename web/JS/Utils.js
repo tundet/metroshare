@@ -16,9 +16,9 @@ $(document).ready(function () {
         $(".login-area").append(signOutButton);
         // friend pictures instead of page description
         $(".header-container").text("");
-        var h3 = document.createElement("h3");
-        h3.innerHTML = "Friends latest posts!";
-        $(".header-container").append(h3);
+        var h2 = document.createElement("h2");
+        h2.innerHTML = "Friends' latest posts";
+        $(".header-container").append(h2);
         $.ajax({
             type: "GET",
             async: false,
