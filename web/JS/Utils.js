@@ -10,6 +10,10 @@ $(document).ready(function () {
         a.href = "profile.html?login=" + LOGINNAME;
         a.innerHTML = LOGINNAME;
         $(".login-area").append(a);
+        var signOutButton = document.createElement("button");
+        signOutButton.innerHTML = "Sign out";
+        signOutButton.setAttribute("onclick", "onSignOut(this)");
+        $(".login-area").append(signOutButton);
         // friend pictures instead of page description
         $(".header-container").text("");
         var h3 = document.createElement("h3");
@@ -68,7 +72,7 @@ function readQParamsToList(loc) {
             var allqparams = loc.split("&");
             //console.log(allqparams);
             for (i in allqparams) {
-//keyword for qparam
+                //keyword for qparam
                 qparams.push(allqparams[i].split("="));
                 //console.log(qparams);
             }
@@ -98,8 +102,9 @@ function returnValueOf(array, slotName) {
 function unBlur(nsfwobject) {
     nsfwobject.classList.remove("nsfw");
     setTimeout(function () {
+        console.log(nsfwobject.getAttribute("realhref"));
         nsfwobject.closest("a").href = nsfwobject.getAttribute("realhref");
-    }, 10);
+    }, 100);
 }
 
 function generateMedia(json) {
@@ -198,6 +203,7 @@ function onSignIn(event) {
         success: function (data, textStatus, xhr) {
             //console.log(data);
             document.cookie = "SessionID = " + data;
+            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
@@ -313,3 +319,13 @@ function checkIfLoggedIn() {
     //console.log(json);
     return json;
 }
+
+// --------------------------------*/
+// ------- Sign Out Button ------- */
+// --------------------------------*/
+
+function onSignOut(event) {
+    console.log("Logging out");
+    document.cookie = "SessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    window.location = "index.html";
+};
