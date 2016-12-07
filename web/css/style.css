@@ -974,6 +974,7 @@ label.checkbox span {
     appearance: none;
     padding: 0 10px 0 10px;
     margin-right: 5px;
+    cursor: pointer; 
 }
 
 label.checkbox :checked + span {
