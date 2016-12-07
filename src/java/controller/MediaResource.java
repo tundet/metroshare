@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.text.SimpleDateFormat;
@@ -34,9 +29,9 @@ import model.MediaTag;
 import model.User;
 
 /**
- * REST Web Service
- *
- * @author Mafields
+ * Media resource.
+ * 
+ * This resource is responsible for retrieving media.
  */
 @Path("media")
 public class MediaResource {
@@ -48,23 +43,24 @@ public class MediaResource {
     private MetroShareSB mssb;
 
     /**
-     * Creates a new instance of MediaResource
+     * Retrieve a single medium and its comments, tags, likes and dislikes.
+     * 
+     * @param mediaId ID of the medium
+     * @param sessionid Session ID of the user who the medium belongs to
+     * @return Data about the medium as JSON
      */
-    public MediaResource() {
-    }
-
     @GET
     @Path("/{mediaId}/{sessionid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson(@PathParam("mediaId") int mediaId, @PathParam("sessionid") String sessionid) {
-        //TODO return proper representation object
         User u = null;
+        
         if (!sessionid.equals("0")) {
             u = mssb.readUserBySessionID(sessionid);
         }
         Media m = mssb.readMediaByMediaID(mediaId);
 
-        //comments
+        // Comments.
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Comment c : m.getCommentCollection()) {
             JsonObjectBuilder commentValue = Json.createObjectBuilder();
@@ -83,7 +79,7 @@ public class MediaResource {
         JsonArray commentA = builder.build();
         System.out.println(commentA.toString());
 
-        //tags
+        // Tags.
         builder = Json.createArrayBuilder();
         for (MediaTag mt : m.getMediaTagCollection()) {
             JsonObject tagValue = Json.createObjectBuilder()
@@ -93,7 +89,6 @@ public class MediaResource {
         }
         JsonArray tagA = builder.build();
 
-        // TODO likes here
         int likes = 0;
         int dislikes = 0;
         boolean userHasOpinion = false;
@@ -136,27 +131,39 @@ public class MediaResource {
         return media.toString();
     }
 
+    /**
+     * Create a new comment.
+     * 
+     * Saves a new comment from the currently logged in user to the database.
+     * 
+     * @param sender Username of the commenter
+     * @param mediaid ID of the commented media
+     * @param comment Contents of the comment
+     * @return Status message as JSON
+     */
     @POST
-    @Path("/comment/")
+    @Path("/comment")
     @Produces(MediaType.APPLICATION_JSON)
     public String makeCommentToMedia(@FormParam("sender") String sender, @FormParam("mediaid") String mediaid, @FormParam("comment") String comment) {
-        //TODO return proper representation object
-        System.out.println("getting user by sessionid:" + sender);
-
         Comment c = new Comment();
         c.setUserId(mssb.readUserBySessionID(sender));
         c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
         c.setMessage(comment);
-        c = mssb.insert(c);
+        mssb.insert(c);
+        
         return "{\"succes\": \"1\"}";
     }
 
+    /**
+     * Retrieve a specific amount of the latest media.
+     * 
+     * @param medias Amount of media to retrieve
+     * @return Latest media as JSON
+     */
     @GET
     @Path("/latest/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getNLatestsMediasJson(@PathParam("numberOfMediasWanted") int medias) {
-        //TODO return proper representation object
-        //System.out.println("getting latest:" + medias + " medias");
         List<Media> ml = mssb.readNLatestMedias(medias);
 
         JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -171,14 +178,20 @@ public class MediaResource {
         }
 
         JsonArray media = builder.build();
+        
         return media.toString();
     }
 
+    /**
+     * Retrieve a specific amount of random media.
+     * 
+     * @param media Amount of media to retrieve
+     * @return Random media as JSON
+     */
     @GET
     @Path("/get/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getThisAmountOfMediasJson(@PathParam("numberOfMediasWanted") int media) {
-        //TODO return proper representation object
         int last = mssb.readLastIndexOfMedias();
         System.err.println(last);
 
@@ -214,15 +227,20 @@ public class MediaResource {
         }
 
         JsonArray mediaA = builder.build();
+        
         return mediaA.toString();
     }
 
+    /**
+     * Search media by author, tag or title as a GET request.
+     * 
+     * @param search Search keyword
+     * @return All media matching the keyword
+     */
     @GET
     @Path("/search/{searchword}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getSearch(@PathParam("searchword") String search) {
-        System.out.println("Search: " + search);
-
         List<Media> ml = null;
         List<Media> ul = null;
         List<Media> tl = null;
@@ -242,8 +260,10 @@ public class MediaResource {
         } catch (Exception e) {
             return "{\"error\": \"no tags\"}";
         }
+        
         JsonArrayBuilder wholeList = Json.createArrayBuilder();
         JsonArrayBuilder builder = Json.createArrayBuilder();
+        
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -253,7 +273,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
+        
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -263,7 +285,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
+        
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -273,18 +297,23 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
         JsonArray mediaA = wholeList.build();
 
         return mediaA.toString();
     }
 
+    /**
+     * Search media by author, tag or title as a POST request.
+     * 
+     * @param search Search keyword
+     * @return All media matching the keyword
+     */
     @POST
-    @Path("/search/")
+    @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     public String postSearch(@FormParam("search") String search) {
-        System.out.println("Search: " + search);
-
         List<Media> ml = null;
         List<Media> ul = null;
         List<Media> tl = null;
@@ -304,8 +333,10 @@ public class MediaResource {
         } catch (Exception e) {
             return "{\"error\": \"no tags\"}";
         }
+        
         JsonArrayBuilder wholeList = Json.createArrayBuilder();
         JsonArrayBuilder builder = Json.createArrayBuilder();
+        
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -315,7 +346,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
+        
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -325,7 +358,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
+        
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -335,32 +370,10 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
+        
         wholeList.add(builder.build());
         JsonArray mediaA = wholeList.build();
 
         return mediaA.toString();
-    }
-
-    /**
-     * Retrieves representation of an instance of controller.MediaResource
-     *
-     * @return an instance of java.lang.String
-     */
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * PUT method for updating or creating an instance of MediaResource
-     *
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void putJson(String content
-    ) {
     }
 }
