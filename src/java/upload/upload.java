@@ -25,24 +25,24 @@ import model.User;
 
 /**
  * Image uploader servlet.
- * 
- * This servlet is responsible for handling the uploading of images.
- * It processes a post request and saves the image received within the request
- * in the uploads directory and inserts information about the uploaded image
- * in the database.
+ *
+ * This servlet is responsible for handling the uploading of images. It
+ * processes a post request and saves the image received within the request in
+ * the uploads directory and inserts information about the uploaded image in the
+ * database.
  */
 @WebServlet(urlPatterns = {"/upload"})
 @MultipartConfig(location = "/tmp")
 public class upload extends HttpServlet {
-    
+
     @EJB
     private MetroShareSB mssb;
 
     /**
      * Show unauthorized access message.
-     * 
-     * Show a message if a user tries to access this upload servlet
-     * directly using a GET request
+     *
+     * Show a message if a user tries to access this upload servlet directly
+     * using a GET request
      *
      * @param request servlet request
      * @param response servlet response
@@ -67,9 +67,9 @@ public class upload extends HttpServlet {
 
     /**
      * Upload an image and insert information in the database.
-     * 
-     * Upload the image the user submitted and insert information about
-     * it in the database to make it accessible using the web UI.
+     *
+     * Upload the image the user submitted and insert information about it in
+     * the database to make it accessible using the web UI.
      *
      * @param request servlet request
      * @param response servlet response
@@ -82,47 +82,47 @@ public class upload extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String fileName = getFilename(request.getPart("file"));
-        
+
         // Get the file extension of the image.
         int lastIndexOfDot = fileName.lastIndexOf(".");
         fileName = mssb.getNextMediaId() + fileName.substring(lastIndexOfDot);
-        
+
         User user = mssb.readUserBySessionID(request.getParameter("sessionid"));
-        
+
         // Set upload directory to the "/uploads" directory.
         String uploadDirectoryPath = getServletContext().getRealPath("/uploads") + File.separator + user.getId() + File.separator;
-        
+
         // Write the file to a temporary location.
         request.getPart("file").write(fileName);
-        
+
         Path file = FileSystems.getDefault().getPath("/tmp" + File.separator + fileName);
 
         // Move the file to the "/uploads" directory.
         Path destinationFile = FileSystems.getDefault().getPath(uploadDirectoryPath + fileName);
         Files.move(file, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-        
+
         Media image = new Media();
         image.setUserId(user);
         image.setDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         image.setMediaLocation("uploads/" + user.getId() + "/" + fileName);
         image.setTitle(request.getParameter("title"));
-        
+
         if (request.getParameter("nsfw") == null) {
             image.setNsfw(false);
         } else {
             image.setNsfw(true);
         }
-        
+
         mssb.insert(image);
     }
 
     /**
      * Get the file name of the uploaded image.
-     * 
+     *
      * Get the full file name, including file extension, of the uploaded image.
-     * 
+     *
      * Also, return a status message as JSON when the file has been uploaded.
-     * 
+     *
      * @param part The file whose name to get
      * @return The file name as a string
      */
