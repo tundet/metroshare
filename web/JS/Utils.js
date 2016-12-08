@@ -329,3 +329,25 @@ function onSignOut(event) {
     document.cookie = "SessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     window.location = "index.html";
 };
+
+// -----------------------------------------------*/
+// ------- Like/removelike/dislike Button ------- */
+// -----------------------------------------------*/
+
+function setLikeFunction(event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "http://localhost:8080/MetroShare/webresources/media/media/opinion",
+        data: $("#like-media-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            if (data) {
+                location.reload();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+};

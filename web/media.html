@@ -100,7 +100,15 @@
                 </div>
             </footer>
         </div>
-
+        <div style="text-align: center;">
+            <form id="like-media-form" onsubmit="setLikeFunction(event);">
+                <input name="sessionid" type="hidden" value="">
+                <input name="mediaid" type="hidden" value="">
+                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+            </form>
+        </div>
         <script type="text/javascript">
             $(document).ready(function (event) {
                 var loc = document.location.toString();
@@ -131,6 +139,10 @@
                         }
 
                         console.log(a);
+                        
+                        //setup likes
+                        $("input[name='mediaid']").val(a[1][0]);
+                        $("input[name='sessionid']").val(readSessionIdFromCookie());
 
                         // make media title
                         var title = $(".img-title");
