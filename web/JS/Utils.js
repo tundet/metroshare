@@ -335,12 +335,51 @@ function onSignOut(event) {
 // -----------------------------------------------*/
 
 function setLikeFunction(event) {
+    console.log("setLikeFunction start");
     event.preventDefault();
     $.ajax({
         type: "POST",
         async: false,
-        url: "http://localhost:8080/MetroShare/webresources/media/media/opinion",
+        url: "http://localhost:8080/MetroShare/webresources/media/opinion/like",
         data: $("#like-media-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            if (data) {
+                location.reload();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+};
+
+function setDislikeFunction(event) {
+    console.log("setLikeFunction start");
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "http://localhost:8080/MetroShare/webresources/media/opinion/dislike",
+        data: $("#dislike-media-form").serialize(),
+        success: function (data, textStatus, xhr) {
+            if (data) {
+                location.reload();
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+};
+
+function removeLikeFunction(event) {
+    console.log("setLikeFunction start");
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "http://localhost:8080/MetroShare/webresources/media/opinion/remove",
+        data: $("#removelike-media-form").serialize(),
         success: function (data, textStatus, xhr) {
             if (data) {
                 location.reload();

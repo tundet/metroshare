@@ -49,9 +49,9 @@ public class MetroShareSB {
     public User readUserByLogin(String login) {
         return (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
     }
-    
+
     public User readUserBySessionID(String sessionid) {
-        return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid +"'", User.class).getSingleResult();
+        return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid + "'", User.class).getSingleResult();
     }
 
     // Media
@@ -67,46 +67,46 @@ public class MetroShareSB {
     public int readLastIndexOfMedias() {
         return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult();
     }
-    
+
     public int getNextMediaId() {
         return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult() + 1;
     }
-    
+
     public List<Media> searchMediaByTag(String word) {
-        return em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word +"%'", Media.class).getResultList();
+        return em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word + "%'", Media.class).getResultList();
     }
-    
+
     public List<Media> searchMediaByUserLogin(String word) {
-        List<Media> mlst = em.createNativeQuery("SELECT * FROM media, user WHERE media.userId = user.ID AND user.Login LIKE '%" + word +"%'", Media.class).getResultList();
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM media, user WHERE media.userId = user.ID AND user.Login LIKE '%" + word + "%'", Media.class).getResultList();
         return mlst;
     }
-    
+
     public List<Media> readNLatestMedias(int num) {
         List<Media> mlst = em.createNativeQuery("SELECT * FROM `media` ORDER BY date DESC, ID DESC LIMIT " + num, Media.class).getResultList();
         return mlst;
     }
 
     public List<Media> searchMediaByTitle(String word) {
-        List<Media> mlst = em.createNativeQuery("SELECT * FROM `media` WHERE title LIKE '%" + word +"%'", Media.class).getResultList();
+        List<Media> mlst = em.createNativeQuery("SELECT * FROM `media` WHERE title LIKE '%" + word + "%'", Media.class).getResultList();
         return mlst;
     }
-    
+
     public List<Media> readAllMedias() {
         return em.createNamedQuery("Media.findAll").getResultList();
     }
-    
+
     public List<Media> readAllMediaIds() {
-        return em.createNativeQuery("SELECT ID FROM media").getResultList();  
+        return em.createNativeQuery("SELECT ID FROM media").getResultList();
     }
 
     public Media readMediaByMediaID(int id) {
-        Media m = (Media)em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
+        Media m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
         em.refresh(m); // <--- IMPORTANT
         return m;
     }
-    
+
     public List<Media> readMediaFromFriends(String ids) {
-        return em.createNativeQuery("SELECT * FROM `media` WHERE userId in (" + ids +") LIMIT 6", Media.class).getResultList();
+        return em.createNativeQuery("SELECT * FROM `media` WHERE userId in (" + ids + ") LIMIT 6", Media.class).getResultList();
     }
 
     public List<Media> readMediaByUserID(int id) {
@@ -169,6 +169,19 @@ public class MetroShareSB {
 
     public void update(MediaLike l) {
         em.merge(l);
+    }
+    
+    public void removeMediaLike(int id) {
+        System.err.println("Removing MediaLike by id: " + id);
+        em.remove((MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult());
+    }
+
+    public MediaLike readMediaLikeByUserIdAndMediaId(int id) {
+        try {
+            return (MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<MediaLike> readAllMediaLikes() {

@@ -102,11 +102,19 @@
         </div>
         <div style="text-align: center;">
             <form id="like-media-form" onsubmit="setLikeFunction(event);">
-                <input name="sessionid" type="hidden" value="">
                 <input name="mediaid" type="hidden" value="">
-                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
-                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-times" aria-hidden="true"></i></button>
-                <button name="button[]" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
+                <input name="hasopinion" type="hidden" value="">
+                <button name="like" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+            </form>
+            <form id="removelike-media-form" onsubmit="removeLikeFunction(event);">
+                <input name="mediaid" type="hidden" value="">
+                <input name="hasopinion" type="hidden" value="">
+                <button name="remove" type="submit" class="redbtn redbtn-search"><i class="fa fa-times" aria-hidden="true"></i></button>
+            </form>
+            <form id="dislike-media-form" onsubmit="setDislikeFunction(event);">
+                <input name="mediaid" type="hidden" value="">
+                <input name="hasopinion" type="hidden" value="">
+                <button name="dislike" type="submit" class="redbtn redbtn-search"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>
             </form>
         </div>
         <script type="text/javascript">
@@ -121,7 +129,7 @@
                 }
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/" + qparam[1] + "/" + sessionId,
+                    url: "http://localhost:8080/MetroShare/webresources/media/" + qparam[1],
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         var a = [];
@@ -142,7 +150,7 @@
                         
                         //setup likes
                         $("input[name='mediaid']").val(a[1][0]);
-                        $("input[name='sessionid']").val(readSessionIdFromCookie());
+                        $("input[name='hasopinion']").val(a[1][7].likeid);
 
                         // make media title
                         var title = $(".img-title");

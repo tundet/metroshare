@@ -11,6 +11,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -28,9 +29,9 @@ import model.User;
 
 /**
  * Media resource.
- * 
- * This resource is responsible for actions such as retrieving, creating,
- * liking and disliking media.
+ *
+ * This resource is responsible for actions such as retrieving, creating, liking
+ * and disliking media.
  */
 @Path("media")
 public class MediaResource {
@@ -43,19 +44,20 @@ public class MediaResource {
 
     /**
      * Retrieve a single medium and its comments, tags, likes and dislikes.
-     * 
+     *
      * @param mediaId ID of the medium
      * @param sessionid Session ID of the user who the medium belongs to
      * @return Data about the medium as JSON
      */
     @GET
-    @Path("/{mediaId}/{sessionid}")
+    @Path("/{mediaId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson(@PathParam("mediaId") int mediaId, @PathParam("sessionid") String sessionid) {
+    public String getJson(@PathParam("mediaId") int mediaId, @CookieParam("SessionID") String sessionid) {
         User u = null;
-        
-        if (!sessionid.equals("0")) {
+
+        if (!sessionid.isEmpty()) {
             u = mssb.readUserBySessionID(sessionid);
+            System.out.println("userfound!");
         }
         Media m = mssb.readMediaByMediaID(mediaId);
 
@@ -92,11 +94,17 @@ public class MediaResource {
         int dislikes = 0;
         boolean userHasOpinion = false;
         boolean userOpinion = false;
+        int likeid = 0;
         for (MediaLike ml : m.getMediaLikeCollection()) {
-            if (!sessionid.equals("0")) {
-                if (ml.getUserId() == u) {
+            System.out.println(ml);
+            if (!sessionid.isEmpty()) {
+                System.out.println(ml.getUserId().getId());
+                System.out.println(u.getId());
+                if (ml.getUserId().getId() == u.getId()) {
+                    System.out.println("USER HAS OPINION");
                     userHasOpinion = true;
                     userOpinion = ml.getLikeBoolean();
+                    likeid = ml.getId();
                 }
             }
             if (ml.getLikeBoolean()) {
@@ -110,6 +118,7 @@ public class MediaResource {
                 .add("dislikes", dislikes)
                 .add("userhasopinion", userHasOpinion)
                 .add("useropinion", userOpinion)
+                .add("likeid", likeid)
                 .build();
 
         builder = Json.createArrayBuilder();
@@ -129,12 +138,102 @@ public class MediaResource {
 
         return media.toString();
     }
+    
+    /**
+     * Create a new comment.
+     *
+     * Saves a new comment from the currently logged in user to the database.
+     *
+     * @param sender Username of the commenter
+     * @param mediaid ID of the commented media
+     * @param comment Contents of the comment
+     * @return Status message as JSON
+     */
+    @POST
+    @Path("/opinion/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeLikeFromMedia(@FormParam("mediaid") String mediaid, @FormParam("hasopinion") String likeid, @CookieParam("SessionID") String sessionid) {
+
+        if (Integer.parseInt(likeid) != 0) {
+            mssb.removeMediaLike(Integer.parseInt(likeid));
+        }
+
+        return "{\"succes\": \"1\"}";
+    }
+    
+    /**
+     * Create a new comment.
+     *
+     * Saves a new comment from the currently logged in user to the database.
+     *
+     * @param sender Username of the commenter
+     * @param mediaid ID of the commented media
+     * @param comment Contents of the comment
+     * @return Status message as JSON
+     */
+    @POST
+    @Path("/opinion/dislike")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String setDislikeToMedia(@FormParam("mediaid") String mediaid, @FormParam("hasopinion") String likeid, @CookieParam("SessionID") String sessionid) {
+        //System.out.println(sessionid);
+        //System.out.println(mediaid);
+        User u = mssb.readUserBySessionID(sessionid);
+
+        MediaLike ml = new MediaLike();
+        if (Integer.parseInt(likeid) == 0) {
+            ml.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
+            ml.setUserId(u);
+            ml.setLikeBoolean(Boolean.FALSE);
+            mssb.insert(ml);
+        } else {
+            ml = mssb.readMediaLikeByUserIdAndMediaId(Integer.parseInt(likeid));
+            ml.setLikeBoolean(Boolean.FALSE);
+            ml.setDate(null);
+            mssb.update(ml);
+        }
+
+        return "{\"succes\": \"1\"}";
+    }
+    
+    /**
+     * Create a new comment.
+     *
+     * Saves a new comment from the currently logged in user to the database.
+     *
+     * @param sender Username of the commenter
+     * @param mediaid ID of the commented media
+     * @param comment Contents of the comment
+     * @return Status message as JSON
+     */
+    @POST
+    @Path("/opinion/like")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String setLikeToMedia(@FormParam("mediaid") String mediaid, @FormParam("hasopinion") String likeid, @CookieParam("SessionID") String sessionid) {
+        //System.out.println(sessionid);
+        //System.out.println(mediaid);
+        User u = mssb.readUserBySessionID(sessionid);
+
+        MediaLike ml = new MediaLike();
+        if (Integer.parseInt(likeid) == 0) {
+            ml.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
+            ml.setUserId(u);
+            ml.setLikeBoolean(Boolean.TRUE);
+            mssb.insert(ml);
+        } else {
+            ml = mssb.readMediaLikeByUserIdAndMediaId(Integer.parseInt(likeid));
+            ml.setLikeBoolean(Boolean.TRUE);
+            ml.setDate(null);
+            mssb.update(ml);
+        }
+
+        return "{\"succes\": \"1\"}";
+    }
 
     /**
      * Create a new comment.
-     * 
+     *
      * Saves a new comment from the currently logged in user to the database.
-     * 
+     *
      * @param sender Username of the commenter
      * @param mediaid ID of the commented media
      * @param comment Contents of the comment
@@ -149,13 +248,13 @@ public class MediaResource {
         c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
         c.setMessage(comment);
         mssb.insert(c);
-        
+
         return "{\"succes\": \"1\"}";
     }
 
     /**
      * Retrieve a specific amount of the latest media.
-     * 
+     *
      * @param medias Amount of media to retrieve
      * @return Latest media as JSON
      */
@@ -177,13 +276,13 @@ public class MediaResource {
         }
 
         JsonArray media = builder.build();
-        
+
         return media.toString();
     }
 
     /**
      * Retrieve a specific amount of random media.
-     * 
+     *
      * @param media Amount of media to retrieve
      * @return Random media as JSON
      */
@@ -226,13 +325,13 @@ public class MediaResource {
         }
 
         JsonArray mediaA = builder.build();
-        
+
         return mediaA.toString();
     }
 
     /**
      * Search media by author, tag or title as a GET request.
-     * 
+     *
      * @param search Search keyword
      * @return All media matching the keyword
      */
@@ -259,10 +358,10 @@ public class MediaResource {
         } catch (Exception e) {
             return "{\"error\": \"no tags\"}";
         }
-        
+
         JsonArrayBuilder wholeList = Json.createArrayBuilder();
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        
+
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -272,9 +371,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
-        
+
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -284,9 +383,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
-        
+
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -296,7 +395,7 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
         JsonArray mediaA = wholeList.build();
 
@@ -305,7 +404,7 @@ public class MediaResource {
 
     /**
      * Search media by author, tag or title as a POST request.
-     * 
+     *
      * @param search Search keyword
      * @return All media matching the keyword
      */
@@ -332,10 +431,10 @@ public class MediaResource {
         } catch (Exception e) {
             return "{\"error\": \"no tags\"}";
         }
-        
+
         JsonArrayBuilder wholeList = Json.createArrayBuilder();
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        
+
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -345,9 +444,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
-        
+
         for (Media m : ul) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -357,9 +456,9 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
-        
+
         for (Media m : tl) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -369,7 +468,7 @@ public class MediaResource {
                     .build();
             builder.add(mediaValue);
         }
-        
+
         wholeList.add(builder.build());
         JsonArray mediaA = wholeList.build();
 

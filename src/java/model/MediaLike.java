@@ -40,13 +40,10 @@ public class MediaLike implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
     @Column(name = "likeBoolean")
     private Boolean likeBoolean;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
