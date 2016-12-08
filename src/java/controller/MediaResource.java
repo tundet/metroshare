@@ -328,6 +328,31 @@ public class MediaResource {
 
         return mediaA.toString();
     }
+    
+       /**
+     * Retrieve total amount of the latest media.
+     * 
+     * @param medias Amount of media to retrieve
+     * @return Latest media as JSON
+     */
+    @GET
+    @Path("/total")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getTotalMediasJson() {
+        List<Media> ml = mssb.readAllMedias();
+
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : ml) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("mediaId", m.getId())
+                    .build();
+            builder.add(mediaValue);
+        }
+
+        JsonArray media = builder.build();
+        
+        return media.toString();
+    }
 
     /**
      * Search media by author, tag or title as a GET request.

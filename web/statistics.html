@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>My Profile -  MetroShare</title>
+        <title>Statistics | MetroShare</title>
         <link href="css/style.css" type="text/css" rel="stylesheet">
         <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet">
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
@@ -58,42 +57,22 @@
             </div>
         </div>
 
-        <div class="container-fluid" style="background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center; color:#ffffff; padding-top: 25px;">
+        <div class="container-fluid" style="background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center; color:#ffffff;">
             <div class="container">
-                <div class="col-4" id="login">
-                    <img src="http://www.technologybloggers.org/wp-content/uploads/2012/04/Gravatar-Logo-300x300.jpg" alt="" style="width: 50%; display:block; margin: auto;">
-                </div>
                 <div class="col-4">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <h3>My Folders</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <ul>
-                                <li>Trees</li>
-                                <li>Landscapes</li>
-                                <li>Sky</li>
-                                <li>Birds</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <img src="http://i.imgur.com/Z2f8tbj.png" alt="" style="width: 100%; transform: scale(0.6); display:block; margin: auto;">
                 </div>
-
-                <div class="col-4">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <h3>Friends</h3>
-                        </div>
-
-                        <div class="panel-body" id="friends">
-                        </div>
-                    </div>
+                <div class="col-8">
+                    <h1>Statistics</h1>
                 </div>
             </div>
         </div>
 
-        <div id="media" class="container">
+        <div class="container">
+            <div class="col-12">
+                <h2 id="total-media"></h2>
+            </div>
+
         </div>
 
         <footer class="container-fluid">
@@ -120,58 +99,17 @@
                 </ul>
             </div>
         </footer>
-
-        <table id="tables">
-
-        </table>
-
+        
         <script type="text/javascript">
             $(document).ready(function (event) {
-                var loc = document.location.toString();
-                var username;
-                qparams = readQParamsToList(loc);
-                //console.log(qparams);
-                if (qparams[0][0] != 0) {
-                    username = returnValueOf(qparams, "login");
-                } else {
-                    console.log("NO QERRY PARAMS FOUND!");
-                }
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/users/" + username,
+                    url: "http://localhost:8080/MetroShare/webresources/media/total",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        //console.log(jsondata[0]);
-
-                        // Example how to insert user name to page after load 
-                        var h3 = document.createElement("H3");
-                        h3.innerHTML = jsondata[0].login;
-                        h3.style.textAlign = "center";
-                        var loginArea = $('#login');
-                        loginArea.append(h3);
-
-                        // Adding user's photos
-                        for (i = 0; i < jsondata[0].media.length; i++) {
-                            document.querySelector("#media").appendChild(generateMedia(jsondata[0].media[i]));
-                        }
-
-                        // Friends
-                        var frul = document.createElement("UL");
-                        for (i = 0; i < jsondata[0].friends.length; i++) {
-                            var frli = document.createElement("LI");
-                            frli.innerText = jsondata[0].friends[i].friend;
-                            frul.appendChild(frli);
-                        }
-                        document.querySelector("#friends").appendChild(frul);
-                        console.log(frul);
-
-
-                        // Example how to modify existing data
-                        console.log($("#loginname").text()); // first it is johndoe
-                        $("#loginname").text(jsondata[0].login);
-                        console.log($("#loginname").text()); // then changed to json value login 
-
-                        //arrayToTable(jsondata[0].friends[0]);
+                        console.log(jsondata[0]);
+                        var total = jsondata.length + " media uploaded in total.";
+                        document.querySelector("#total-media").innerHTML = total;
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -179,7 +117,5 @@
                 });
             });
         </script>
-
     </body>
 </html>
-

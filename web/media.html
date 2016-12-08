@@ -21,8 +21,8 @@
                 <div class="container">
                     <ul>
                         <li class="left navbar-secondary-logo"><a href="index.html"><img src="images/favicon.ico" alt=""></a></li>
-                        <li class="left"><a href="index.html">Statistics</a></li>
-                        <li class="left"><a href="index.html">About</a></li>
+                        <li class="left"><a href="statistics.html">Statistics</a></li>
+                        <li class="left"><a href="about.html">About</a></li>
                         <li class="right login-area">
                             <form class="signin-form" method="post" onsubmit="onSignIn(event);">
                                 <input type="text" name="username" placeholder="Username" required>
@@ -78,24 +78,24 @@
             <footer class="container-fluid">
                 <div class="container">
                     <ul class="col-4">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Browse</a></li>
-                        <li><a href="#">Upload</a></li>
-                        <li><a href="#">About</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse</a></li>
+                        <li><a href="upload.html">Upload</a></li>
+                        <li><a href="about.html">About</a></li>
                     </ul>
 
                     <ul class="col-4">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Browse</a></li>
-                        <li><a href="#">Upload</a></li>
-                        <li><a href="#">About</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse</a></li>
+                        <li><a href="upload.html">Upload</a></li>
+                        <li><a href="about.html">About</a></li>
                     </ul>
 
                     <ul class="col-4">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Browse</a></li>
-                        <li><a href="#">Upload</a></li>
-                        <li><a href="#">About</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse</a></li>
+                        <li><a href="upload.html">Upload</a></li>
+                        <li><a href="about.html">About</a></li>
                     </ul>
                 </div>
             </footer>
@@ -147,7 +147,7 @@
                         }
 
                         console.log(a);
-                        
+
                         //setup likes
                         $("input[name='mediaid']").val(a[1][0]);
                         $("input[name='hasopinion']").val(a[1][7].likeid);
@@ -216,8 +216,8 @@
                             summaryDiv.classList.add("comment-summary");
 
                             var aRules = document.createElement("a");
-                            aRules.href = "#";
-                            aRules.innerHTML = "Remember community rules";
+                            aRules.href = "about.html";
+                            aRules.innerHTML = "Remember our community rules";
                             summaryDiv.append(aRules);
 
                             var sendButton = document.createElement("button");
