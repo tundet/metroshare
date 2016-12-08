@@ -11,7 +11,7 @@
     box-sizing: border-box;
 }
 
-a {
+a, a:visited {
     outline: 0;
 }
 
@@ -1050,7 +1050,7 @@ label.checkbox :checked + span {
     color: #fff;
 }
 
-.comment-summary a, a:visited{
+.comment-summary a, .comment-summary a:visited{
     color: #fff;
 }
 
@@ -1128,7 +1128,7 @@ label.checkbox :checked + span {
     color: #000;
 }
 
-.show-media-figure a, a:visited {
+.show-media-figure a, .show-media-figure a:visited {
     color: #fff;
     font-weight: bold;
 }

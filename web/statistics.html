@@ -71,6 +71,9 @@
         <div class="container">
             <div class="col-12">
                 <h2 id="total-media"></h2>
+                <h2>Latest media uploaded</h2>
+                <div id="recent-media"></div>
+                <h2 id="most-liked"></h2>
             </div>
 
         </div>
@@ -108,8 +111,24 @@
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         console.log(jsondata[0]);
-                        var total = jsondata.length + " media uploaded in total.";
+                        var total = jsondata.length + " media uploaded in total";
                         document.querySelector("#total-media").innerHTML = total;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+        
+        <script type="text/javascript">
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/latest/1",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        document.querySelector("#recent-media").append(generateMedia(jsondata));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
