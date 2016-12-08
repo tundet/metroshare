@@ -21,7 +21,10 @@ import model.Media;
 import model.User;
 
 /**
- * REST Web Service
+ * Users resource.
+ * 
+ * This resource is responsible for retrieving users, their media, friends,
+ * last activity time.
  */
 @Path("users")
 public class UsersResource {
@@ -34,10 +37,10 @@ public class UsersResource {
 
     /**
      * Create a JSON object from the given user containing,
-     *  the username and also friends and media of the user.
+     * the username and also friends and media of the user.
      *
      * @param login Username of the user
-     * @return JSON object
+     * @return JSON object of the user and its media and friends
      */
     @GET
     @Path("/{login}")
@@ -47,7 +50,7 @@ public class UsersResource {
         Map<String, Object> config = new HashMap<String, Object>();
         JsonBuilderFactory factory = Json.createBuilderFactory(config);
         
-        // Media
+        // Media.
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : u.getMediaCollection()) {
             JsonObject mediaValue = Json.createObjectBuilder()
@@ -60,7 +63,7 @@ public class UsersResource {
         }
         JsonArray mediaA = builder.build();
         
-        // Friends
+        // Friends.
         builder = Json.createArrayBuilder();
         for (Friend f : u.getFriendCollection()) {
             JsonObject friendValue = Json.createObjectBuilder()
@@ -83,26 +86,28 @@ public class UsersResource {
     /**
      * Get the matching username from the given session ID.
      *
-     * @param sessionid Session ID of the user
+     * @param username Username of the user
      * @return Username of the matching user
      */
     @GET
     @Path("/friends/media/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getFriendsMediaJson(@PathParam("username") String username) {
-        //TODO return proper representation object
         String r = "";
         User u = mssb.readUserByLogin(username);
         String ids = "";
-        for(Friend f : u.getFriendCollection()) {
+        
+        for (Friend f : u.getFriendCollection()) {
             ids += f.getFriendId().getId() + ",";
         }
-        System.out.println(ids);
+        
         if (ids.endsWith(",")){
             ids = ids.substring(0, ids.length() -1);
         }
+        
         List<Media> mlst = mssb.readMediaFromFriends(ids);
         JsonArrayBuilder builder = Json.createArrayBuilder();
+        
         for (Media m : mlst) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -114,32 +119,34 @@ public class UsersResource {
         }
 
         JsonArray mediaA = builder.build();
+        
         return mediaA.toString();
     }
     
     /**
-     * Retrieves representation of an instance of controller.UsersResource
+     * Get the matching username from the given session ID.
      *
-     * @param login
-     * @return an instance of java.lang.String
+     * @param sessionid Session ID of the user
+     * @return Username of the matching user
      */
     @GET
     @Path("/sessionid/{sessionid}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getSessionJson(@PathParam("sessionid") String sessionid) {
         String r = "";
+        
         User u = mssb.readUserBySessionID(sessionid);
+        
         r += "{\"username\":\"" + u.getLogin() + "\"}";
+        
         return r;
     }
     
     /**
-     * Get last activity time of the given user.
+     * Get a user by its session ID.
      * 
-     * Last activity time is specified in format YYYY-MM-DD HH:MM:SS.
-     *
-     * @param login Username of the user
-     * @return Last activity time
+     * @param sessionid Session ID of the user
+     * @return User object of the matching user
      */
     @GET
     @Path("/getuser/{sessionid}")
@@ -149,18 +156,23 @@ public class UsersResource {
     }
     
     /**
-     * Retrieves representation of an instance of controller.UsersResource
+     * Get the last activity time of the given user.
+     * 
+     * Date format is YYYY-MM-DD HH:MM:SS.
      *
-     * @param login
-     * @return an instance of java.lang.String
+     * @param login Username of the user
+     * @return Last activity time
      */
     @GET
     @Path("/{login}/activity")
     @Produces(MediaType.APPLICATION_JSON)
     public String getUserJson(@PathParam("login") String login) {
         String ua = "";
+        
         User u = mssb.readUserByLogin(login);
+        
         ua += "{\"activity\":\"" + u.getActivity() + "\"}";
+        
         return ua;
     }
 }
