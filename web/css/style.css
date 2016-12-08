@@ -747,7 +747,7 @@ footer ul li a {
 
 .btn-success {
     background-color: #3cb636;
-    border-bottom: outset 5px #31912c;
+    padding-top: 5px;
 }
 
 .btn-success:hover {
@@ -908,20 +908,20 @@ footer ul li a {
 }
 
 /* ---------------------------*/
-/* ------ Signup Form ------- */
+/* - Signup and Upload Form - */
 /* ---------------------------*/
 
-.signup-form-container {
+.signup-form-container, .upload-form-container {
     margin-top: 25px;
 }
 
-.signup-form label {
+.signup-form label, .upload-form label {
     display: block;
     margin-top: 25px;
     font-size: 14px;
 }
 
-.signup-form-username, .signup-form-password, .signup-form-submit {
+.signup-form-username, .signup-form-password, .signup-form-submit, .upload-form-title, .upload-form-image, .upload-form-submit, upload-form-tag {
     display: block;
     width: 100%;
 }
