@@ -126,10 +126,10 @@ public class MetroShareSB {
      * @param i Medium to create
      * @return Instance of the created medium
      */
-    public Media insert(Media i) {
+    public Media insert(Media m) {
         try {
-            em.persist(i);
-            return i;
+            em.persist(m);
+            return m;
         } catch (Exception e) {
             System.err.println("Media insert error: " + e);
             return null;
@@ -141,9 +141,9 @@ public class MetroShareSB {
      *
      * @param i Medium to update
      */
-    public void update(Media i) {
+    public void update(Media m) {
         try {
-            em.merge(i);
+            em.merge(m);
         } catch (Exception e) {
             System.err.println("Media update error: " + e);
         }
@@ -189,7 +189,6 @@ public class MetroShareSB {
     public List<Media> readNLatestMedias(int num) {
         try {
             List<Media> ml = em.createNativeQuery("SELECT * FROM `media` ORDER BY date DESC, ID DESC LIMIT " + num, Media.class).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read latest n error: " + e);
@@ -205,7 +204,6 @@ public class MetroShareSB {
     public List<Media> readAllMedias() {
         try {
             List<Media> ml = em.createNamedQuery("Media.findAll").getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read all error: " + e);
@@ -221,7 +219,6 @@ public class MetroShareSB {
     public List<Media> readAllMediaIds() {
         try {
             List<Media> ml = em.createNativeQuery("SELECT ID FROM media").getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read all ids error: " + e);
@@ -255,7 +252,6 @@ public class MetroShareSB {
     public List<Media> readMediaFromFriends(String ids) {
         try {
             List<Media> ml = em.createNativeQuery("SELECT * FROM `media` WHERE userId in (" + ids + ") LIMIT 6", Media.class).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read by friends error: " + e);
@@ -272,7 +268,6 @@ public class MetroShareSB {
     public List<Media> readMediaByUserID(int id) {
         try {
             List<Media> ml = em.createNamedQuery("User.findById").setParameter("id", id).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read by userId error: " + e);
@@ -289,7 +284,6 @@ public class MetroShareSB {
     public List<Media> searchMediaByTag(String word) {
         try {
             List<Media> ml = em.createNativeQuery("SELECT * FROM media,media_tag,tag WHERE media_tag.mediaId = media.ID and media_tag.tagId = tag.ID and tag.tag LIKE '%" + word + "%'", Media.class).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media read bby tag error: " + e);
@@ -306,7 +300,6 @@ public class MetroShareSB {
     public List<Media> searchMediaByUserLogin(String word) {
         try {
             List<Media> ml = em.createNativeQuery("SELECT * FROM media, user WHERE media.userId = user.ID AND user.Login LIKE '%" + word + "%'", Media.class).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media search by login error: " + e);
@@ -323,7 +316,6 @@ public class MetroShareSB {
     public List<Media> searchMediaByTitle(String word) {
         try {
             List<Media> ml = em.createNativeQuery("SELECT * FROM `media` WHERE title LIKE '%" + word + "%'", Media.class).getResultList();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("Media search by title error: " + e);
@@ -369,7 +361,6 @@ public class MetroShareSB {
     public List<Comment> readAllComments() {
         try {
             List<Comment> cl = em.createNamedQuery("Comment.findAll").getResultList();
-            em.refresh(cl);
             return cl;
         } catch (Exception e) {
             System.err.println("Comment real all error: " + e);
@@ -449,7 +440,6 @@ public class MetroShareSB {
     public List<Friend> readAllFriends() {
         try {
             List<Friend> fl = em.createNamedQuery("Friend.findAll").getResultList();
-            em.refresh(fl);
             return fl;
         } catch (Exception e) {
             System.err.println("Friend read all error: " + e);
@@ -542,7 +532,6 @@ public class MetroShareSB {
     public List<MediaLike> readAllMediaLikes() {
         try {
             List<MediaLike> mll = em.createNamedQuery("MediaLike.findAll").getResultList();
-            em.refresh(mll);
             return mll;
         } catch (Exception e) {
             System.err.println("MediaLike read all error: " + e);  
@@ -593,7 +582,6 @@ public class MetroShareSB {
     public MediaLike readMediaLikeByMediaId(int id) {
         try {
             MediaLike ml = (MediaLike)em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("MediaLike red by mediaId error: " + e);  
@@ -639,7 +627,6 @@ public class MetroShareSB {
     public List<MediaTag> readAllMediaTags() {
         try {
             List<MediaTag> mtl = em.createNamedQuery("MediaTag.findAll").getResultList();
-            em.refresh(mtl);
             return mtl;
         } catch (Exception e) {
           System.err.println("MediaTag read all error: " + e);
@@ -736,7 +723,6 @@ public class MetroShareSB {
     public List<Tag> readTagById(int id) {
         try {
             List<Tag> tl = em.createNamedQuery("Tag.findById").setParameter("id", id).getResultList();
-            em.refresh(tl);
             return tl;
         } catch (Exception e) {
           System.err.println("Tag read by id error: " + e);
@@ -753,7 +739,6 @@ public class MetroShareSB {
     public List<Tag> readTagByTag(String tag) {
         try {
             List<Tag> tl = em.createNamedQuery("Tag.findByTag").setParameter("tag", tag).getResultList();
-            em.refresh(tl);
             return tl;
         } catch (Exception e) {
           System.err.println("Tag read by tag error: " + e);
