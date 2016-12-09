@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.util.ArrayList;
@@ -348,11 +343,22 @@ public class MetroShareSB {
         em.merge(l);
     }
     
+    /**
+     * Remove a like from a medium.
+     * 
+     * @param id ID of the like
+     */
     public void removeMediaLike(int id) {
         System.err.println("Removing MediaLike by id: " + id);
         em.remove((MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult());
     }
 
+    /**
+     * Retrieve a media like by its ID.
+     * 
+     * @param id ID of the like
+     * @return Instance of the like on success, null on failure
+     */
     public MediaLike readMediaLikeByUserIdAndMediaId(int id) {
         try {
             return (MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
@@ -361,6 +367,11 @@ public class MetroShareSB {
         }
     }
 
+    /**
+     * Retrieve all media likes.
+     * 
+     * @return All media likes as a list
+     */
     public List<MediaLike> readAllMediaLikes() {
         return em.createNamedQuery("MediaLike.findAll").getResultList();
     }
@@ -486,7 +497,7 @@ public class MetroShareSB {
     /**
      * Retrieve a tag by its name. 
      * 
-     * @param tag Name of the tag.
+     * @param tag Name of the tag
      * @return Instance of the tag
      */
     public List<Tag> readTagByTag(String tag) {
