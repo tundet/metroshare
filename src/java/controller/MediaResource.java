@@ -329,11 +329,10 @@ public class MediaResource {
         return mediaA.toString();
     }
     
-       /**
+     /**
      * Retrieve total amount of the latest media.
      * 
-     * @param medias Amount of media to retrieve
-     * @return Latest media as JSON
+     * @return All media.
      */
     @GET
     @Path("/total")

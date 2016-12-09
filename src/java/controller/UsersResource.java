@@ -83,6 +83,30 @@ public class UsersResource {
         return value.toString();
     }
     
+     /**
+     * Retrieve total users.
+     * 
+     * @return all users.
+     */
+    @GET
+    @Path("/total")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getTotalUsersJson() {
+        List<User> ul = mssb.readAllUsers();
+
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (User u : ul) {
+            JsonObject userValue = Json.createObjectBuilder()
+                    .add("userId", u.getId())
+                    .build();
+            builder.add(userValue);
+        }
+
+        JsonArray user = builder.build();
+        
+        return user.toString();
+    }
+    
     /**
      * Get the matching username from the given session ID.
      *

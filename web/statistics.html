@@ -71,6 +71,7 @@
         <div class="container">
             <div class="col-12">
                 <h2 id="total-media"></h2>
+                <h2 id="total-users"></h2>
                 <h2>Latest media uploaded</h2>
                 <div id="recent-media"></div>
                 <h2 id="most-liked"></h2>
@@ -104,6 +105,7 @@
         </footer>
         
         <script type="text/javascript">
+            //retrieve total media
             $(document).ready(function (event) {
                 $.ajax({
                     type: "GET",
@@ -122,6 +124,27 @@
         </script>
         
         <script type="text/javascript">
+            //retrieve total users
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/users/total",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        console.log(jsondata[0]);
+                        var total = jsondata.length + " users registered in total";
+                        document.querySelector("#total-users").innerHTML = total;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+        
+        
+        
+        <script type="text/javascript">
             //TODO FIX LOL it's undefined now
             $(document).ready(function (event) {
                 $.ajax({
@@ -129,13 +152,15 @@
                     url: "http://localhost:8080/MetroShare/webresources/media/latest/1",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        document.querySelector("#recent-media").append(generateMedia(jsondata));
+                        document.querySelector("#recent-media").append(generateMedia(jsondata[0]));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
                     }
                 });
             });
+            
+            
         </script>
     </body>
 </html>
