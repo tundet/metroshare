@@ -554,6 +554,15 @@ public class MetroShareSB {
             return null;
         }
     }
+    
+    /**
+     * Retrieve media with most likes in descending order.
+     * 
+     * @return All media likes as a list
+     */
+    public List<MediaLike> readMostMediaLikes() {
+        return em.createNativeQuery("SELECT media_like.mediaId, SUM(likeBoolean) FROM media_like GROUP BY mediaId ORDER BY SUM(likeBoolean) DESC").getResultList();
+    }
 
     /**
      * Retrieve all likes of the given user ID.
