@@ -561,7 +561,13 @@ public class MetroShareSB {
      * @return All media likes as a list
      */
     public List<MediaLike> readMostMediaLikes() {
-        return em.createNativeQuery("SELECT media_like.mediaId, SUM(likeBoolean) FROM media_like GROUP BY mediaId ORDER BY SUM(likeBoolean) DESC").getResultList();
+        try {
+            List<MediaLike> mll = em.createNativeQuery("SELECT media_like.Id,media_like.mediaId, SUM(likeBoolean) FROM media_like GROUP BY mediaId ORDER BY SUM(likeBoolean) DESC", MediaLike.class).getResultList();
+            return mll;
+        } catch (Exception e) {
+            System.err.println("Media search by most likes error: " + e);
+            return null;
+        }
     }
 
     /**

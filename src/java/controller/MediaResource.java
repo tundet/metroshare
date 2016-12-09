@@ -329,7 +329,7 @@ public class MediaResource {
         return mediaA.toString();
     }
     
-     /**
+    /**
      * Retrieve total amount of the latest media.
      * 
      * @return All media.
@@ -344,6 +344,30 @@ public class MediaResource {
         for (Media m : ml) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
+                    .build();
+            builder.add(mediaValue);
+        }
+
+        JsonArray media = builder.build();
+        
+        return media.toString();
+    }
+    
+    /**
+     * Retrieve total amount of the latest media.
+     * 
+     * @return All media.
+     */
+    @GET
+    @Path("/mostlikes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getMostLikesJson() {
+        List<MediaLike> mll = mssb.readMostMediaLikes();
+
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (MediaLike m : mll) {
+            JsonObject mediaValue = Json.createObjectBuilder()
+                    .add("mediaId", m.getMediaId().getId())
                     .build();
             builder.add(mediaValue);
         }
