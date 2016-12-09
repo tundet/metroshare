@@ -813,6 +813,13 @@ footer ul li a {
     font-size: 20px;
 }
 
+.redbtn-like:disabled {
+    margin-left: 10px;
+    background-color: #D32F2F;
+    padding: 4px 5px 7px 15px;
+    font-size: 20px;
+}
+
 /* ---------------------------*/
 /* --------- Panels --------- */
 /* ---------------------------*/
