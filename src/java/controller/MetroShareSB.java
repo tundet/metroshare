@@ -61,7 +61,6 @@ public class MetroShareSB {
     public List<User> readAllUsers() {
         try {
             List<User> ul = em.createNamedQuery("User.findAll").getResultList();
-            em.refresh(ul);
             return ul;
         } catch (Exception e) {
             System.err.println("User real all error: " + e);
@@ -706,7 +705,6 @@ public class MetroShareSB {
     public List<Tag> readAllTags() {
         try {
             List<Tag> tl = em.createNamedQuery("Tag.findAll").getResultList();
-            em.refresh(tl);
             return tl;
         } catch (Exception e) {
           System.err.println("Tag read all error: " + e);
