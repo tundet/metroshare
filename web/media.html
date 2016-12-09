@@ -321,36 +321,5 @@
                 });
             });
         </script>
-
-        <script type="text/javascript">
-            function arrayToTable(arrayToBeTable) {
-                // console.log(arrayToBeTable);
-                var table = document.getElementById("tables");
-                table.innerHTML = '';
-                var thead = document.createElement("THEAD");
-                var tbody = document.createElement("TBODY");
-                var tr = document.createElement("TR");
-                for (i = 0; i < arrayToBeTable.length; i++) {
-                    if (i == 0) {
-                        for (var header in arrayToBeTable[i]) {
-                            var th = document.createElement("TH");
-                            th.textContent = arrayToBeTable[i][header];
-                            tr.appendChild(th);
-                        }
-                        thead.appendChild(tr);
-                        table.appendChild(thead);
-                    } else {
-                        tr = document.createElement("TR");
-                        for (var value in arrayToBeTable[i]) {
-                            var th = document.createElement("TD");
-                            th.textContent = arrayToBeTable[i][value];
-                            tr.appendChild(th);
-                        }
-                        tbody.appendChild(tr);
-                        table.appendChild(tbody);
-                    }
-                }
-            }
-        </script>
     </body>
 </html>
