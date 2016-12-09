@@ -107,14 +107,9 @@ and open the template in the editor.
         </footer>
 
         <div class="test">
-            <form id="login-form" method="post" action="">
-                <input type="text" name="username" placeholder="Username">
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" value="Log in">
-            </form>
             <div>
-
-                <h4>PAGES</h4>
+                <h2>ADMIN TOOLS</h2>
+                <h4>RAW PAGES</h4>
                 <ul>
                     <li>
                         <form id="profile" action="profile.html">
@@ -123,7 +118,7 @@ and open the template in the editor.
                     </li>
                     <li>
                         <form id="profile" action="signup.html">
-                            <button type="submit">Login page</button>
+                            <button type="submit">Singup page</button>
                         </form>
                     </li>
                     <li>
@@ -132,8 +127,23 @@ and open the template in the editor.
                         </form>
                     </li>
                     <li>
+                        <form id="profile" action="about.html">
+                            <button type="submit">About page</button>
+                        </form>
+                    </li>
+                    <li>
                         <form id="profile" action="browse.html">
-                            <button type="submit">Browse media page</button>
+                            <button type="submit">Browse page</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="profile" action="statistics.html">
+                            <button type="submit">Statistics page</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form id="profile" action="upload.html">
+                            <button type="submit">Upload page</button>
                         </form>
                     </li>
                 </ul>
@@ -167,11 +177,6 @@ and open the template in the editor.
                             <button type="submit">Get Tags!</button>
                         </form>
                     </li>
-                    <li>
-                        <form id="get-images" method="get" action="">
-                            <button type="submit">Get 4 random pics!</button>
-                        </form>
-                    </li>
                 </ul>           
             </div>
 
@@ -179,24 +184,6 @@ and open the template in the editor.
 
             </table>
         </div>
-
-        <script type="text/javascript">
-            $("#login-form").submit(function (event) {
-                event.preventDefault();
-
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:8080/MetroShare/webresources/login",
-                    data: $("#login-form").serialize(),
-                    success: function (data, textStatus, xhr) {
-                        alert(data);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            });
-        </script>
 
         <script type="text/javascript">
             $(document).ready(function (event) {
@@ -221,23 +208,6 @@ and open the template in the editor.
         <!-- Admin functions -->
 
         <script type="text/javascript">
-            $("#get-images").submit(function (event) {
-                event.preventDefault();
-
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:8080/MetroShare/webresources/media/get/4",
-                    success: function (data, textStatus, xhr) {
-                        alert(data);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Error: " + errorThrown);
-                    }
-                });
-            });
-        </script>
-
-        <script type="text/javascript">
             $("#admin-users").submit(function (event) {
                 event.preventDefault();
 
@@ -247,21 +217,7 @@ and open the template in the editor.
                     data: $("#admin-users").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        var a = [];
-                        var b = [];
-                        for (var data in jsondata[0]) {
-                            b.push(data);
-                        }
-                        a.push(b);
-                        for (var json in jsondata) {
-                            var b = [];
-                            for (var data in jsondata[json]) {
-                                b.push(jsondata[json][data]);
-                            }
-                            a.push(b);
-                        }
-                        //console.log(a);
-                        arrayToTable(a);
+                        arrayToTable(jsonArrayToArray2(jsondata));
 
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -281,21 +237,7 @@ and open the template in the editor.
                     data: $("#admin-comments").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        var a = [];
-                        var b = [];
-                        for (var data in jsondata[0]) {
-                            b.push(data);
-                        }
-                        a.push(b);
-                        for (var json in jsondata) {
-                            var b = [];
-                            for (var data in jsondata[json]) {
-                                b.push(jsondata[json][data]);
-                            }
-                            a.push(b);
-                        }
-                        //console.log(a);
-                        arrayToTable(a);
+                        arrayToTable(jsonArrayToArray2(jsondata));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -314,32 +256,7 @@ and open the template in the editor.
                     data: $("#admin-medias").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        console.log(jsondata);
-                        var a = [];
-                        var b = [];
-                        for (var data in jsondata[0]) {
-                            b.push(data);
-                        }
-                        a.push(b);
-                        for (var json in jsondata) {
-                            var b = [];
-                            for (var data in jsondata[json]) {
-                                if (data == "tags") {
-                                    for (var tag in jsondata[json][data]) {
-                                        var c = [];
-                                        for (var tagdata in jsondata[json][data][tag]) {
-                                            c.push(jsondata[json][data][tag][tagdata]);
-                                        }
-                                        b.push(c);
-                                    }
-                                } else {
-                                    b.push(jsondata[json][data]);
-                                }
-                            }
-                            a.push(b);
-                        }
-                        console.log(a);
-                        arrayToTable(a);
+                        arrayToTable(jsonArrayToArray2(jsondata));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
@@ -358,27 +275,45 @@ and open the template in the editor.
                     data: $("#admin-tags").serialize(),
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        var a = [];
-                        var b = [];
-                        for (var data in jsondata[0]) {
-                            b.push(data);
-                        }
-                        a.push(b);
-                        for (var json in jsondata) {
-                            var b = [];
-                            for (var data in jsondata[json]) {
-                                b.push(jsondata[json][data]);
-                            }
-                            a.push(b);
-                        }
-                        console.log(a);
-                        arrayToTable(a);
+                        arrayToTable(jsonArrayToArray2(jsondata));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
                     }
                 });
             });
+        </script>
+        
+        <script type="text/javascript">
+            function jsonArrayToArray2(jsonArray) {
+                var a = [];
+                var b = [];
+
+                // First line titles
+                for (key in jsonArray[0]) {
+                    b.push(key);
+                }
+                a.push(b);
+                
+                for (key in jsonArray) {
+                    b = [];
+                    if (typeof jsonArray[key] === "object") {
+                        for (value in jsonArray[key]) {
+                            if (typeof jsonArray[key][value] === "object") {
+                                for (valueb in jsonArray[key][value]) {
+                                    b.push(jsonArray[key][value][valueb]);
+                                }
+                            } else {
+                                b.push(jsonArray[key][value]);
+                            }
+                        }
+                    } else {
+                        b.push(jsonArray[key]);
+                    }
+                    a.push(b);
+                }
+                return a;
+            }
         </script>
     </body>
 </html>

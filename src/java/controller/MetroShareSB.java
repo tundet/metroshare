@@ -475,8 +475,8 @@ public class MetroShareSB {
             em.refresh(u);
             return new ArrayList<Friend>(u.getFriendCollection1());
         } catch (Exception e) {
-          System.err.println("Friend read by friendId error: " + e);
-          return null;  
+            System.err.println("Friend read by friendId error: " + e);
+            return null;
         }
     }
 
@@ -492,8 +492,8 @@ public class MetroShareSB {
             em.refresh(ml);
             return ml;
         } catch (Exception e) {
-          System.err.println("MediaLike insert error: " + e);
-          return null;  
+            System.err.println("MediaLike insert error: " + e);
+            return null;
         }
     }
 
@@ -506,7 +506,7 @@ public class MetroShareSB {
         try {
             em.merge(ml);
         } catch (Exception e) {
-          System.err.println("MediaLike update error: " + e);
+            System.err.println("MediaLike update error: " + e);
         }
     }
 
@@ -519,7 +519,7 @@ public class MetroShareSB {
         try {
             em.remove((MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult());
         } catch (Exception e) {
-          System.err.println("MediaLike remove error: " + e);  
+            System.err.println("MediaLike remove error: " + e);
         }
     }
 
@@ -533,7 +533,7 @@ public class MetroShareSB {
             List<MediaLike> mll = em.createNamedQuery("MediaLike.findAll").getResultList();
             return mll;
         } catch (Exception e) {
-            System.err.println("MediaLike read all error: " + e);  
+            System.err.println("MediaLike read all error: " + e);
             return null;
         }
     }
@@ -550,8 +550,8 @@ public class MetroShareSB {
             em.refresh(m);
             return new ArrayList<MediaLike>(m.getMediaLikeCollection());
         } catch (Exception e) {
-          System.err.println("MediaLike read by mediaId error: " + e);
-          return null;  
+            System.err.println("MediaLike read by mediaId error: " + e);
+            return null;
         }
     }
 
@@ -567,23 +567,23 @@ public class MetroShareSB {
             em.refresh(u);
             return new ArrayList<MediaLike>(u.getMediaLikeCollection());
         } catch (Exception e) {
-          System.err.println("MediaLike read by userId error: " + e);
-          return null;  
+            System.err.println("MediaLike read by userId error: " + e);
+            return null;
         }
     }
-    
+
     /**
      * Retrieve a media like by its ID.
-     * 
+     *
      * @param id ID of the like
      * @return Instance of the like on success, null on failure
      */
     public MediaLike readMediaLikeByMediaId(int id) {
         try {
-            MediaLike ml = (MediaLike)em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
+            MediaLike ml = (MediaLike) em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
             return ml;
         } catch (Exception e) {
-            System.err.println("MediaLike red by mediaId error: " + e);  
+            System.err.println("MediaLike red by mediaId error: " + e);
             return null;
         }
     }
@@ -600,8 +600,8 @@ public class MetroShareSB {
             em.refresh(mt);
             return mt;
         } catch (Exception e) {
-          System.err.println("MediaTag insert error: " + e);
-          return null;  
+            System.err.println("MediaTag insert error: " + e);
+            return null;
         }
     }
 
@@ -614,7 +614,7 @@ public class MetroShareSB {
         try {
             em.merge(mt);
         } catch (Exception e) {
-          System.err.println("MediaTag update error: " + e);
+            System.err.println("MediaTag update error: " + e);
         }
     }
 
@@ -628,8 +628,8 @@ public class MetroShareSB {
             List<MediaTag> mtl = em.createNamedQuery("MediaTag.findAll").getResultList();
             return mtl;
         } catch (Exception e) {
-          System.err.println("MediaTag read all error: " + e);
-          return null;  
+            System.err.println("MediaTag read all error: " + e);
+            return null;
         }
     }
 
@@ -645,8 +645,8 @@ public class MetroShareSB {
             em.refresh(m);
             return new ArrayList<MediaTag>(m.getMediaTagCollection());
         } catch (Exception e) {
-          System.err.println("MediaTag read by mediaId error: " + e);
-          return null;  
+            System.err.println("MediaTag read by mediaId error: " + e);
+            return null;
         }
     }
 
@@ -662,8 +662,8 @@ public class MetroShareSB {
             em.refresh(t);
             return new ArrayList<MediaTag>(t.getMediaTagCollection());
         } catch (Exception e) {
-          System.err.println("MediaTag read by tagId error: " + e);
-          return null;  
+            System.err.println("MediaTag read by tagId error: " + e);
+            return null;
         }
     }
 
@@ -679,8 +679,8 @@ public class MetroShareSB {
             em.refresh(t);
             return t;
         } catch (Exception e) {
-          System.err.println("Tag insert error: " + e);
-          return null;  
+            System.err.println("Tag insert error: " + e);
+            return null;
         }
     }
 
@@ -693,7 +693,7 @@ public class MetroShareSB {
         try {
             em.merge(t);
         } catch (Exception e) {
-          System.err.println("Tag update error: " + e);
+            System.err.println("Tag update error: " + e);
         }
     }
 
@@ -707,8 +707,8 @@ public class MetroShareSB {
             List<Tag> tl = em.createNamedQuery("Tag.findAll").getResultList();
             return tl;
         } catch (Exception e) {
-          System.err.println("Tag read all error: " + e);
-          return null;  
+            System.err.println("Tag read all error: " + e);
+            return null;
         }
     }
 
@@ -723,8 +723,8 @@ public class MetroShareSB {
             List<Tag> tl = em.createNamedQuery("Tag.findById").setParameter("id", id).getResultList();
             return tl;
         } catch (Exception e) {
-          System.err.println("Tag read by id error: " + e);
-          return null;  
+            System.err.println("Tag read by id error: " + e);
+            return null;
         }
     }
 
@@ -739,8 +739,8 @@ public class MetroShareSB {
             List<Tag> tl = em.createNamedQuery("Tag.findByTag").setParameter("tag", tag).getResultList();
             return tl;
         } catch (Exception e) {
-          System.err.println("Tag read by tag error: " + e);
-          return null;  
+            System.err.println("Tag read by tag error: " + e);
+            return null;
         }
     }
 }
