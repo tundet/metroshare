@@ -186,7 +186,7 @@ public class MediaResource {
             ml.setLikeBoolean(Boolean.FALSE);
             mssb.insert(ml);
         } else {
-            ml = mssb.readMediaLikeByUserIdAndMediaId(Integer.parseInt(likeid));
+            ml = mssb.readMediaLikeByMediaId(Integer.parseInt(likeid));
             ml.setLikeBoolean(Boolean.FALSE);
             ml.setDate(null);
             mssb.update(ml);
@@ -220,7 +220,7 @@ public class MediaResource {
             ml.setLikeBoolean(Boolean.TRUE);
             mssb.insert(ml);
         } else {
-            ml = mssb.readMediaLikeByUserIdAndMediaId(Integer.parseInt(likeid));
+            ml = mssb.readMediaLikeByMediaId(Integer.parseInt(likeid));
             ml.setLikeBoolean(Boolean.TRUE);
             ml.setDate(null);
             mssb.update(ml);

@@ -583,6 +583,23 @@ public class MetroShareSB {
           return null;  
         }
     }
+    
+    /**
+     * Retrieve a media like by its ID.
+     * 
+     * @param id ID of the like
+     * @return Instance of the like on success, null on failure
+     */
+    public MediaLike readMediaLikeByMediaId(int id) {
+        try {
+            MediaLike ml = (MediaLike)em.createNamedQuery("MediaLike.findById").setParameter("id", id).getSingleResult();
+            em.refresh(ml);
+            return ml;
+        } catch (Exception e) {
+            System.err.println("MediaLike red by mediaId error: " + e);  
+            return null;
+        }
+    }
 
     /**
      * Create a media tag.
