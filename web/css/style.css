@@ -811,6 +811,7 @@ footer ul li a {
     background-color: #303F9F;
     padding: 4px 5px 7px 15px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .redbtn-like:disabled {
@@ -818,6 +819,7 @@ footer ul li a {
     background-color: #D32F2F;
     padding: 4px 5px 7px 15px;
     font-size: 20px;
+    cursor: not-allowed;
 }
 
 /* ---------------------------*/
