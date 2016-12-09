@@ -155,15 +155,11 @@ public class UsersResource {
      */
     @GET
     @Path("/sessionid/{sessionid}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public String getSessionJson(@PathParam("sessionid") String sessionid) {
-        String r = "";
-        
         User u = mssb.readUserBySessionID(sessionid);
         
-        r += "{\"username\":\"" + u.getLogin() + "\"}";
-        
-        return r;
+        return u.getLogin();
     }
     
     /**

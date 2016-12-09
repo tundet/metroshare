@@ -9,7 +9,7 @@
 
 $(document).ready(function () {
     if (readSessionIdFromCookie()) {
-        var loginName = checkIfLoggedIn().username;
+        var loginName = checkIfLoggedIn();
         $(".login-area").text("");
         
         // Show username in the upper-right corner.
@@ -253,7 +253,6 @@ function onSignIn(event) {
         url: "http://localhost:8080/MetroShare/webresources/admin/signin",
         data: $(".signin-form").serialize(),
         success: function (data, textStatus, xhr) {
-            //console.log(data);
             document.cookie = "SessionID = " + data;
             location.reload();
         },
@@ -389,7 +388,7 @@ function checkIfLoggedIn() {
         async: false,
         url: "http://localhost:8080/MetroShare/webresources/users/sessionid/" + readSessionIdFromCookie(),
         success: function (data, textStatus, xhr) {
-            json = JSON.parse(data);
+            json = data;
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
