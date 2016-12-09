@@ -85,7 +85,7 @@ public class upload extends HttpServlet {
 
         // Get the file extension of the image.
         int lastIndexOfDot = fileName.lastIndexOf(".");
-        fileName = mssb.getNextMediaId() + fileName.substring(lastIndexOfDot);
+        fileName = mssb.readNextMediaId() + fileName.substring(lastIndexOfDot);
 
         User user = mssb.readUserBySessionID(request.getParameter("sessionid"));
 
