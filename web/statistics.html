@@ -72,6 +72,8 @@
             <div class="col-12">
                 <h2 id="total-media"></h2>
                 <h2 id="total-users"></h2>
+                <h2 id="total-tags"></h2>
+                <h2 id="total-comments"></h2>
                 <h2>Latest media uploaded</h2>
                 <div id="recent-media"></div>
                 <h2 id="most-liked"></h2>
@@ -103,7 +105,7 @@
                 </ul>
             </div>
         </footer>
-        
+
         <script type="text/javascript">
             //retrieve total media
             $(document).ready(function (event) {
@@ -122,7 +124,7 @@
                 });
             });
         </script>
-        
+
         <script type="text/javascript">
             //retrieve total users
             $(document).ready(function (event) {
@@ -131,7 +133,6 @@
                     url: "http://localhost:8080/MetroShare/webresources/users/total",
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
-                        console.log(jsondata[0]);
                         var total = jsondata.length + " users registered in total";
                         document.querySelector("#total-users").innerHTML = total;
                     },
@@ -141,11 +142,47 @@
                 });
             });
         </script>
-        
-        
+
+        <script type="text/javascript">
+            //retrieve total tags
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/tags",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        console.log(jsondata);
+                        var total = jsondata.length + " tags in total";
+                        document.querySelector("#total-tags").innerHTML = total;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            //retrieve total comments
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8080/MetroShare/webresources/admin/comments",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        console.log(jsondata);
+                        var total = jsondata.length + " comments posted in total";
+                        document.querySelector("#total-comments").innerHTML = total;
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
         
         <script type="text/javascript">
-            //TODO FIX LOL it's undefined now
+            //retrieve latest media
             $(document).ready(function (event) {
                 $.ajax({
                     type: "GET",
@@ -159,8 +196,6 @@
                     }
                 });
             });
-            
-            
         </script>
     </body>
 </html>
