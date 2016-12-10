@@ -298,8 +298,10 @@ and open the template in the editor.
                 for (key in jsonArray) {
                     b = [];
                     if (typeof jsonArray[key] === "object") {
+                        console.log("2nd stage found");
                         for (value in jsonArray[key]) {
                             if (typeof jsonArray[key][value] === "object") {
+                                console.log("3nd stage found");
                                 for (valueb in jsonArray[key][value]) {
                                     b.push(jsonArray[key][value][valueb]);
                                 }
