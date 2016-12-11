@@ -10,32 +10,48 @@
 $(document).ready(function () {
 //Stuff to do on everysite:
 //    navbarhide();
+    var cookiesessionid = readSessionIdFromCookie();
 
-//Stuff to do in spesific site when not logged in
+    //Stuff to do in spesific site when not logged in
     var loc = document.location.toString();
     loc = loc.substring(loc.indexOf("MetroShare/") + 11);
     if (loc.startsWith("index.html") || loc === "") {
         getrandompics(10);
     } else if (loc.startsWith("media.html")) {
+        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+            window.location = "signup.html";
+        }
     } else if (loc.startsWith("profile.html")) {
 //        console.log("yay in profile");
+        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+            window.location = "signup.html";
+        }
     } else if (loc.startsWith("singup.html")) {
 //        console.log("yay in singup");
     } else if (loc.startsWith("statistics.html")) {
 //        console.log("yay in statistics");
     } else if (loc.startsWith("upload.html")) {
 //        console.log("yay in upload");
+        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+            window.location = "signup.html";
+        }
     } else if (loc.startsWith("about.html")) {
 //        console.log("yay in about");
     } else if (loc.startsWith("admin.html")) {
 //        console.log("yay in admin");
+        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+            window.location = "signup.html";
+        }
         getAdminTools();
     } else if (loc.startsWith("browse.html")) {
+        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+            window.location = "signup.html";
+        }
         getrandompics(8);
         loadNlatestMedia(6);
+        
     }
 
-    var cookiesessionid = readSessionIdFromCookie();
     if (cookiesessionid !== "undefined" && cookiesessionid !== null) {
         console.log("cookie session id: " + cookiesessionid);
         var loginName = null;
