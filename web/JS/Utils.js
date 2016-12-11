@@ -229,7 +229,9 @@ function onSignOut(event) {
 
 function getrandompics(num) {
     var headin = document.querySelector("#random-media-headin");
-    headin.innerHTML = num + " random media of the moment!";
+    if (headin) {
+        headin.innerHTML = num + " random media of the moment!";
+    }
     var media = document.querySelector("#random-media");
     fetch("http://localhost:8080/MetroShare/webresources/media/get/" + num, {
         method: 'GET'
