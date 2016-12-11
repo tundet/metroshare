@@ -18,12 +18,12 @@ $(document).ready(function () {
     if (loc.startsWith("index.html") || loc === "") {
         getrandompics(10);
     } else if (loc.startsWith("media.html")) {
-        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+        if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
         }
     } else if (loc.startsWith("profile.html")) {
 //        console.log("yay in profile");
-        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+        if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
         }
     } else if (loc.startsWith("singup.html")) {
@@ -32,24 +32,25 @@ $(document).ready(function () {
 //        console.log("yay in statistics");
     } else if (loc.startsWith("upload.html")) {
 //        console.log("yay in upload");
-        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+        if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
         }
     } else if (loc.startsWith("about.html")) {
 //        console.log("yay in about");
     } else if (loc.startsWith("admin.html")) {
 //        console.log("yay in admin");
-        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+        if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
+        } else {
+            getAdminTools();
         }
-        getAdminTools();
     } else if (loc.startsWith("browse.html")) {
-        if ((cookiesessionid == "undefined" || cookiesessionid == null)) {
+        if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
+        } else {
+            getrandompics(8);
+            loadNlatestMedia(6);
         }
-        getrandompics(8);
-        loadNlatestMedia(6);
-        
     }
 
     if (cookiesessionid !== "undefined" && cookiesessionid !== null) {
@@ -676,7 +677,7 @@ function loadBrowse() {
         title = true;
     }
 
-    if (title == null) {
+    if (title === null) {
         $("#titles").toggleClass("checked");
         $("#titles").removeAttr("checked");
     }
@@ -1163,7 +1164,7 @@ function adminMediaToTable(arrayToBeTable) {
         titleInput.name = "title";
         titleInput.value = arrayToBeTable[i][5];
         titleInput.style.width = "100%";
-        td.style.width = "100%"
+        td.style.width = "100%";
         td.append(titleInput);
         tr.append(td);
         table.append(tr);
@@ -1172,9 +1173,9 @@ function adminMediaToTable(arrayToBeTable) {
         td.innerHTML = "<b>Tags:</b>";
         tr.append(td);
         if (arrayToBeTable[i][6].length > 0) {
-            for (x in arrayToBeTable[i][6]) {
+            for (var x in arrayToBeTable[i][6]) {
                 td = document.createElement("span");
-                var tagCBInput = document.createElement("input")
+                var tagCBInput = document.createElement("input");
                 tagCBInput.type = "checkbox";
                 tagCBInput.checked = true;
                 tagCBInput.name = "tags";
