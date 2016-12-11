@@ -94,7 +94,6 @@ public class MetroShareSB {
     public User readUserByLogin(String login) {
         try {
             User u = (User) em.createNamedQuery("User.findByLogin").setParameter("login", login).getSingleResult();
-            em.refresh(u);
             return u;
         } catch (Exception e) {
             System.err.println("User read by login error: " + e);
@@ -110,9 +109,7 @@ public class MetroShareSB {
      */
     public User readUserBySessionID(String sessionid) {
         try {
-            User u = (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid + "'", User.class).getSingleResult();
-            em.refresh(u);
-            return u;
+            return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid.trim() + "';",User.class).getSingleResult();
         } catch (Exception e) {
             System.err.println("User read by session id error: " + e);
             return null;
@@ -154,6 +151,7 @@ public class MetroShareSB {
      * @return The greatest ID as an integer
      */
     public int readLastIndexOfMedias() {
+        System.out.println("Works here");
         try {
             return (int) em.createNativeQuery("SELECT MAX(ID) FROM media").getSingleResult();
         } catch (Exception e) {
@@ -331,7 +329,6 @@ public class MetroShareSB {
     public Comment insert(Comment c) {
         try {
             em.persist(c);
-            em.refresh(c);
             return c;
         } catch (Exception e) {
             System.err.println("Comment insert error: " + e);
@@ -410,7 +407,6 @@ public class MetroShareSB {
     public Friend insert(Friend f) {
         try {
             em.persist(f);
-            em.refresh(f);
             return f;
         } catch (Exception e) {
             System.err.println("Friend insert error: " + e);
@@ -489,7 +485,6 @@ public class MetroShareSB {
     public MediaLike insert(MediaLike ml) {
         try {
             em.persist(ml);
-            em.refresh(ml);
             return ml;
         } catch (Exception e) {
             System.err.println("MediaLike insert error: " + e);
@@ -612,7 +607,6 @@ public class MetroShareSB {
     public MediaTag insert(MediaTag mt) {
         try {
             em.persist(mt);
-            em.refresh(mt);
             return mt;
         } catch (Exception e) {
             System.err.println("MediaTag insert error: " + e);
@@ -691,7 +685,6 @@ public class MetroShareSB {
     public Tag insert(Tag t) {
         try {
             em.persist(t);
-            em.refresh(t);
             return t;
         } catch (Exception e) {
             System.err.println("Tag insert error: " + e);

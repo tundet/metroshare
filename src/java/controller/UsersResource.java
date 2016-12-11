@@ -9,6 +9,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -22,9 +23,9 @@ import model.User;
 
 /**
  * Users resource.
- * 
- * This resource is responsible for retrieving users, their media, friends,
- * last activity time.
+ *
+ * This resource is responsible for retrieving users, their media, friends, last
+ * activity time.
  */
 @Path("users")
 public class UsersResource {
@@ -36,8 +37,8 @@ public class UsersResource {
     private MetroShareSB mssb;
 
     /**
-     * Create a JSON object from the given user containing,
-     * the username and also friends and media of the user.
+     * Create a JSON object from the given user containing, the username and
+     * also friends and media of the user.
      *
      * @param login Username of the user
      * @return JSON object of the user and its media and friends
@@ -49,7 +50,7 @@ public class UsersResource {
         User u = mssb.readUserByLogin(login);
         Map<String, Object> config = new HashMap<String, Object>();
         JsonBuilderFactory factory = Json.createBuilderFactory(config);
-        
+
         // Media.
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : u.getMediaCollection()) {
@@ -62,7 +63,7 @@ public class UsersResource {
             builder.add(mediaValue);
         }
         JsonArray mediaA = builder.build();
-        
+
         // Friends.
         builder = Json.createArrayBuilder();
         for (Friend f : u.getFriendCollection()) {
@@ -71,8 +72,7 @@ public class UsersResource {
             builder.add(friendValue);
         }
         JsonArray friendsA = builder.build();
-        
-        
+
         JsonArray value = factory.createArrayBuilder()
                 .add(factory.createObjectBuilder()
                         .add("login", u.getLogin())
@@ -82,10 +82,10 @@ public class UsersResource {
 
         return value.toString();
     }
-    
-     /**
+
+    /**
      * Retrieve total users.
-     * 
+     *
      * @return all users.
      */
     @GET
@@ -103,10 +103,10 @@ public class UsersResource {
         }
 
         JsonArray user = builder.build();
-        
+
         return user.toString();
     }
-    
+
     /**
      * Get the matching username from the given session ID.
      *
@@ -114,24 +114,23 @@ public class UsersResource {
      * @return Username of the matching user
      */
     @GET
-    @Path("/friends/media/{username}")
+    @Path("/friends/media/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getFriendsMediaJson(@PathParam("username") String username) {
-        String r = "";
-        User u = mssb.readUserByLogin(username);
+    public String getFriendsMediaJson(@CookieParam("SessionID") String SessionID) {
+        User u = mssb.readUserBySessionID(SessionID);
         String ids = "";
-        
+
         for (Friend f : u.getFriendCollection()) {
             ids += f.getFriendId().getId() + ",";
         }
-        
-        if (ids.endsWith(",")){
-            ids = ids.substring(0, ids.length() -1);
+
+        if (ids.endsWith(",")) {
+            ids = ids.substring(0, ids.length() - 1);
         }
-        
+
         List<Media> mlst = mssb.readMediaFromFriends(ids);
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        
+
         for (Media m : mlst) {
             JsonObject mediaValue = Json.createObjectBuilder()
                     .add("mediaId", m.getId())
@@ -143,10 +142,10 @@ public class UsersResource {
         }
 
         JsonArray mediaA = builder.build();
-        
+
         return mediaA.toString();
     }
-    
+
     /**
      * Get the matching username from the given session ID.
      *
@@ -154,30 +153,38 @@ public class UsersResource {
      * @return Username of the matching user
      */
     @GET
-    @Path("/sessionid/{sessionid}")
+    @Path("/get/sessionid/")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getSessionJson(@PathParam("sessionid") String sessionid) {
-        User u = mssb.readUserBySessionID(sessionid);
-        
-        return u.getLogin();
+    public String getSessionJson(@CookieParam("SessionID") String sessionid) {
+        System.out.println("GET /sessionid");
+        System.out.println(sessionid);
+        if (sessionid != null) {
+            User u = mssb.readUserBySessionID(sessionid);
+            JsonObject userValue = Json.createObjectBuilder()
+                    .add("login", u.getLogin()).build();
+            System.out.println(userValue.toString());
+            return userValue.toString();
+        } else {
+            return null;
+        }
     }
-    
+
     /**
      * Get a user by its session ID.
-     * 
+     *
      * @param sessionid Session ID of the user
      * @return User object of the matching user
      */
     @GET
-    @Path("/getuser/{sessionid}")
+    @Path("/getuser/")
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUserBySession(@PathParam("sessionid") String sessionid) {
+    public User getUserBySession(@CookieParam("SessionID") String sessionid) {
         return mssb.readUserBySessionID(sessionid);
     }
-    
+
     /**
      * Get the last activity time of the given user.
-     * 
+     *
      * Date format is YYYY-MM-DD HH:MM:SS.
      *
      * @param login Username of the user
@@ -188,11 +195,11 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getUserJson(@PathParam("login") String login) {
         String ua = "";
-        
+
         User u = mssb.readUserByLogin(login);
-        
+
         ua += "{\"activity\":\"" + u.getActivity() + "\"}";
-        
+
         return ua;
     }
 }

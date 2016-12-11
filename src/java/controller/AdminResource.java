@@ -8,6 +8,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -117,7 +118,7 @@ public class AdminResource {
             job.add("nsfw", m.getNsfw());
             job.add("date", m.getDate().toString());
             if (m.getTitle() != null) {
-                job.add("sessionID", m.getTitle());
+                job.add("title", m.getTitle());
             } else {
                 job.add("sessionID", m.getDate().toString());
             }
@@ -186,6 +187,41 @@ public class AdminResource {
     }
 
     /**
+     * Create a new user.
+     * 
+     * Save a new user in the database.
+     * 
+     * @param username Username of the user
+     * @param password Password of the user
+     * @return Status message as a string
+     */
+    @GET
+    @Path("/gettools")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAdminTools(@CookieParam("SessionID") String SessionID) {
+        System.err.println("SessionID:" + SessionID);
+        try {
+            User user = mssb.readUserBySessionID(SessionID);
+            if (user.getPrivileges().equals("admin")) {
+                JsonObject toolsValue = Json.createObjectBuilder()
+                    .add("tools", "true")
+                    .build();
+                return toolsValue.toString();
+            }
+        } catch (Exception e) {
+            JsonObject toolsValue = Json.createObjectBuilder()
+                    .add("tools", "false")
+                    .build();
+                return toolsValue.toString();
+        } finally {
+            JsonObject toolsValue = Json.createObjectBuilder()
+                    .add("tools", "false")
+                    .build();
+                return toolsValue.toString();
+        }
+    }
+    
+    /**
      * Sign a user in.
      * 
      * Check if the user provided a correct password upon signing in.
@@ -202,12 +238,14 @@ public class AdminResource {
     public String postSignIn(@FormParam("username") String username, @FormParam("password") String password) {
         try {
             User user = mssb.readUserByLogin(username);
-
+            System.out.println(user);
             if (user.getLogin().equals(username) && user.getPassword().equals(password)) {
                 user.setSessionID(nextSessionId());
                 mssb.update(user);
-                
-                return user.getSessionID();
+                JsonObject userValue = Json.createObjectBuilder()
+                    .add("sessionid", user.getSessionID())
+                    .build();
+                return userValue.toString();
             } else {
                 return "false";
             }

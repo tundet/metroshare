@@ -138,7 +138,7 @@ public class MediaResource {
 
         return media.toString();
     }
-    
+
     /**
      * Create a new comment.
      *
@@ -160,7 +160,7 @@ public class MediaResource {
 
         return "{\"succes\": \"1\"}";
     }
-    
+
     /**
      * Create a new comment.
      *
@@ -194,7 +194,7 @@ public class MediaResource {
 
         return "{\"succes\": \"1\"}";
     }
-    
+
     /**
      * Create a new comment.
      *
@@ -242,14 +242,20 @@ public class MediaResource {
     @POST
     @Path("/comment")
     @Produces(MediaType.APPLICATION_JSON)
-    public String makeCommentToMedia(@FormParam("sender") String sender, @FormParam("mediaid") String mediaid, @FormParam("comment") String comment) {
+    public String makeCommentToMedia(@CookieParam("SessionID") String sessionid, @FormParam("mediaid") String mediaid, @FormParam("comment") String comment) {
+        User u = mssb.readUserBySessionID(sessionid);
+        System.err.println(u);
         Comment c = new Comment();
-        c.setUserId(mssb.readUserBySessionID(sender));
+        c.setUserId(u);
         c.setMediaId(mssb.readMediaByMediaID(Integer.parseInt(mediaid)));
         c.setMessage(comment);
         mssb.insert(c);
 
-        return "{\"succes\": \"1\"}";
+        JsonObject commentValue = Json.createObjectBuilder()
+                .add("status", "1").build();
+        System.out.println(commentValue.toString());
+        return commentValue.toString();
+
     }
 
     /**
@@ -289,7 +295,7 @@ public class MediaResource {
     @GET
     @Path("/get/{numberOfMediasWanted}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getThisAmountOfMediasJson(@PathParam("numberOfMediasWanted") int media) {
+    public String getThisAmountOfMediasJson(@PathParam("numberOfMediasWanted") String media) {
         int last = mssb.readLastIndexOfMedias();
         System.err.println(last);
 
@@ -298,7 +304,7 @@ public class MediaResource {
 
         List<Media> midal = mssb.readAllMediaIds();
 
-        while (mal.size() < media) {
+        while (mal.size() < Integer.parseInt(media)) {
             int id = (rnd.nextInt(last) + 1);
             if (midal.contains(id)) {
                 Media m = mssb.readMediaByMediaID(id);
@@ -328,10 +334,10 @@ public class MediaResource {
 
         return mediaA.toString();
     }
-    
+
     /**
      * Retrieve total amount of the latest media.
-     * 
+     *
      * @return All media.
      */
     @GET
@@ -349,13 +355,13 @@ public class MediaResource {
         }
 
         JsonArray media = builder.build();
-        
+
         return media.toString();
     }
-    
+
     /**
      * Retrieve total amount of the latest media.
-     * 
+     *
      * @return All media.
      */
     @GET
@@ -373,7 +379,7 @@ public class MediaResource {
         }
 
         JsonArray media = builder.build();
-        
+
         return media.toString();
     }
 
