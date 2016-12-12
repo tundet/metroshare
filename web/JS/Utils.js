@@ -786,9 +786,9 @@ function loadBrowse() {
 // ------ browse tools ------ */
 // -------------------------------*/
 //give class "checked" to checkbox when clicking on its span
-$('span').click(function (event) {
-    $(this).parents("label").find("input").toggleClass("checked");
-});
+function onSearchCheckboxTick (event) {
+    $(event.target).parents("label").find("input").toggleClass("checked");
+}
 
 
 function searchMedia(event) {
