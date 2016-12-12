@@ -30,6 +30,13 @@ $(document).ready(function () {
 //        console.log("yay in singup");
     } else if (loc.startsWith("statistics.html")) {
 //        console.log("yay in statistics");
+        loadTotalMedia();
+        loadTotalUsers();
+        loadTotalTags();
+        loadTotalComments();
+        loadRecentMedia();
+        loadMostLikedMedia();
+        loadMostCommentedMedia();
     } else if (loc.startsWith("upload.html")) {
 //        console.log("yay in upload");
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
@@ -1376,3 +1383,120 @@ $("#admin-tags").submit(function (event) {
         }
     });
 });
+
+// -------------------------------*/
+// ------ Statistics Load ------- */
+// -------------------------------*/
+
+//retrieve total media
+function loadTotalMedia() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/media/total",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            console.log(jsondata[0]);
+            var total = jsondata.length + " media uploaded in total";
+            document.querySelector("#total-media").innerHTML = total;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+//retrieve total users
+function loadTotalUsers() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/users/total",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            var total = jsondata.length + " users registered in total";
+            document.querySelector("#total-users").innerHTML = total;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+//retrieve total tags
+function loadTotalTags() {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/tags",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            console.log(jsondata);
+            var total = jsondata.length + " tags in total";
+            document.querySelector("#total-tags").innerHTML = total;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+//retrieve total comments
+function loadTotalComments() {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/MetroShare/webresources/admin/comments",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            console.log(jsondata);
+            var total = jsondata.length + " comments posted in total";
+            document.querySelector("#total-comments").innerHTML = total;
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+//retrieve most recent media
+function loadRecentMedia() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/media/latest/1",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            console.log(jsondata);
+            document.querySelector("#recent-media").append(generateMedia(jsondata[0], 12));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+//retrieve most likes
+function loadMostLikedMedia() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/media/mostlikes",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            document.querySelector("#most-liked").append(generateMedia(jsondata[0], 12));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
+
+
+//retrieve most commented
+function loadMostCommentedMedia() {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/MetroShare/webresources/media/mostcomments",
+        success: function (data, textStatus, xhr) {
+            var jsondata = JSON.parse(data);
+            document.querySelector("#most-comments").append(generateMedia(jsondata[0], 12));
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error: " + errorThrown);
+        }
+    });
+}
