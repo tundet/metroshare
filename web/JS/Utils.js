@@ -41,8 +41,6 @@ $(document).ready(function () {
 //        console.log("yay in admin");
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
-        } else {
-            getAdminTools();
         }
     } else if (loc.startsWith("browse.html")) {
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
@@ -851,21 +849,14 @@ $("#search-media").submit(function (event) {
 });
 
 function getAdminTools() {
-    $.ajax({
-        type: "POST",
+    fetch("http://localhost:8080/MetroShare/webresources/admin/gettools/", {
+        method: 'GET',
         async: false,
-        url: "http://localhost:8080/MetroShare/webresources/admin/gettools/",
-        data: $("#make-comment-form").serialize(),
-        success: function (data, textStatus, xhr) {
-            if (data) {
-                console.log("data");
-                var jsondata = JSON.parse(data);
-                document.querySelector("#admin-tools").inneHTML = jsondata.tools;
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Error: " + errorThrown);
-        }
+        credentials: 'same-origin'
+    }).then(function (response) {
+        return response.json();
+    }).then(function (j) {
+        $("#admin-tools").append("Tools get");
     });
 }
 
