@@ -1011,6 +1011,7 @@ label.checkbox :checked + span {
     color:#fff;
     margin: 3px;
     font-weight: normal;
+    text-decoration: none;
 }
 
 .show-media-figure {

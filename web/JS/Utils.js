@@ -516,6 +516,7 @@ function loadmedia(qparam) {
             var uploaderdiv = $(".img-uploader");
             var aUploader = document.createElement("a");
             aUploader.href = "profile.html?login=" + a[1][1];
+            aUploader.style.textDecoration = "none";
             var h5 = document.createElement("h5");
             h5.append("By " + a[1][1]);
             aUploader.append(h5);
@@ -595,6 +596,7 @@ function loadmedia(qparam) {
                     contdiv.append(rightColumn);
                     var alink = document.createElement("a");
                     alink.href = "profile.html?login=" + a[1][5][i].userName;
+                    alink.style.textDecoration = "none";
                     var unameh2 = document.createElement("h2");
                     unameh2.classList.add("comment-sender-name");
                     unameh2.innerHTML = a[1][5][i].userName;
