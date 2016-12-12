@@ -238,12 +238,7 @@ public class AdminResource {
                     .add("tools", "false")
                     .build();
             return toolsValue.toString();
-        } finally {
-            JsonObject toolsValue = Json.createObjectBuilder()
-                    .add("tools", "false")
-                    .build();
-            return toolsValue.toString();
-        }
+        } 
     }
 
     /**

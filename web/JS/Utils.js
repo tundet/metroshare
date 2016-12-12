@@ -856,8 +856,15 @@ function getAdminTools() {
     }).then(function (response) {
         return response.json();
     }).then(function (j) {
-        console.log(j)
-        $("#admin-tools").append(j);
+        if (j.tools) {
+            for (var page in j.pages) {
+                var form = document.createElement();
+                console.log(page);
+                console.log(j.pages[page])
+            }
+            
+            $("#admin-tools").append(j);
+        }
     });
 }
 
