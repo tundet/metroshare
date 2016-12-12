@@ -369,14 +369,15 @@ public class MediaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getMostLikesJson() {
         List<MediaLike> mll = mssb.readMostMediaLikes();
-
+        Media m = mll.get(0).getMediaId();
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (MediaLike m : mll) {
-            JsonObject mediaValue = Json.createObjectBuilder()
-                    .add("mediaId", m.getMediaId().getId())
-                    .build();
-            builder.add(mediaValue);
-        }
+        JsonObject mediaValue = Json.createObjectBuilder()
+                .add("mediaId", m.getId())
+                .add("mediaLocation", m.getMediaLocation())
+                .add("title", m.getTitle())
+                .add("nsfw", m.getNsfw())
+                .build();
+        builder.add(mediaValue);
 
         JsonArray media = builder.build();
 

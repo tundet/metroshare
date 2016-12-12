@@ -301,9 +301,12 @@ function unBlur(nsfwobject) {
  *
  * @param json string JSON containing media information
  */
-function generateMedia(json) {
+function generateMedia(json, num) {
+    if (typeof num === "undefined") {
+        num = 2;
+    }
     var col2 = document.createElement("DIV");
-    col2.setAttribute("class", "col-2");
+    col2.setAttribute("class", "col-" + num);
     var imageholder = document.createElement("DIV");
     imageholder.setAttribute("class", "imageholder");
     var a = document.createElement("A");
