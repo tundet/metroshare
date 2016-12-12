@@ -44,7 +44,7 @@ public class AdminResource {
      *
      * @return All users as JSON
      */
-    @POST
+    @GET
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
     public String getUsersJson() {
@@ -76,7 +76,7 @@ public class AdminResource {
      *
      * @return All comments as JSON
      */
-    @POST
+    @GET
     @Path("/comments")
     @Produces(MediaType.APPLICATION_JSON)
     public String getCommentsJson() {
@@ -103,7 +103,7 @@ public class AdminResource {
      *
      * @return All media as JSON.
      */
-    @POST
+    @GET
     @Path("/medias")
     @Produces(MediaType.APPLICATION_JSON)
     public String getMediasJson() {
@@ -145,6 +145,43 @@ public class AdminResource {
      * @return All tags as JSON.
      */
     @POST
+    @Path("/remove")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removeJson(@CookieParam("SessionID") String sessionid, @FormParam("datatype") String datatype, @FormParam("id") int id) {
+        System.out.println("Removing " + sessionid + " , " + datatype + " , " + id);
+        User u = mssb.readUserBySessionID(sessionid);
+        if (u.getPrivileges().equals("admin")) {
+            if (datatype.equals("user")) {
+                mssb.removeUser(id);
+            } else if (datatype.equals("comment")) {
+                mssb.removeComment(id);
+            } else if (datatype.equals("media")) {
+                mssb.removeMedia(id);
+            } else if (datatype.equals("tag")) {
+                mssb.removeTag(id);
+            }
+            
+            JsonObject removeValue = Json.createObjectBuilder()
+                    .add("status", "Removed")
+                    .add("sessionid", sessionid)
+                    .add("datatype", datatype)
+                    .add("id", id)
+                    .build();
+            return removeValue.toString();
+        } else {
+            JsonObject removeValue = Json.createObjectBuilder()
+                    .add("status", "failure")
+                    .build();
+            return removeValue.toString();
+        }
+    }
+
+    /**
+     * Return all tags as JSON.
+     *
+     * @return All tags as JSON.
+     */
+    @GET
     @Path("/tags")
     @Produces(MediaType.APPLICATION_JSON)
     public String getTagsJson() {
@@ -215,16 +252,16 @@ public class AdminResource {
                         .build();
                 JsonObject toolsGetData = Json.createObjectBuilder()
                         .add("Users", "admin-users")
-                        .add("About", "admin-comments")
-                        .add("Browse", "admin-medias")
-                        .add("Media", "admin-tags")
+                        .add("Comments", "admin-comments")
+                        .add("Medias", "admin-medias")
+                        .add("Tags", "admin-tags")
                         .build();
                 JsonObject toolsValue = Json.createObjectBuilder()
                         .add("tools", "true")
                         .add("pages", toolsSinglePages)
                         .add("gets", toolsGetData)
                         .build();
-                
+
                 System.out.println(toolsValue.toString());
                 return toolsValue.toString();
             } else {
@@ -238,7 +275,7 @@ public class AdminResource {
                     .add("tools", "false")
                     .build();
             return toolsValue.toString();
-        } 
+        }
     }
 
     /**

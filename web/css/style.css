@@ -1186,3 +1186,28 @@ label.checkbox :checked + span {
     color: #fff;
     font-weight: bold;
 }
+
+/* ---------------------------*/
+/* -------- admin ----------- */
+/* ---------------------------*/
+
+#admin-tools {
+    background: url(http://i.imgur.com/yTWY6ay.jpg) no-repeat center center; 
+}
+
+#tables {
+    display: table;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}
+
+#tables form {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+#tables form:nth-child(even) {
+    background-color: #ccc;
+}

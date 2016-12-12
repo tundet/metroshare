@@ -58,7 +58,6 @@ $(document).ready(function () {
             if (qparam === null) {
                 loadNlatestMedia(6);
             }
-
             getrandompics(12);
         }
     }
@@ -600,10 +599,10 @@ function loadmedia(qparam) {
                 comments.append(makeCommentDiv);
             }
 
-            console.log(a[1][5].length);
+            //console.log(a[1][5].length);
             if (a[1][5].length > 0) {
                 for (var i in a[1][5]) {
-                    console.log(a[1][5][i].date);
+                    //.log(a[1][5][i].date);
                     var contdiv = document.createElement("div");
                     contdiv.classList.add("comment");
                     var leftColumn = document.createElement("div");
@@ -675,9 +674,9 @@ function loadProfile(qparam) {
             }
             document.querySelector("#friends").appendChild(frul);
             // Example how to modify existing data
-            console.log($("#loginname").text()); // first it is johndoe
+            //console.log($("#loginname").text()); // first it is johndoe
             $("#loginname").text(jsondata[0].login);
-            console.log($("#loginname").text()); // then changed to json value login 
+            //console.log($("#loginname").text()); // then changed to json value login 
 
             //arrayToTable(jsondata[0].friends[0]);
         },
@@ -694,7 +693,7 @@ function loadProfile(qparam) {
 function loadBrowse() {
     var loc = document.location.toString();
     var qparamsl = readQParamsToList(loc);
-    console.log(qparamsl);
+    //console.log(qparamsl);
     var tag = returnValueOf(qparamsl, "tag");
     var user = returnValueOf(qparamsl, "user");
     var title = returnValueOf(qparamsl, "title");
@@ -719,7 +718,7 @@ function loadBrowse() {
     }
 
     if (search !== null) {
-        console.log(search);
+        //console.log(search);
         $.ajax({
             type: "GET",
             url: "http://localhost:8080/MetroShare/webresources/media/search/" + search,
@@ -753,7 +752,7 @@ function loadBrowse() {
                 }
 
                 if (jsondata[1].length > 0 && user) {
-                    console.log("by uploader");
+                    //console.log("by uploader");
                     var col12 = document.createElement("div");
                     col12.setAttribute("class", "col-12");
                     var h1 = document.createElement("h1");
@@ -791,7 +790,7 @@ function loadBrowse() {
 // ------ browse tools ------ */
 // -------------------------------*/
 //give class "checked" to checkbox when clicking on its span
-function onSearchCheckboxTick (event) {
+function onSearchCheckboxTick(event) {
     $(event.target).parents("label").find("input").toggleClass("checked");
 }
 
@@ -834,7 +833,7 @@ function searchMedia(event) {
             }
 
             if (jsondata[1].length > 0 && $("#users").hasClass("checked")) {
-                console.log("by uploader");
+                //console.log("by uploader");
                 var col12 = document.createElement("div");
                 col12.setAttribute("class", "col-12");
                 var h1 = document.createElement("h1");
@@ -877,13 +876,54 @@ function getAdminTools() {
         return response.json();
     }).then(function (j) {
         if (j.tools) {
+            var tools = $("#admin-tools");
+            var h2 = document.createElement("h2");
+            h2.style.textAlign = "center";
+            h2.textContent = "Raw Pages";
+            tools.append(h2);
+            var flexDiv = document.createElement("div");
+            flexDiv.style.display = "flex";
+            flexDiv.style.justifyContent = "center";
             for (var page in j.pages) {
-                var form = document.createElement();
-                console.log(page);
-                console.log(j.pages[page])
+                var form = document.createElement("form");
+                form.action = j.pages[page];
+                form.style.paddingLeft = "5px";
+                form.style.paddingRight = "5px";
+                var button = document.createElement("button");
+                button.type = "submit";
+                button.textContent = page;
+                form.append(button);
+                flexDiv.append(form);
             }
+            tools.append(flexDiv);
+            h2 = document.createElement("h2");
+            h2.style.textAlign = "center";
+            h2.textContent = "Get Admin data";
+            tools.append(h2);
+            flexDiv = document.createElement("div");
+            flexDiv.style.display = "flex";
+            flexDiv.style.justifyContent = "center";
+            for (var get in j.gets) {
+                var button = document.createElement("button");
+                if (get === "Users") {
+                    //button.addEventListener(adminGetUsers());
+                    button.setAttribute('onclick', "adminGetUsers()");
+                } else if (get === "Comments") {
+                    button.setAttribute('onclick', "adminGetComments()");
 
-            $("#admin-tools").append(j);
+                } else if (get === "Medias") {
+                    button.setAttribute('onclick', "adminGetMedias()");
+
+                } else if (get === "Tags") {
+                    button.setAttribute('onclick', "adminGetTags()");
+                }
+                button.textContent = get;
+                flexDiv.append(button);
+                flexDiv.style.paddingBottom = "10px";
+                //console.log(get);
+                //console.log(j.gets[get]);
+            }
+            tools.append(flexDiv);
         }
     });
 }
@@ -923,13 +963,13 @@ function jsonArrayToArray(jsonArray) {
     for (var key in jsonArray) {
         b = [];
         if (typeof jsonArray[key] === "object") {
-            console.log("2nd stage found");
+            //console.log("2nd stage found");
             for (var value in jsonArray[key]) {
                 if (typeof jsonArray[key][value] === "object") {
-                    console.log("3nd stage found");
+                    //console.log("3nd stage found");
                     var c = [];
                     for (var valueb in jsonArray[key][value]) {
-                        console.log(jsonArray[key][value][valueb]);
+                        //console.log(jsonArray[key][value][valueb]);
                         c.push(jsonArray[key][value][valueb]);
                     }
                     b.push(c);
@@ -942,8 +982,8 @@ function jsonArrayToArray(jsonArray) {
         }
         a.push(b);
     }
-    console.log("jsonArrayToArray2 is returning: ");
-    console.log(a);
+    //console.log("jsonArrayToArray2 is returning: ");
+    //console.log(a);
     return a;
 }
 
@@ -952,10 +992,9 @@ function jsonArrayToArray(jsonArray) {
  *
  * @param arrayToBeTable Array Array to convert
  */
-function arrayToTable(arrayToBeTable) {
+function arrayToTable(arrayToBeTable, dataType) {
     var table = document.getElementById("tables");
     table.innerHTML = '';
-    table.style.display = "table";
     var thead = document.createElement("div");
     thead.style.display = "table-header-group";
     var tr = document.createElement("div");
@@ -964,12 +1003,15 @@ function arrayToTable(arrayToBeTable) {
         if (i === 0) {
             for (var header in arrayToBeTable[i]) {
                 var th = document.createElement("th");
+                if (arrayToBeTable[i][header] === "message") {
+                    //th.width = "70%";
+                }
                 th.textContent = arrayToBeTable[i][header];
                 var longest = 1;
                 for (x in arrayToBeTable) {
                     if (typeof arrayToBeTable[x][header] === "object") {
                         longest = Math.max(longest, arrayToBeTable[x][header].length);
-                        console.log(longest);
+                        //console.log(longest);
                     }
                 }
                 th.colSpan = longest;
@@ -993,7 +1035,7 @@ function arrayToTable(arrayToBeTable) {
                     for (var x in arrayToBeTable) {
                         if (typeof arrayToBeTable[x][header] === "object") {
                             longest = Math.max(longest, arrayToBeTable[x][header].length);
-                            console.log(longest);
+                            //console.log(longest);
                         }
                     }
                     if (arrayToBeTable[i][value].length > 0) {
@@ -1005,7 +1047,7 @@ function arrayToTable(arrayToBeTable) {
                             tagCBInput.name = "tags";
                             tagCBInput.value = arrayToBeTable[i][value][x].tagid;
                             td.append(tagCBInput);
-                            console.log(arrayToBeTable[i][value][x]);
+                            //console.log(arrayToBeTable[i][value][x]);
                             var b = document.createElement("b");
                             b.innerHTML = arrayToBeTable[i][value][x].tagid;
                             td.append(b);
@@ -1039,14 +1081,30 @@ function arrayToTable(arrayToBeTable) {
                         var oTrue = document.createElement("option");
                         oTrue.text = "True";
                         nsfwSelect.add(oTrue);
-                        console.log(arrayToBeTable[i][value]);
+                        //console.log(arrayToBeTable[i][value]);
                         if (arrayToBeTable[i][value]) {
                             nsfwSelect.selectedIndex = "1";
                         } else {
                             nsfwSelect.selectedIndex = "0";
                         }
                         td.append(nsfwSelect);
-                    } else if (arrayToBeTable[0][value] === "Login") {
+                    } else if (arrayToBeTable[0][value] === "privileges") {
+                        var priSelect = document.createElement("select");
+                        priSelect.name = "privileges";
+                        var oUser = document.createElement("option");
+                        oUser.text = "User";
+                        priSelect.add(oUser);
+                        var oAdmin = document.createElement("option");
+                        oAdmin.text = "Admin";
+                        priSelect.add(oAdmin);
+                        //console.log(arrayToBeTable[i][value]);
+                        if (arrayToBeTable[i][value] === "admin") {
+                            priSelect.selectedIndex = "1";
+                        } else {
+                            priSelect.selectedIndex = "0";
+                        }
+                        td.append(priSelect);
+                    } else if (arrayToBeTable[0][value] === "Login" || arrayToBeTable[0][value] === "login") {
                         var a = document.createElement("a");
                         a.href = "profile.html?login=" + arrayToBeTable[i][value];
                         var b = document.createElement("b");
@@ -1068,6 +1126,20 @@ function arrayToTable(arrayToBeTable) {
                         titleInput.name = "title";
                         titleInput.value = arrayToBeTable[i][value];
                         td.append(titleInput);
+                    } else if (arrayToBeTable[0][value] === "message") {
+                        var messageInput = document.createElement("input");
+                        messageInput.type = "text";
+                        messageInput.name = "message";
+                        messageInput.size = "128";
+                        messageInput.value = arrayToBeTable[i][value];
+                        td.append(messageInput);
+                    } else if (arrayToBeTable[0][value] === "tag") {
+                        var tagInput = document.createElement("input");
+                        tagInput.type = "text";
+                        tagInput.name = "message";
+                        tagInput.size = "128";
+                        tagInput.value = arrayToBeTable[i][value];
+                        td.append(tagInput);
                     } else if (arrayToBeTable[0][value] === "medialocation") {
                         var a = document.createElement("a");
                         a.href = "media.html?id=" + arrayToBeTable[i][0];
@@ -1091,6 +1163,19 @@ function arrayToTable(arrayToBeTable) {
             tr.append(savetd);
             var removetd = document.createElement("td");
             var removeForm = document.createElement("form");
+            removeForm.setAttribute("onsubmit", "adminremove(event,this)");
+            removeForm.method = "POST";
+            //console.log(arrayToBeTable[i]);
+            var typeInput = document.createElement("input");
+            typeInput.type = "hidden";
+            typeInput.name = "datatype";
+            typeInput.value = dataType;
+            removeForm.append(typeInput);
+            var idInput = document.createElement("input");
+            idInput.type = "hidden";
+            idInput.name = "id";
+            idInput.value = arrayToBeTable[i][0];
+            removeForm.append(idInput);
             var removeButton = document.createElement("button");
             removeButton.textContent = "Remove";
             removeButton.type = "submit";
@@ -1100,6 +1185,29 @@ function arrayToTable(arrayToBeTable) {
             table.appendChild(tr);
         }
     }
+}
+
+function adminremove(event, target) {
+    event.preventDefault();
+    console.log(target);
+    var id = target.querySelector('input[name="id"]').value;
+    var datatype = target.querySelector('input[name="datatype"]').value;
+    var data = "id=" + id + "&datatype=" + datatype;
+    console.log("jee");
+    fetch("http://localhost:8080/MetroShare/webresources/admin/remove/", {
+        method: 'POST',
+        async: false,
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        },
+        body: data
+    }).then(function (response) {
+        return response.json();
+    }).then(function (j) {
+        alert(j.status);
+    });        
 }
 
 /**
@@ -1319,48 +1427,39 @@ $("#friend-list-heading").click(function () {
 // ------ admin.html loads ------ */
 // -------------------------------*/
 
-$("#admin-users").submit(function (event) {
-    event.preventDefault();
-
+function adminGetUsers() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/users",
-        data: $("#admin-users").serialize(),
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
-            arrayToTable(jsonArrayToArray(jsondata));
+            arrayToTable(jsonArrayToArray(jsondata),"user");
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
         }
     });
-});
+}
 
-$("#admin-comments").submit(function (event) {
-    event.preventDefault();
-
+function adminGetComments() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/comments",
-        data: $("#admin-comments").serialize(),
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
-            arrayToTable(jsonArrayToArray(jsondata));
+            arrayToTable(jsonArrayToArray(jsondata),"comment");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
         }
     });
-});
+}
 
-$("#admin-medias").submit(function (event) {
-    event.preventDefault();
-
+function adminGetMedias() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/medias",
-        data: $("#admin-medias").serialize(),
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
             //arrayToTable(jsonArrayToArray(jsondata));
@@ -1370,24 +1469,21 @@ $("#admin-medias").submit(function (event) {
             console.log("Error: " + errorThrown);
         }
     });
-});
+}
 
-$("#admin-tags").submit(function (event) {
-    event.preventDefault();
-
+function adminGetTags() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/tags",
-        data: $("#admin-tags").serialize(),
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
-            arrayToTable(jsonArrayToArray(jsondata));
+            arrayToTable(jsonArrayToArray(jsondata), "tag");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
         }
     });
-});
+}
 
 // -------------------------------*/
 // ------ Statistics Load ------- */

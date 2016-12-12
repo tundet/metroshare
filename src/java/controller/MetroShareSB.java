@@ -506,6 +506,58 @@ public class MetroShareSB {
     }
 
     /**
+     * Remove a user from a medium.
+     *
+     * @param id ID of the user
+     */
+    public void removeUser(int id) {
+        try {
+            em.remove((User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            System.err.println("User remove error: " + e);
+        }
+    }
+    
+    /**
+     * Remove a comment from a medium.
+     *
+     * @param id ID of the comment
+     */
+    public void removeComment(int id) {
+        try {
+            em.remove((Comment) em.createNamedQuery("Comment.findById").setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            System.err.println("Comment remove error: " + e);
+        }
+    }
+    
+    /**
+     * Remove a media from a medium.
+     *
+     * @param id ID of the media
+     */
+    public void removeMedia(int id) {
+        try {
+            em.remove((Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            System.err.println("Media remove error: " + e);
+        }
+    }
+    
+    /**
+     * Remove a tag from a medium.
+     *
+     * @param id ID of the tag
+     */
+    public void removeTag(int id) {
+        try {
+            em.remove((Tag) em.createNamedQuery("Tag.findById").setParameter("id", id).getSingleResult());
+        } catch (Exception e) {
+            System.err.println("Media remove error: " + e);
+        }
+    }
+    
+    /**
      * Remove a like from a medium.
      *
      * @param id ID of the like
