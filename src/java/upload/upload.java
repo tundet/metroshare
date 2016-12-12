@@ -21,6 +21,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 import model.Media;
+import model.MediaTag;
+import model.Tag;
 import model.User;
 
 /**
@@ -82,10 +84,12 @@ public class upload extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String fileName = getFilename(request.getPart("file"));
+        
+        int nextMediaId = mssb.readNextMediaId();
 
         // Get the file extension of the image.
         int lastIndexOfDot = fileName.lastIndexOf(".");
-        fileName = mssb.readNextMediaId() + fileName.substring(lastIndexOfDot);
+        fileName = nextMediaId + fileName.substring(lastIndexOfDot);
 
         User user = mssb.readUserBySessionID(request.getParameter("sessionid"));
 
@@ -114,6 +118,24 @@ public class upload extends HttpServlet {
         }
 
         mssb.insert(image);
+        
+        // Get tags of the image.
+        String[] tags = request.getParameter("tags").split("\\s+");
+        
+        for (String tag : tags) {
+            // Create a new tag if it doesn't exist.
+            if (mssb.readTagByTag(tag).isEmpty()) {
+                Tag newTag = new Tag();
+                newTag.setTag(tag);
+                mssb.insert(newTag);
+            }
+            
+            // Add all tags to the image.
+            MediaTag mediaTag = new MediaTag();
+            mediaTag.setMediaId(mssb.readMediaByMediaID(nextMediaId));
+            mediaTag.setTagId(mssb.readTagByTag(tag).get(0));
+            mssb.insert(mediaTag);
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ public class MediaTag implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "ID")
     private Integer id;
     @JoinColumn(name = "tagId", referencedColumnName = "ID")
