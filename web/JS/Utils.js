@@ -53,7 +53,12 @@ $(document).ready(function () {
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
         } else {
-            loadNlatestMedia(6);
+            var qparams = readQParamsToList(loc);
+            var qparam = returnValueOf(qparams, "search");
+            if (qparam === null) {
+                loadNlatestMedia(6);
+            }
+
             getrandompics(12);
         }
     }
