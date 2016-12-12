@@ -360,9 +360,9 @@ public class MediaResource {
     }
 
     /**
-     * Retrieve total amount of the latest media.
+     * Retrieve media with most likes.
      *
-     * @return All media.
+     * @return All media with likes in descending order.
      */
     @GET
     @Path("/mostlikes")
@@ -370,6 +370,31 @@ public class MediaResource {
     public String getMostLikesJson() {
         List<MediaLike> mll = mssb.readMostMediaLikes();
         Media m = mll.get(0).getMediaId();
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        JsonObject mediaValue = Json.createObjectBuilder()
+                .add("mediaId", m.getId())
+                .add("mediaLocation", m.getMediaLocation())
+                .add("title", m.getTitle())
+                .add("nsfw", m.getNsfw())
+                .build();
+        builder.add(mediaValue);
+
+        JsonArray media = builder.build();
+
+        return media.toString();
+    }
+    
+    /**
+     * Retrieve media with most comments.
+     *
+     * @return list of media with most comments in descending order.
+     */
+    @GET
+    @Path("/mostcomments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getMostCommentsJson() {
+        List<Comment> cl = mssb.readMostMediaComments();
+        Media m = cl.get(0).getMediaId();
         JsonArrayBuilder builder = Json.createArrayBuilder();
         JsonObject mediaValue = Json.createObjectBuilder()
                 .add("mediaId", m.getId())

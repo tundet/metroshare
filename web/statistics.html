@@ -83,6 +83,10 @@
                 <h2>Most liked media</h2>
                 <div id="most-liked"></div>
             </div>
+            <div class="col-4">
+                <h2>Most commented media</h2>
+                <div id="most-comments"></div>
+            </div>
 
         </div>
 
@@ -208,6 +212,23 @@
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         document.querySelector("#most-liked").append(generateMedia(jsondata[0], 12));
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            });
+        </script>
+        
+        <script type="text/javascript">
+            //retrieve most likes
+            $(document).ready(function (event) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/MetroShare/webresources/media/mostcomments",
+                    success: function (data, textStatus, xhr) {
+                        var jsondata = JSON.parse(data);
+                        document.querySelector("#most-comments").append(generateMedia(jsondata[0], 12));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);

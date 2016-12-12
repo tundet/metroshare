@@ -109,7 +109,7 @@ public class MetroShareSB {
      */
     public User readUserBySessionID(String sessionid) {
         try {
-            return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid.trim() + "';",User.class).getSingleResult();
+            return (User) em.createNativeQuery("SELECT * FROM `user` WHERE user.SessionID = '" + sessionid.trim() + "';", User.class).getSingleResult();
         } catch (Exception e) {
             System.err.println("User read by session id error: " + e);
             return null;
@@ -549,10 +549,10 @@ public class MetroShareSB {
             return null;
         }
     }
-    
+
     /**
      * Retrieve media with most likes in descending order.
-     * 
+     *
      * @return All media likes as a list
      */
     public List<MediaLike> readMostMediaLikes() {
@@ -561,6 +561,21 @@ public class MetroShareSB {
             return mll;
         } catch (Exception e) {
             System.err.println("Media search by most likes error: " + e);
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve media with most comments in descending order.
+     *
+     * @return All media comments as a list
+     */
+    public List<Comment> readMostMediaComments() {
+        try {
+            List<Comment> cl = em.createNativeQuery("SELECT comment.Id,comment.mediaId, COUNT(mediaId) FROM comment GROUP BY mediaId ORDER BY COUNT(mediaId) DESC", Comment.class).getResultList();
+            return cl;
+        } catch (Exception e) {
+            System.err.println("Media search by most comments error: " + e);
             return null;
         }
     }
