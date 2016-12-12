@@ -1269,9 +1269,11 @@ function onUpload(event) {
         processData: false,
         data: new FormData($(event.target)[0]),
         success: function (data, textStatus, xhr) {
+            window.location = "index.html";
             console.log(JSON.parse(data));
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            window.location = "index.html";
             console.log("Error: " + errorThrown);
         }
     });
