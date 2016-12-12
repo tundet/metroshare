@@ -16,7 +16,7 @@ $(document).ready(function () {
     var loc = document.location.toString();
     loc = loc.substring(loc.indexOf("MetroShare/") + 11);
     if (loc.startsWith("index.html") || loc === "") {
-        getrandompics(10);
+        getrandompics(12);
     } else if (loc.startsWith("media.html")) {
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
@@ -46,8 +46,8 @@ $(document).ready(function () {
         if ((cookiesessionid === "undefined" || cookiesessionid === null)) {
             window.location = "signup.html";
         } else {
-            getrandompics(8);
             loadNlatestMedia(6);
+            getrandompics(12);
         }
     }
 
@@ -89,6 +89,11 @@ $(document).ready(function () {
                     getAdminTools();
                 } else if (loc.startsWith("browse.html")) {
                     console.log("yay in browse");
+                    var qparams = readQParamsToList(loc);
+                    var qparam = returnValueOf(qparams, "search");
+                    if (qparam !== null) {
+                        loadBrowse();
+                    }
                 }
             }
         });
@@ -779,7 +784,7 @@ $('span').click(function (event) {
 });
 
 
-$("#search-media").submit(function (event) {
+function searchMedia(event) {
     event.preventDefault();
     $.ajax({
         type: "POST",
@@ -849,7 +854,7 @@ $("#search-media").submit(function (event) {
         }
     });
     $("#latest-media-headin").remove();
-});
+}
 
 function getAdminTools() {
     fetch("http://localhost:8080/MetroShare/webresources/admin/gettools/", {
@@ -865,7 +870,7 @@ function getAdminTools() {
                 console.log(page);
                 console.log(j.pages[page])
             }
-            
+
             $("#admin-tools").append(j);
         }
     });
