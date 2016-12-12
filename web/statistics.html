@@ -74,16 +74,16 @@
                 <h2 id="total-users"></h2>
                 <h2 id="total-tags"></h2>
                 <h2 id="total-comments"></h2>
-                <div class="col-4">
-                    <h2>Recent media</h2>
-                    <div id="recent-media"></div>
-                </div>
-                <div class="col-4">
-                    <h2>Most liked media</h2>
-                    <div id="most-liked"></div>
-                </div>
-
             </div>
+            <div class="col-4">
+                <h2>Recent media</h2>
+                <div id="recent-media"></div>
+            </div>
+            <div class="col-4">
+                <h2>Most liked media</h2>
+                <div id="most-liked"></div>
+            </div>
+
         </div>
 
 
@@ -190,7 +190,7 @@
                     success: function (data, textStatus, xhr) {
                         var jsondata = JSON.parse(data);
                         console.log(jsondata);
-                        document.querySelector("#recent-media").append(generateMedia(jsondata[0]));
+                        document.querySelector("#recent-media").append(generateMedia(jsondata[0], 12));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Error: " + errorThrown);
