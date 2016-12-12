@@ -1002,6 +1002,21 @@ label.checkbox :checked + span {
 /* --- Browse Single Media ---*/
 /* ---------------------------*/
 
+.img-title {
+    color:#fff;
+    margin-bottom: 3px;
+}
+
+.img-uploader h5 {
+    color:#fff;
+    margin: 3px;
+    font-weight: normal;
+}
+
+.show-media-figure {
+    margin-top: 7px;
+}
+
 .browse-media-container {
     text-align: center;
 }
@@ -1039,9 +1054,10 @@ label.checkbox :checked + span {
     background-color: #303F9F;
 }
 
-.comments h2{
+.comment-sender-name{
     margin-bottom: 10px;
     padding-left: 10px;
+    color: #fff;
 }
 
 .comments textArea {

@@ -513,6 +513,13 @@ function loadmedia(qparam) {
             // make media title
             var title = $(".img-title");
             title.text(a[1][3]);
+            var uploaderdiv = $(".img-uploader");
+            var aUploader = document.createElement("a");
+            aUploader.href = "profile.html?login=" + a[1][1];
+            var h5 = document.createElement("h5");
+            h5.append("By " + a[1][1]);
+            aUploader.append(h5);
+            uploaderdiv.append(aUploader);
             // make media figure
             var figure = $(".show-media-figure");
             figure.text("");
@@ -589,6 +596,7 @@ function loadmedia(qparam) {
                     var alink = document.createElement("a");
                     alink.href = "profile.html?login=" + a[1][5][i].userName;
                     var unameh2 = document.createElement("h2");
+                    unameh2.classList.add("comment-sender-name");
                     unameh2.innerHTML = a[1][5][i].userName;
                     alink.append(unameh2);
                     leftColumn.append(alink);
@@ -616,7 +624,7 @@ function loadmedia(qparam) {
 }
 
 // -------------------------------*/
-// ------ media.html loads ------ */
+// ------ profile.html loads ------ */
 // -------------------------------*/
 
 function loadProfile(qparam) {
@@ -660,7 +668,7 @@ function loadProfile(qparam) {
 }
 
 // -------------------------------*/
-// ------ media.html loads ------ */
+// ------ browse.html loads ------ */
 // -------------------------------*/
 
 function loadBrowse() {
