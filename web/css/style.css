@@ -856,6 +856,16 @@ footer ul li a {
     border-radius: 0px 0px 25px 25px;
 }
 
+.panel-body ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+.panel-body li{
+    padding: 0 5px;
+}
+
 .panel-footer {
     padding: 10px;
     text-align: right;
