@@ -1028,6 +1028,7 @@ function arrayToTable(arrayToBeTable, dataType) {
         } else {
 
             tr = document.createElement("form");
+            tr.setAttribute("onsubmit", "adminedit(event,this)");
             tr.style.display = "table-row";
             for (var value in arrayToBeTable[i]) {
                 if (arrayToBeTable[0][value] === "tags") {
@@ -1093,9 +1094,11 @@ function arrayToTable(arrayToBeTable, dataType) {
                         priSelect.name = "privileges";
                         var oUser = document.createElement("option");
                         oUser.text = "User";
+                        oUser.value = "user";
                         priSelect.add(oUser);
                         var oAdmin = document.createElement("option");
                         oAdmin.text = "Admin";
+                        oAdmin.value = "admin";
                         priSelect.add(oAdmin);
                         //console.log(arrayToBeTable[i][value]);
                         if (arrayToBeTable[i][value] === "admin") {
@@ -1136,7 +1139,7 @@ function arrayToTable(arrayToBeTable, dataType) {
                     } else if (arrayToBeTable[0][value] === "tag") {
                         var tagInput = document.createElement("input");
                         tagInput.type = "text";
-                        tagInput.name = "message";
+                        tagInput.name = "tag";
                         tagInput.size = "128";
                         tagInput.value = arrayToBeTable[i][value];
                         td.append(tagInput);
@@ -1156,6 +1159,16 @@ function arrayToTable(arrayToBeTable, dataType) {
                 }
             }
             var savetd = document.createElement("td");
+            var typeInput = document.createElement("input");
+            typeInput.type = "hidden";
+            typeInput.name = "datatype";
+            typeInput.value = dataType;
+            savetd.append(typeInput);
+            var idInput = document.createElement("input");
+            idInput.type = "hidden";
+            idInput.name = "id";
+            idInput.value = arrayToBeTable[i][0];
+            savetd.append(idInput);
             var saveButton = document.createElement("button");
             saveButton.textContent = "Save";
             saveButton.type = "submit";
@@ -1166,12 +1179,12 @@ function arrayToTable(arrayToBeTable, dataType) {
             removeForm.setAttribute("onsubmit", "adminremove(event,this)");
             removeForm.method = "POST";
             //console.log(arrayToBeTable[i]);
-            var typeInput = document.createElement("input");
+            typeInput = document.createElement("input");
             typeInput.type = "hidden";
             typeInput.name = "datatype";
             typeInput.value = dataType;
             removeForm.append(typeInput);
-            var idInput = document.createElement("input");
+            idInput = document.createElement("input");
             idInput.type = "hidden";
             idInput.name = "id";
             idInput.value = arrayToBeTable[i][0];
@@ -1187,6 +1200,70 @@ function arrayToTable(arrayToBeTable, dataType) {
     }
 }
 
+/**
+ * Send remove query to backend
+ *
+ * @param target to get form informarion to query
+ */
+function adminedit(event, target) {
+    event.preventDefault();
+    console.log(target);
+    var id = target.querySelector('input[name="id"]').value;
+    var datatype = target.querySelector('input[name="datatype"]').value;
+    var values = [];
+    if (datatype === "user") {
+        var val = [];
+        val.push("privileges");
+        val.push(target.querySelector('select[name="privileges"]').value)
+        values.push(val);
+    } else if (datatype === "comment") {
+        var val = [];
+        val.push("message");
+        val.push(target.querySelector('input[name="message"]').value)
+        values.push(val);
+    } else if (datatype === "tag") {
+        var val = [];
+        val.push("tag");
+        val.push(target.querySelector('input[name="tag"]').value)
+        values.push(val);
+    } else if (datatype === "media") {
+        var val = [];
+        val.push("nsfw");
+        val.push(target.querySelector('select[name="nsfw"]').value)
+        values.push(val);
+        val = [];
+        val.push("title");
+        val.push(target.querySelector('input[name="title"]').value)
+        values.push(val);
+    }
+    var valuePairs = "";
+    for (i in values) {
+        valuePairs += "&" + values[i][0] + "=" + values[i][1];
+    }
+    var data = "id=" + id + "&datatype=" + datatype + valuePairs;
+    console.log(data);
+    fetch("http://localhost:8080/MetroShare/webresources/admin/edit/", {
+        method: 'POST',
+        async: false,
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        },
+        body: data
+    }).then(function (response) {
+        return response.json();
+    }).then(function (j) {
+        alert(j.status);
+        window.location.reload();
+    });
+}
+
+/**
+ * Send remove query to backend
+ *
+ * @param target to get form informarion to query
+ */
 function adminremove(event, target) {
     event.preventDefault();
     console.log(target);
@@ -1207,7 +1284,8 @@ function adminremove(event, target) {
         return response.json();
     }).then(function (j) {
         alert(j.status);
-    });        
+        window.location.reload();
+    });
 }
 
 /**
@@ -1215,7 +1293,7 @@ function adminremove(event, target) {
  *
  * @param arrayToBeTable Array Array to convert
  */
-function adminMediaToTable(arrayToBeTable) {
+function adminMediaToTable(arrayToBeTable, dataType) {
     var tables = document.getElementById("tables");
     tables.innerHTML = '';
     tables.classList.add("container-fluid");
@@ -1244,6 +1322,8 @@ function adminMediaToTable(arrayToBeTable) {
         tabletd.classList.add("container-fluid");
         tabletd.style.padding = "5px";
         var table = document.createElement("form");
+        table.setAttribute("onsubmit", "adminedit(event,this)");
+        table.method = "POST";
         table.style.display = "table";
         var tr = document.createElement("div");
         tr.style.display = "table-row";
@@ -1334,6 +1414,16 @@ function adminMediaToTable(arrayToBeTable) {
         tr = document.createElement("tr");
         td = document.createElement("td");
         var savetd = document.createElement("td");
+        var typeInput = document.createElement("input");
+        typeInput.type = "hidden";
+        typeInput.name = "datatype";
+        typeInput.value = dataType;
+        savetd.append(typeInput);
+        var idInput = document.createElement("input");
+        idInput.type = "hidden";
+        idInput.name = "id";
+        idInput.value = arrayToBeTable[i][0];
+        savetd.append(idInput);
         var saveButton = document.createElement("button");
         saveButton.textContent = "Save";
         saveButton.type = "submit";
@@ -1341,6 +1431,18 @@ function adminMediaToTable(arrayToBeTable) {
         tr.append(savetd);
         var removetd = document.createElement("td");
         var removeForm = document.createElement("form");
+        removeForm.setAttribute("onsubmit", "adminremove(event,this)");
+        removeForm.method = "POST";
+        typeInput = document.createElement("input");
+        typeInput.type = "hidden";
+        typeInput.name = "datatype";
+        typeInput.value = dataType;
+        removeForm.append(typeInput);
+        idInput = document.createElement("input");
+        idInput.type = "hidden";
+        idInput.name = "id";
+        idInput.value = arrayToBeTable[i][0];
+        removeForm.append(idInput);
         var removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
         removeButton.type = "submit";
@@ -1433,7 +1535,7 @@ function adminGetUsers() {
         url: "http://localhost:8080/MetroShare/webresources/admin/users",
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
-            arrayToTable(jsonArrayToArray(jsondata),"user");
+            arrayToTable(jsonArrayToArray(jsondata), "user");
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -1448,7 +1550,7 @@ function adminGetComments() {
         url: "http://localhost:8080/MetroShare/webresources/admin/comments",
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
-            arrayToTable(jsonArrayToArray(jsondata),"comment");
+            arrayToTable(jsonArrayToArray(jsondata), "comment");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);
@@ -1463,7 +1565,7 @@ function adminGetMedias() {
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
             //arrayToTable(jsonArrayToArray(jsondata));
-            adminMediaToTable(jsonArrayToArray(jsondata));
+            adminMediaToTable(jsonArrayToArray(jsondata), "media");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Error: " + errorThrown);

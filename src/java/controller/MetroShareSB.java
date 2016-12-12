@@ -348,6 +348,21 @@ public class MetroShareSB {
             System.err.println("Comment update error: " + e);
         }
     }
+    
+     /**
+     * Retrieve comment by ID.
+     *
+     * @param id ID of the comment
+     * @return Matching Comment
+     */
+    public Comment readCommentByID(int id) {
+        try {
+            return (Comment)em.createNamedQuery("Comment.findById").setParameter("id", id).getSingleResult();
+        } catch (Exception e) {
+            System.err.println("Media read by userId error: " + e);
+            return null;
+        }
+    }
 
     /**
      * Retrieve all comments.
@@ -538,7 +553,8 @@ public class MetroShareSB {
      */
     public void removeMedia(int id) {
         try {
-            em.remove((Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult());
+            Media m = (Media) em.createNamedQuery("Media.findById").setParameter("id", id).getSingleResult();
+            em.remove(m);
         } catch (Exception e) {
             System.err.println("Media remove error: " + e);
         }
@@ -772,6 +788,21 @@ public class MetroShareSB {
         }
     }
 
+    /**
+     * Retrieve Tag by ID.
+     *
+     * @param id ID of the Tag
+     * @return Matching Tag
+     */
+    public Tag readTagByID(int id) {
+        try {
+            return (Tag)em.createNamedQuery("Tag.findById").setParameter("id", id).getSingleResult();
+        } catch (Exception e) {
+            System.err.println("Media read by userId error: " + e);
+            return null;
+        }
+    }
+    
     /**
      * Retrieve all tags.
      *

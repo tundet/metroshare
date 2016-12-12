@@ -1,8 +1,8 @@
 package controller;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -17,6 +17,8 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import model.Comment;
 import model.Media;
@@ -72,77 +74,9 @@ public class AdminResource {
     }
 
     /**
-     * Retrieves all comments as JSON.
+     * Removes given id data from datatype.
      *
-     * @return All comments as JSON
-     */
-    @GET
-    @Path("/comments")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getCommentsJson() {
-        List<Comment> clst = mssb.readAllComments();
-
-        // user found and returning json data about login priviliges and activity
-        JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (Comment c : clst) {
-            JsonObject commentValue = Json.createObjectBuilder()
-                    .add("ID", c.getId())
-                    .add("login", c.getUserId().getLogin())
-                    .add("mediaId", c.getMediaId().getId())
-                    .add("message", c.getMessage())
-                    .add("date", c.getDate().toString()).build();
-            builder.add(commentValue);
-        }
-        JsonArray commentA = builder.build();
-
-        return commentA.toString();
-    }
-
-    /**
-     * Retrieves all media as JSON.
-     *
-     * @return All media as JSON.
-     */
-    @GET
-    @Path("/medias")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getMediasJson() {
-        List<Media> mlst = mssb.readAllMedias();
-
-        // user found and returning json data about login priviliges and activity
-        JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (Media m : mlst) {
-            JsonObjectBuilder job = Json.createObjectBuilder();
-            job.add("ID", m.getId());
-            job.add("Login", m.getUserId().getLogin());
-            job.add("medialocation", m.getMediaLocation());
-            job.add("nsfw", m.getNsfw());
-            job.add("date", m.getDate().toString());
-            if (m.getTitle() != null) {
-                job.add("title", m.getTitle());
-            } else {
-                job.add("sessionID", m.getDate().toString());
-            }
-            JsonArrayBuilder tagAbuilder = Json.createArrayBuilder();
-            for (MediaTag mt : m.getMediaTagCollection()) {
-                JsonObjectBuilder tagjob = Json.createObjectBuilder();
-                tagjob.add("tagid", mt.getTagId().getId());
-                tagjob.add("tag", mt.getTagId().getTag());
-                tagAbuilder.add(tagjob);
-            }
-            job.add("tags", tagAbuilder);
-            JsonObject mediaValue = job.build();
-            builder.add(mediaValue);
-        }
-        JsonArray mediaA = builder.build();
-
-        return mediaA.toString();
-    }
-
-    /**
-     * Return all tags as JSON.
-     *
-     * @return All tags as JSON.
+     * @return status as JSON.
      */
     @POST
     @Path("/remove")
@@ -173,6 +107,76 @@ public class AdminResource {
                     .add("status", "failure")
                     .build();
             return removeValue.toString();
+        }
+    }
+    
+    /**
+     * Return all tags as JSON.
+     *
+     * @return All tags as JSON.
+     */
+    @POST
+    @Path("/edit")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String editJson(@CookieParam("SessionID") String sessionid, @FormParam("datatype") String datatype,
+            @FormParam("id") int id, @FormParam("privileges") String privileges, @FormParam("message") String message,
+            @FormParam("tag") String tag, @FormParam("nsfw") String nsfw, @FormParam("title") String title) {
+        System.out.println("Saving " + sessionid + " , " + datatype + " , " + id);
+        User u = mssb.readUserBySessionID(sessionid);
+        if (u.getPrivileges().equals("admin")) {
+            JsonObjectBuilder json = Json.createObjectBuilder();
+            switch (datatype) {
+                case "user":
+                    User ur = mssb.readUserByID(id);
+                    ur.setPrivileges(privileges);
+                    mssb.update(ur);
+                    json.add("status", "saved");
+                    json.add("id", ur.getId());
+                    json.add("login", ur.getLogin());
+                    json.add("priviliges", ur.getPrivileges());
+                    break;
+                case "comment":
+                    Comment c = mssb.readCommentByID(id);
+                    c.setMessage(message);
+                    mssb.update(c);
+                    json.add("status", "saved");
+                    json.add("id", c.getId());
+                    json.add("login", c.getUserId().getLogin());
+                    json.add("message", c.getMessage());
+                    break;
+                case "media":
+                    Media m = mssb.readMediaByMediaID(id);
+                    if (nsfw.equals("true")){
+                        m.setNsfw(true);
+                    } else {
+                        m.setNsfw(false);
+                    }   m.setTitle(title);
+                    mssb.update(m);
+                    json.add("status", "saved");
+                    json.add("id", m.getId());
+                    json.add("login", m.getUserId().getLogin());
+                    json.add("title", m.getTitle());
+                    json.add("nsfw", m.getNsfw());
+                    break;
+                case "tag":
+                    Tag t = mssb.readTagByID(id);
+                    t.setTag(tag);
+                    mssb.update(t);
+                    json.add("status", "saved");
+                    json.add("id", t.getId());
+                    json.add("tag", t.getTag());
+                    break;
+                default:
+                    break;
+            }
+            
+            JsonObject saveValue = json.build();
+            return saveValue.toString();
+        } else {
+            JsonObject saveValue = Json.createObjectBuilder()
+                    .add("status", "failure")
+                    .build();
+            return saveValue.toString();
         }
     }
 
@@ -330,5 +334,80 @@ public class AdminResource {
         String sessionid = sb.toString();
 
         return sessionid;
+    }
+    private ExecutorService executorService = java.util.concurrent.Executors.newCachedThreadPool();
+
+    @GET
+    @Path(value = "/comments")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void getCommentsJson(@Suspended final AsyncResponse asyncResponse) {
+        executorService.submit(new Runnable() {
+            public void run() {
+                asyncResponse.resume(doGetCommentsJson());
+            }
+        });
+    }
+
+    private String doGetCommentsJson() {
+        List<Comment> clst = mssb.readAllComments();
+        
+        // user found and returning json data about login priviliges and activity
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Comment c : clst) {
+            JsonObject commentValue = Json.createObjectBuilder()
+                    .add("ID", c.getId())
+                    .add("login", c.getUserId().getLogin())
+                    .add("mediaId", c.getMediaId().getId())
+                    .add("message", c.getMessage())
+                    .add("date", c.getDate().toString()).build();
+            builder.add(commentValue);
+        }
+        JsonArray commentA = builder.build();
+        
+        return commentA.toString();
+    }
+
+    @GET
+    @Path(value = "/medias")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public void getMediasJson(@Suspended final AsyncResponse asyncResponse) {
+        executorService.submit(new Runnable() {
+            public void run() {
+                asyncResponse.resume(doGetMediasJson());
+            }
+        });
+    }
+
+    private String doGetMediasJson() {
+        List<Media> mlst = mssb.readAllMedias();
+        
+        // user found and returning json data about login priviliges and activity
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (Media m : mlst) {
+            JsonObjectBuilder job = Json.createObjectBuilder();
+            job.add("ID", m.getId());
+            job.add("Login", m.getUserId().getLogin());
+            job.add("medialocation", m.getMediaLocation());
+            job.add("nsfw", m.getNsfw());
+            job.add("date", m.getDate().toString());
+            if (m.getTitle() != null) {
+                job.add("title", m.getTitle());
+            } else {
+                job.add("sessionID", m.getDate().toString());
+            }
+            JsonArrayBuilder tagAbuilder = Json.createArrayBuilder();
+            for (MediaTag mt : m.getMediaTagCollection()) {
+                JsonObjectBuilder tagjob = Json.createObjectBuilder();
+                tagjob.add("tagid", mt.getTagId().getId());
+                tagjob.add("tag", mt.getTagId().getTag());
+                tagAbuilder.add(tagjob);
+            }
+            job.add("tags", tagAbuilder);
+            JsonObject mediaValue = job.build();
+            builder.add(mediaValue);
+        }
+        JsonArray mediaA = builder.build();
+        
+        return mediaA.toString();
     }
 }
