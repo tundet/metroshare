@@ -9,7 +9,7 @@
 
 $(document).ready(function () {
 //Stuff to do on everysite:
-//    navbarhide();
+    navbarhide();
     var cookiesessionid = readSessionIdFromCookie();
 
     //Stuff to do in spesific site when not logged in
