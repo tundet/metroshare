@@ -856,7 +856,8 @@ function getAdminTools() {
     }).then(function (response) {
         return response.json();
     }).then(function (j) {
-        $("#admin-tools").append("Tools get");
+        console.log(j)
+        $("#admin-tools").append(j);
     });
 }
 

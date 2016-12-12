@@ -1,5 +1,6 @@
 package controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import javax.ejb.EJB;
@@ -25,7 +26,7 @@ import model.User;
 
 /**
  * Admin resource.
- * 
+ *
  * Contains logic for miscellaneous features, such as login and signup
  * implementations and to get comments for media.
  */
@@ -161,12 +162,12 @@ public class AdminResource {
 
         return tagA.toString();
     }
-    
+
     /**
      * Create a new user.
-     * 
+     *
      * Save a new user in the database.
-     * 
+     *
      * @param username Username of the user
      * @param password Password of the user
      * @return Status message as a string
@@ -188,9 +189,9 @@ public class AdminResource {
 
     /**
      * Create a new user.
-     * 
+     *
      * Save a new user in the database.
-     * 
+     *
      * @param username Username of the user
      * @param password Password of the user
      * @return Status message as a string
@@ -203,31 +204,55 @@ public class AdminResource {
         try {
             User user = mssb.readUserBySessionID(SessionID);
             if (user.getPrivileges().equals("admin")) {
+                JsonObject toolsSinglePages = Json.createObjectBuilder()
+                        .add("Profile", "profile.html")
+                        .add("About", "about.html")
+                        .add("Browse", "browse.html")
+                        .add("Media", "media.html")
+                        .add("Statistics", "statistics.html")
+                        .add("Signup", "signup.html")
+                        .add("Upload", "upload.html")
+                        .build();
+                JsonObject toolsGetData = Json.createObjectBuilder()
+                        .add("Users", "admin-users")
+                        .add("About", "admin-comments")
+                        .add("Browse", "admin-medias")
+                        .add("Media", "admin-tags")
+                        .build();
                 JsonObject toolsValue = Json.createObjectBuilder()
-                    .add("tools", "true")
-                    .build();
+                        .add("tools", "true")
+                        .add("pages", toolsSinglePages)
+                        .add("gets", toolsGetData)
+                        .build();
+                
+                System.out.println(toolsValue.toString());
+                return toolsValue.toString();
+            } else {
+                JsonObject toolsValue = Json.createObjectBuilder()
+                        .add("tools", "false")
+                        .build();
                 return toolsValue.toString();
             }
         } catch (Exception e) {
             JsonObject toolsValue = Json.createObjectBuilder()
                     .add("tools", "false")
                     .build();
-                return toolsValue.toString();
+            return toolsValue.toString();
         } finally {
             JsonObject toolsValue = Json.createObjectBuilder()
                     .add("tools", "false")
                     .build();
-                return toolsValue.toString();
+            return toolsValue.toString();
         }
     }
-    
+
     /**
      * Sign a user in.
-     * 
-     * Check if the user provided a correct password upon signing in.
-     * If yes, generate a new session ID and send it to the user.
-     * If the login was not successful, return "false".
-     * 
+     *
+     * Check if the user provided a correct password upon signing in. If yes,
+     * generate a new session ID and send it to the user. If the login was not
+     * successful, return "false".
+     *
      * @param username Username of the user
      * @param password Password of the user
      * @return Session ID if successful, false if wrong password.
@@ -243,8 +268,8 @@ public class AdminResource {
                 user.setSessionID(nextSessionId());
                 mssb.update(user);
                 JsonObject userValue = Json.createObjectBuilder()
-                    .add("sessionid", user.getSessionID())
-                    .build();
+                        .add("sessionid", user.getSessionID())
+                        .build();
                 return userValue.toString();
             } else {
                 return "false";
@@ -256,10 +281,10 @@ public class AdminResource {
 
     /**
      * Generate a new session ID.
-     * 
-     * Generate a random 64 characters long session ID from
-     * a list of predefined characters.
-     * 
+     *
+     * Generate a random 64 characters long session ID from a list of predefined
+     * characters.
+     *
      * @return Session ID as a string
      */
     public String nextSessionId() {
@@ -271,7 +296,7 @@ public class AdminResource {
             sb.append(c);
         }
         String sessionid = sb.toString();
-        
+
         return sessionid;
     }
 }
