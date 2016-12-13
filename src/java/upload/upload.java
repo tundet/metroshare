@@ -34,7 +34,7 @@ import model.User;
  * database.
  */
 @WebServlet(urlPatterns = {"/upload"})
-@MultipartConfig(location = "/tmp")
+@MultipartConfig(location = "C:\\Windows\\Temp")
 public class upload extends HttpServlet {
 
     @EJB

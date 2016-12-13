@@ -2,7 +2,6 @@ package controller;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
 import javax.ejb.EJB;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -17,8 +16,6 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import model.Comment;
 import model.Media;

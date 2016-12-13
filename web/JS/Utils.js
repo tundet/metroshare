@@ -632,6 +632,7 @@ function loadmedia(qparam) {
             } else {
                 var h2 = document.createElement("h2");
                 h2.innerHTML = "No comments yet!";
+                h2.style.color = "#fff";
                 comments.append(h2);
             }
 
@@ -880,6 +881,7 @@ function getAdminTools() {
             var h2 = document.createElement("h2");
             h2.style.textAlign = "center";
             h2.textContent = "Raw Pages";
+            h2.style.color = "#fff";
             tools.append(h2);
             var flexDiv = document.createElement("div");
             flexDiv.style.display = "flex";
@@ -899,6 +901,7 @@ function getAdminTools() {
             h2 = document.createElement("h2");
             h2.style.textAlign = "center";
             h2.textContent = "Get Admin data";
+            h2.style.color = "#fff";
             tools.append(h2);
             flexDiv = document.createElement("div");
             flexDiv.style.display = "flex";
@@ -1627,7 +1630,7 @@ function loadTotalUsers() {
 //retrieve total tags
 function loadTotalTags() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/tags",
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
@@ -1644,7 +1647,7 @@ function loadTotalTags() {
 //retrieve total comments
 function loadTotalComments() {
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://localhost:8080/MetroShare/webresources/admin/comments",
         success: function (data, textStatus, xhr) {
             var jsondata = JSON.parse(data);
