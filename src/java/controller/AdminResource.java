@@ -335,22 +335,18 @@ public class AdminResource {
 
         return sessionid;
     }
-    private ExecutorService executorService = java.util.concurrent.Executors.newCachedThreadPool();
-
+    
+        /**
+     * Retrieves all comments as JSON.
+     *
+     * @return All comments as JSON
+     */
     @GET
-    @Path(value = "/comments")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public void getCommentsJson(@Suspended final AsyncResponse asyncResponse) {
-        executorService.submit(new Runnable() {
-            public void run() {
-                asyncResponse.resume(doGetCommentsJson());
-            }
-        });
-    }
-
-    private String doGetCommentsJson() {
+    @Path("/comments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getCommentsJson() {
         List<Comment> clst = mssb.readAllComments();
-        
+
         // user found and returning json data about login priviliges and activity
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Comment c : clst) {
@@ -363,24 +359,21 @@ public class AdminResource {
             builder.add(commentValue);
         }
         JsonArray commentA = builder.build();
-        
+
         return commentA.toString();
     }
 
+    /**
+     * Retrieves all media as JSON.
+     *
+     * @return All media as JSON.
+     */
     @GET
-    @Path(value = "/medias")
-    @Produces(value = MediaType.APPLICATION_JSON)
-    public void getMediasJson(@Suspended final AsyncResponse asyncResponse) {
-        executorService.submit(new Runnable() {
-            public void run() {
-                asyncResponse.resume(doGetMediasJson());
-            }
-        });
-    }
-
-    private String doGetMediasJson() {
+    @Path("/medias")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getMediasJson() {
         List<Media> mlst = mssb.readAllMedias();
-        
+
         // user found and returning json data about login priviliges and activity
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Media m : mlst) {
@@ -407,7 +400,7 @@ public class AdminResource {
             builder.add(mediaValue);
         }
         JsonArray mediaA = builder.build();
-        
+
         return mediaA.toString();
     }
 }
