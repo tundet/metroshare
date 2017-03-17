@@ -19,7 +19,7 @@ discuss and like others' images. MetroShare is built with Java EE and GlassFish.
 ### 1. Clone the project
 
 ```sh
-git clone git@github.com:/jukump/metroshare.git
+git clone git@github.com:/tundet/metroshare.git
 ```
 
 ### 2. Configure a GlassFish server
